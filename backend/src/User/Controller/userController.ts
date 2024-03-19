@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { signup , login, getUsers,toggleUserBlock ,generateOtpForPassword , ResetPassword , CheckExistingUSer , gLogin , googleSignup } from "../Service/userService";
+import { signup , login, getUsers,toggleUserBlock ,generateOtpForPassword , ResetPassword , CheckExistingUSer , gLogin , googleSignup , FavoriteVendor } from "../Service/userService";
 import generateOtp from "../../files/util/generateOtp";
 import { CustomError } from "../../files/Error/CustomError";
 import user from "../Model/user";
@@ -347,6 +347,31 @@ async verifyOtp(req:Request , res: Response):Promise<void>{
         }
       },
 
+      async AddFavVendor(req:Request , res: Response):Promise<void>{
+        try {
+        const vendorId: string = req.query.vendorId ? String(req.query.vendorId) : "";
+        const userId: string = req.query.userId ? String(req.query.userId) : "";
+          if(!vendorId){
+            res.status(400).json({error:"Invalid vendor id."})
+          }
+          if(!userId){
+            res.status(400).json({error:"Invalid user id."})
+          }
+
+          const data = await FavoriteVendor(vendorId , userId);
+          if(data){
+            res.status(200).json({message:"vendor added to Favorite list.."});
+          }else{
+            res.status(400).json({message:"vendor already added to favorites."});
+          }
+
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      },
+
+     
      
      
       

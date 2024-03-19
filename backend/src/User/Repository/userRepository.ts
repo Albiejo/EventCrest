@@ -65,3 +65,27 @@ export const UpdatePassword = async (password: string, mail: string) => {
   }
 };
 
+
+export const addVendorToFavorites = async (
+  userId: string,
+  vendorId: string
+) => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found.");
+    }
+
+    if (user.favorite.includes(vendorId)) {
+      return false; // Vendor already in favorites
+    }
+
+    user.favorite.push(vendorId);
+    await user.save();
+
+    return true;
+  } catch (error) {
+    console.error("Error in addVendorToFavorites repository:", error);
+    throw new Error("Failed to add vendor to favorites.");
+  }
+};

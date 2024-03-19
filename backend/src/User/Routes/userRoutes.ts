@@ -18,6 +18,7 @@ router.post('/resetpassword' , UserController.ResetUserPassword)
 router.get('/getvendors' ,VendorController.getAllVendors )
 router.post('/google/login' , UserController.UseGoogleLogin)
 router.post('/google/register' , UserController.UseGoogleRegister)
+router.post('/add-Favorite-Vendor' , UserController.AddFavVendor)
 
 
 

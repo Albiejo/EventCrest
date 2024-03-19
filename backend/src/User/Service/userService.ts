@@ -5,7 +5,7 @@ import {
   findAllUsers,
   findUserByEmail,
   UpdatePassword,
-  
+  addVendorToFavorites
 } from "../Repository/userRepository";
 import User, { UserDocument } from "../Model/user";
 import generateOtp from "../../files/util/generateOtp";
@@ -182,4 +182,12 @@ export const googleSignup = async (
 
 
 
-
+export const FavoriteVendor = async(vendorId:string , userId:string)=>{
+  try {
+    const result = await addVendorToFavorites(userId, vendorId);
+    return result;
+} catch (error) {
+    console.error("Error in addToFavorites service:", error);
+    throw new Error("Failed to add vendor to favorites.");
+}
+};
