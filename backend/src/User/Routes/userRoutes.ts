@@ -12,16 +12,25 @@ router.post('/verify' ,UserController.verifyOtp);
 router.post('/resendOtp' ,UserController.ResendOtp)
 router.post('/login', UserController.UserLogin );
 router.get('/logout' , UserController.UserLogout);
+
+
+
 router.post('/getotp' , UserController.UserForgotPassword)
 router.post('/verify-otp' , UserController.VerifyOtpForPassword)
 router.post('/resetpassword' , UserController.ResetUserPassword)
+
+
 router.get('/getvendors' ,VendorController.getAllVendors )
+
 router.post('/google/login' , UserController.UseGoogleLogin)
 router.post('/google/register' , UserController.UseGoogleRegister)
+
+
 router.post('/add-Favorite-Vendor' , UserController.AddFavVendor)
+router.post('/updatePassword' , UserController.UpdatePasswordController)
 
 
-
+router.post('/addVendorReview' , VendorController.addVendorReview)
 
 
 

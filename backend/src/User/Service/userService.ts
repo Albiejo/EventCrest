@@ -6,7 +6,10 @@ import {
   findUserByEmail,
   UpdatePassword,
   addVendorToFavorites
+  ,findUserById
 } from "../Repository/userRepository";
+
+
 import User, { UserDocument } from "../Model/user";
 import generateOtp from "../../files/util/generateOtp";
 import { CustomError } from "../../files/Error/CustomError";
@@ -52,6 +55,7 @@ export const login = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
+    console.log("login data" , email , password)
     const existingUser = await findUserByEmail(email);
     if (!existingUser) {
       throw new CustomError("User not exists..", 404);
@@ -61,6 +65,7 @@ export const login = async (
     }
 
     const passwordMatch = await bcrypt.compare(password, existingUser.password);
+    console.log(passwordMatch);
 
     if (!passwordMatch) {
       throw new CustomError("Incorrect password..", 401);
@@ -191,3 +196,49 @@ export const FavoriteVendor = async(vendorId:string , userId:string)=>{
     throw new Error("Failed to add vendor to favorites.");
 }
 };
+
+
+
+export const checkCurrentPassword = async(currentpassword:string , userId:string)=>{
+
+  try {
+    
+    const existingUser = await findUserById(userId);
+
+    if(!existingUser){
+     throw new Error("user not found")
+    }
+
+    const passwordMatch = await bcrypt.compare(currentpassword, existingUser.password);
+    if (!passwordMatch) {
+     return false;
+    }
+
+    return passwordMatch; 
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const UpdatePasswordService = async(newPassword:string , userId:string)=>{
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    const existingUser = await findUserById(userId);
+    if(!existingUser){
+      throw new Error("user not found")
+    }
+    const email = existingUser.email;
+
+    const updatedValue = await UpdatePassword(hashedPassword , email);
+    if(updatedValue){
+      return true;
+    }
+    return false
+  } catch (error) {
+    throw error;
+  }
+}

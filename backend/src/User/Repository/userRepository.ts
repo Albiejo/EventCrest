@@ -21,6 +21,29 @@ export const findUserByEmail = async (
   }
 };
 
+
+export const findUserById = async (
+  userId: string
+): Promise<UserDocument | null> => {
+  try {
+    return await User.findById( userId );
+  } catch (error) {
+    throw error;
+  }
+};
+
+const UpdateUserPassword=async(password:string , userid:string)=>{
+try {
+  
+} catch (error) {
+  throw error;
+}
+}
+
+
+
+
+
 export const findAllUsers = async (
   page: number,
   limit: number,

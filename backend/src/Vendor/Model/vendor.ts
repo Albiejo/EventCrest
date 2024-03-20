@@ -10,13 +10,12 @@ export interface Vendor {
     phone:number;
     logo:string;
     coverpic:string;
-    reviews:object;
+    reviews:Array<object>;
     isVerified:boolean;
     verificationRequest:boolean;
     totalBooking:number;
     vendor_type:Schema.Types.ObjectId;
     isActive:boolean;
-    
 }
 
 export interface VendorDocument extends Vendor, Document {}
@@ -30,7 +29,7 @@ const VendorSchema: Schema = new Schema({
     about:{type:String},
     logo:{type:String},
     coverpic:{type:String},
-    reviews:{type:Object},
+    reviews:{type:Array<object>},
     isVerified:{type:Boolean},
     verificationRequest:{type:Boolean},
     totalBooking:{type:Number},
