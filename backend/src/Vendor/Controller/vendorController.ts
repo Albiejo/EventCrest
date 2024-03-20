@@ -1,6 +1,6 @@
 import { Request , Response } from "express";
-import { signup , login , CheckExistingVendor , getVendors , toggleVendorBlock , getSingleVendor , ResetVendorPasswordService 
-} from "../Service/vendorService";
+import { signup , login , CheckExistingVendor , getVendors , toggleVendorBlock , getSingleVendor , ResetVendorPasswordService ,
+  PushFavoriteVendor,} from "../Service/vendorService";
 import generateOtp from "../../files/util/generateOtp";
 import { CustomError } from "../../files/Error/CustomError";
 
@@ -204,6 +204,26 @@ export const VendorController = {
         }
        },
 
+
+       async addVendorReview(req:Request , res: Response):Promise<void>{
+        try {
+          
+          const content = req.body.content;
+          const rating :number = req.body.rate as number;
+          console.log(rating)
+          const userid :string  = req.query.userid as string
+          const vendorid :string=req.query.vendorid as string;
+
+          const status = await PushFavoriteVendor(content,rating,userid,vendorid);
+          if(!status){
+            res.status(400).json({error:`couldn't add reviews, some error occured`})
+          }
+          res.status(200).json({message:"review added for vendor.."})
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+       }
       
 }
 

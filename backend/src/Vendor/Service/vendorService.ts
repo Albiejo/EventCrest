@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createVendor , findvendorByEmail , findAllVendors ,UpdateVendorPassword } from '../Repository/vendorRepository';
+import { createVendor , findvendorByEmail , findAllVendors ,UpdateVendorPassword ,AddVendorReview } from '../Repository/vendorRepository';
 import { ObjectId } from 'mongoose';
 import vendor , { VendorDocument } from '../Model/vendor';
 import { findVerndorIdByType } from '../../VendorType/Repository/vendorTypeRepository';
@@ -136,3 +136,12 @@ export const ResetVendorPasswordService = async(password:string , email:string)=
 }
 
 
+export const PushFavoriteVendor = async(content:string , rating:number , userid:string , vendorid:string)=>{
+  try {
+    console.log("inside service " , rating)
+    const data = await AddVendorReview(content , rating, userid , vendorid)
+    return  data;
+  } catch (error) {
+    throw error;
+  }
+}

@@ -2,12 +2,13 @@ import {
   Avatar,
   Button, Card, CardBody, CardFooter, CardHeader, Chip, Input, Typography
 } from "@material-tailwind/react";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { axiosInstanceAdmin } from "../../../api/axiosinstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import {toast} from "react-toastify"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-
+import { logout } from "../../../redux/slices/UserSlice";
+import { useDispatch } from "react-redux";
 
 interface User {
   _id: string;
@@ -22,13 +23,14 @@ const TABLE_HEAD = ["User", "Phone", "Status", "Action"];
 
 const UsersTable=()=> {
 
+
   const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState<number>(1);
   const [value ,setValue] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
   const location = useLocation();
-
+  const dispatch = useDispatch();
 
   useEffect(() => {
 
@@ -64,6 +66,7 @@ const UsersTable=()=> {
     axiosInstanceAdmin.patch(`/block-unblock?userId=${userId}`)
       .then((response) => {
         console.log(response)
+        dispatch(logout());
         toast.success(response.data.message)
         navigate("/admin/users");
       })

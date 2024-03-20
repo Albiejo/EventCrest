@@ -13,6 +13,9 @@ export default async function generateOtp(email: string){
                 user: process.env.USER_NAME,
                 pass: process.env.USER_PASSWORD,
             },
+            tls: {
+                rejectUnauthorized: false // Ignore self-signed certificates
+            }
         });
 
         const mailOptions = {
