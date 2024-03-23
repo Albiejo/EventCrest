@@ -15,9 +15,6 @@ import {
   UpdateUserProfile,FavoriteVendors
 } from "../Service/userService";
 
-
-
-
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
 import user from "../Model/user";
@@ -27,7 +24,9 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import sharp from "sharp";
 import crypto from "crypto";
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 interface UserSession {
   otpSetTimestamp: number | undefined;
@@ -61,10 +60,10 @@ declare module "express-session" {
 
 const s3 = new S3Client({
   credentials: {
-    accessKeyId: "AKIARTTIMOSFMIEW7LML",
-    secretAccessKey: "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",
+    accessKeyId:process.env.ACCESS_KEY!,
+    secretAccessKey:process.env.SECRET_ACCESS_KEY!,
   },
-  region: "ap-south-1",
+  region:process.env.BUCKET_REGION!,
 });
 
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");

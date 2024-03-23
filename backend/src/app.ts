@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 
 
 
-const sessionMiddleware :RequestHandler =  session({
+const sessionMiddleware :RequestHandler=session({
   secret: process.env.SESSION_SECRET!, 
   resave: false,
   saveUninitialized: true,

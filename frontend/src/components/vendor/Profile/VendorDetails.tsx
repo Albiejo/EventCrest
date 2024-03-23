@@ -53,7 +53,8 @@ useEffect(()=>{
         </Typography>
         </div>
         <div>
-        {path==="/viewVendor"? <Button color="red" className="mr-5"  placeholder={undefined} onClick={handleclick}><HeartIcon className="h-5 w-5" /></Button>:""}
+        {path==="/viewVendor"? 
+        <Button color="red" className="mr-5"  placeholder={undefined} onClick={handleclick}><HeartIcon className="h-5 w-5" /></Button>:""}
        
         <Button color="green" placeholder={undefined}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>4.7</Button>
         </div>
