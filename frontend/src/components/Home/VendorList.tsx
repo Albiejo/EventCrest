@@ -34,7 +34,7 @@ const VendorList=()=> {
     return (
         <>
         <div style={{ padding:"40px"}} className="bg-white">
-        <Typography
+               <Typography
                   variant="h4"
                   color="black"
                   className="mx-5 w-full leading-snug !text-3xl lg:max-w-xl lg:!text-3xl mb-5"
@@ -43,11 +43,11 @@ const VendorList=()=> {
                   Vendors
                 </Typography>
         <div style={{ display: 'flex',flexWrap:"wrap"}}>
-        {vendors.map((vendor, index) => (
-        //   <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="m-3">
+
+        {vendors.map((vendor, index) => (       
           <VendorCard {...vendor} key={index}/>
-        // </Link>
         ))}
+        
          </div>
         </div>
         </>
