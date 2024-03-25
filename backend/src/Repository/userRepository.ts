@@ -123,6 +123,7 @@ export const addVendorToFavorites = async (
 
 export const UpdateUserProfileDetails = async(userId:string , name:string , phone:number,image:string,imageUrl:string)=>{
   try {
+
     const userData = await User.findOne({ _id:userId});
     
     const update = {
@@ -152,14 +153,11 @@ export const UpdateUserProfileDetails = async(userId:string , name:string , phon
       update.imageUrl = userData.imageUrl;
     }
     const result = await User.updateOne({ _id: userId }, { $set: update });
-    console.log("inside repository");
+    const NewUserData = await User.findOne({ _id: userId});
     if (result.modifiedCount === 1) {
-      return {  message: "Profile data  updated successfully." };
+      return {NewUserData:NewUserData };
     } else {
-      return {
-        success: false,
-        message: "Profile data not updated.",
-      }   
+      return false
     }
   } catch (error) {
     console.error("Error in updating profile", error);

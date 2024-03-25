@@ -498,13 +498,11 @@ export const UserController = {
 
   async UpdateProfileDetails(req: Request, res: Response): Promise<void> {
   try {
-
     const name = req.body.name;
     const phone = parseInt(req.body.phone);
     const userid:string = req.query.userid as string;
-    console.log("user is",userid);
-    console.log("type of user id is ",typeof userid);
-    
+
+  
     let imageName = "";
     let imageUrl="";
 
@@ -535,11 +533,9 @@ export const UserController = {
       imageUrl = await getSignedUrl(s3, command);
       
     }
-    console.log("inside controller");
+
 
     const data = await UpdateUserProfile(userid, name, phone, imageName,imageUrl,);
-
-    console.log("inside controller after calling updateUserservice");
     
     if(!data){
       res.status(400).json({error:`couldn't update details..try after soem time`});

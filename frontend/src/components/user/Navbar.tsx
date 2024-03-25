@@ -94,7 +94,7 @@ const UserNavbar=()=> {
 
 
   return (
-    <Navbar className="px-4 lg:px-8 lg:py-2 lg:mb-6 bg-sky-blue max-w-screen-3xl" placeholder={undefined} style={{ borderRadius: 0, border: 0 }}>
+    <Navbar className="px-4 lg:px-8 lg:py-2 lg:mb-6 max-w-screen-3xl" placeholder={undefined} style={{ borderRadius: 0, border: 0 }}>
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
        
         <Typography

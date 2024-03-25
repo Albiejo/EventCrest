@@ -17,6 +17,7 @@ import { useEffect } from "react";
 export default function VendorDetails() {
   const location = useLocation();
   const path=location.pathname;
+  
   const vendor = useSelector(
     (state: VendorRootState) => state.vendor.vendordata
   );
@@ -26,6 +27,7 @@ export default function VendorDetails() {
 
 useEffect(()=>{
   console.log("user data ", user);
+  console.log("vendor data is",vendor);
 },[])
 
   const handleclick=()=>{

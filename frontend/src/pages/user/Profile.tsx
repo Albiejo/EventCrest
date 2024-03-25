@@ -11,8 +11,8 @@ const Profile = () => {
       <div style={{ marginLeft: '200px', flex: 1 ,marginTop:"50px"}}>
         <Routes>
           <Route path="/" element={<ProfileCard />} />
-          <Route path="/change-password" element={<ChangePassword />} />
-          <Route path="profile/Favorites" element={<Favorites />} />
+          <Route path="/change-password" element={<ChangePassword/>} />
+          <Route path="/Favorites" element={<Favorites/>} />
         </Routes>
       </div>
     </div>

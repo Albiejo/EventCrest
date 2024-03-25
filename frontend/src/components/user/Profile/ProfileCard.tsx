@@ -8,6 +8,7 @@ import {
 } from "@material-tailwind/react";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector,useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { axiosInstance } from "../../../api/axiosinstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -18,10 +19,6 @@ interface FormInputs {
   phone: string;
 }
 
-// interface FormErrors {
-//  name?: string;
-//  phone?: string;
-// }
 
 export interface UserData {
   name: string;
@@ -37,6 +34,9 @@ export interface UserData {
 const ProfileCard = () => {
 
 
+  const navigate = useNavigate();
+  const dispatch=useDispatch()
+
   const user= useSelector((state: UserRootState) => state.user.userdata);
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -47,34 +47,23 @@ const ProfileCard = () => {
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
-  const navigate = useNavigate();
-  const dispatch=useDispatch()
-
-
+useEffect(() =>console.log("data is ",user));
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  
     e.preventDefault();
-
-
     const formData = new FormData();
-
     formData.append("name", inputs.name);
     formData.append("phone", inputs.phone);
-
     if (file) {
       formData.append("image", file, file.name);
     }
-
-    console.log("Submitting form data:", formData);
-    
     axiosInstance
       .put(`/updateProfile?userid=${user?._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },withCredentials: true })
       .then((response) => {
-        console.log(response);
+        console.log("response is",response.data.data.NewUserData);
         toast.success("Profile updated successfully...!");
-        dispatch(setUserInfo(response.data));
+        dispatch(setUserInfo(response.data.data.NewUserData));
         navigate("/profile");
       })
       .catch((error) => {
@@ -109,10 +98,10 @@ const ProfileCard = () => {
               alt="Selected Profile"
               className="h-40 w-40 rounded-full"
             />
-          ) : user?.image ? (
+          ) : user?.image? (
             <img
               src={user.imageUrl}
-              alt="User Profile"
+              alt="ProfilePic"
               className="h-40 w-40 rounded-full"
             />
           ) : (
@@ -141,6 +130,7 @@ const ProfileCard = () => {
             type="file"
             className="hidden"
             name="image"
+           
             onChange={(e) => {
               if (e.target.files && e.target.files.length > 0) {
                 const file = e.target.files[0];
@@ -150,6 +140,9 @@ const ProfileCard = () => {
             }}
           />
         </CardHeader>
+
+
+
         <CardBody
           className="text-center flex flex-col gap-4"
           placeholder={undefined}

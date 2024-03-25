@@ -26,7 +26,7 @@ function Favorites() {
         axiosInstance
       .get(`/get-favorite-vendor?userid=${user?._id}`,{withCredentials:true})
       .then((response) => {
-        console.log(response.data)
+        console.log("data is :",response.data);
         setVendors(response.data.data);
       })
       .catch((error) => {

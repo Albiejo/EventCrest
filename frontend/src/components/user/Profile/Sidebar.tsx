@@ -1,12 +1,28 @@
-import React from 'react';
-import { Card, Typography, List, ListItem, ListItemPrefix, ListItemSuffix, Chip } from '@material-tailwind/react';
+import { Card, Typography, List, ListItem, ListItemPrefix} from '@material-tailwind/react';
 import {   InboxIcon, PowerIcon, HomeIcon, PencilIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
-
-
+import { axiosInstance } from '../../../api/axiosinstance';
+import { logout } from '../../../redux/slices/UserSlice';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 
 function UserSidebar() {
+
+  const navigate =useNavigate();
+  const dispatch= useDispatch();
+  const handleLogout=(e: React.MouseEvent<HTMLButtonElement>)=>{
+    e.preventDefault();
+    axiosInstance.get("/logout")
+      .then(() => {
+        dispatch(logout());
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.log('here', error);
+      });
+  }
+
   return ( <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5"  placeholder={undefined}>
       
       <div className="mb-2 p-4">
@@ -87,7 +103,7 @@ function UserSidebar() {
         </ListItem></Link>
 
        
-        <ListItem  placeholder={undefined}>
+        <ListItem  placeholder={undefined} onClick={handleLogout}>
           <ListItemPrefix  placeholder={undefined}>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>
@@ -102,3 +118,4 @@ function UserSidebar() {
 
 
 export default UserSidebar;
+

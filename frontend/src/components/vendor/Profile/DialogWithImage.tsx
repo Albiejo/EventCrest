@@ -41,13 +41,13 @@ export function DialogWithImage({ imageUrl, open, handler }:DialogWithImageProps
                          variant="small"
                          color="blue-gray"
                          className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
-                {vendor.name}
+                {vendor?.name}
               </Typography>
               <Typography
                          variant="small"
                          color="gray"
                          className="text-xs font-normal"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}              >
-                {vendor.email}
+                {vendor?.email}
               </Typography>
             </div>
           </div>

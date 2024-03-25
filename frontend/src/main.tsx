@@ -46,7 +46,7 @@ import VendorListing from './pages/VendorListing.tsx';
 import ChangePassword from './components/vendor/ChangePassword.tsx';
 import EditProfileCard from './components/vendor/EditProfileCard.tsx';
 import Profile from './pages/user/Profile.tsx';
-import LandingPage from './components/Home/Landingpage.tsx';
+
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const router = createBrowserRouter(
@@ -58,14 +58,11 @@ const router = createBrowserRouter(
       <Route path="/verify" element={<VerifyEmail />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path='/sample' element={<LandingPage/>}/>
       {/* User Private Routes */}
       <Route path="" element={<UserPrivateRoute/>}>
-      <Route path="/profile" element={<UserSidebar/>}/>
-      <Route path="/vendors" element={<VendorListing/>}/>
-      <Route path="/viewVendor" element={<VendorProfilePage/>}/>
-      <Route path='/profile/change-password' element={<ChangeUserPassword/>}/>
-      <Route path='/profile/Favorites' element={<Favourites/>}/>
+        <Route path="/profile/*" element={<Profile/>}/>
+        <Route path="/vendors" element={<VendorListing/>}/>
+        <Route path="/viewVendor" element={<VendorProfilePage/>}/>
       </Route>
     </Route>
 
