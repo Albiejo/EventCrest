@@ -29,9 +29,8 @@ export const PostController = {
 
   async addNewPost(req: Request, res: Response): Promise<void> {
     try {
-      console.log("req body is", req.body);
       const caption = req.body.caption;
-      const vendor_id: string = req.body.vendorid;
+      const vendor_id: string = req.query.vendorid as string;
       const buffer = await sharp(req.file?.buffer)
         .resize({ height: 1920, width: 1080, fit: "contain" })
         .toBuffer();
@@ -64,9 +63,9 @@ export const PostController = {
 
       const vendor_id:string=req.query.vendorid as string;
       const posts=await getAllPosts(vendor_id)
-      console.log("vendorid is",vendor_id);
       
-      console.log(posts)
+      
+      
 
       for(const post of posts){
         const getObjectParams={
@@ -78,6 +77,10 @@ export const PostController = {
         const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
         post.imageUrl=url;
       }
+
+      console.log(posts)
+
+      
       res.status(201).json(posts);
     } catch (error) {
       console.error(error);

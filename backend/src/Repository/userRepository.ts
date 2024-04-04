@@ -4,6 +4,8 @@ import vendor from "../Model/vendor";
 import mongoose from 'mongoose';
 
 
+
+
 export const createUser = async (
   userData: Partial<UserDocument>
 ): Promise<UserDocument> => {
@@ -14,6 +16,9 @@ export const createUser = async (
   }
 };
 
+
+
+
 export const findUserByEmail = async (
   email: string
 ): Promise<UserDocument | null> => {
@@ -23,6 +28,8 @@ export const findUserByEmail = async (
     throw error;
   }
 };
+
+
 
 
 export const findUserById = async (
@@ -36,6 +43,16 @@ export const findUserById = async (
 };
 
 
+export const findbyIdandUpdate = async( userId: string , refreshToken:string):Promise<UserDocument | null> =>{
+  try {
+    return await User.findByIdAndUpdate({_id:userId},{$set:{refreshToken:refreshToken}});
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 
 const UpdateUserPassword=async(password:string , userid:string)=>{
 try {
@@ -44,7 +61,6 @@ try {
   throw error;
 }
 }
-
 
 
 

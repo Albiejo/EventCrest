@@ -7,13 +7,17 @@ import {
   UpdatePassword,
   addVendorToFavorites
   ,findUserById,
-  UpdateUserProfileDetails,getfavVendors
+  UpdateUserProfileDetails,getfavVendors,findbyIdandUpdate
 } from "../Repository/userRepository";
 
 
 import User, { UserDocument } from "../Model/user";
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 interface LoginResponse {
   token: string;
@@ -44,12 +48,22 @@ export const signup = async (
       isActive,
     });
 
-    const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!);
-    return { token: token, user: newUser };
+    //creating a access token and refresh token and stroing the refresh token in the database for the user.
+
+    const Accesstoken = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!  , { expiresIn: "1h"});
+    // const refreshToken = jwt.sign({ _id: newUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
+    // await findbyIdandUpdate(newUser._id, refreshToken);
+
+    return { token: Accesstoken, user: newUser };
+
   } catch (error) {
     throw error;
   }
 };
+
+
+
+
 
 export const login = async (
   email: string,
@@ -71,9 +85,7 @@ export const login = async (
     if (!passwordMatch) {
       throw new CustomError("Incorrect password..", 401);
     }
-    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
     return {
       token,
       userData: existingUser,

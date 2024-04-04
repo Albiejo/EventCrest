@@ -9,7 +9,8 @@ export interface User {
     isActive:boolean;
     favorite:Array<string>;
     image:string;
-    imageUrl:string
+    imageUrl:string;
+    refreshToken:string
     
 }
 
@@ -23,7 +24,8 @@ const UserSchema: Schema = new Schema({
     isActive :{type:Boolean , required:true},
     favorite:{type:Array},
     image:{type:String},
-    imageUrl:{type:String}
+    imageUrl:{type:String},
+    refreshToken: { type: String }
 
 });
 

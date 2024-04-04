@@ -8,7 +8,8 @@ export interface UserData{
     isActive:boolean,
     image:string,
     phone:string,
-    imageUrl:string
+    imageUrl:string,
+    favorite:Array<string>
 }
 
 export interface UserState{

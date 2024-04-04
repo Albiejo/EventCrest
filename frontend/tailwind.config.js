@@ -6,7 +6,12 @@ export default withMT({
     "./src/**/*.{js,jsx,ts,tsx}"
   ],
   theme: {
-    extend: {},
+    fontFamily: {
+      satoshi: ['Satoshi', 'sans-serif'],
+    },
+   extends:{
+    
+   }
   },
   plugins: [],
 })

@@ -3,7 +3,6 @@ import {
   Card,
   CardHeader,
   CardBody,
-  CardFooter,
   Typography,
   Input,
     Button,
@@ -12,8 +11,9 @@ import {
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import { validate } from "../validations/resetPassword";
-import { axiosInstance } from "../api/axiosinstance";
+import { axiosInstance, axiosInstanceVendor } from "../api/axiosinstance";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface FormValues {
   password: string;
@@ -29,12 +29,25 @@ const initialValues: FormValues = {
 
 const ResetPassword = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const formik = useFormik({
     initialValues,
     validate,
     onSubmit: (values) => {
-      console.log(values);
+     {
+      location.pathname === "/vendor/reset-password"
+      ? axiosInstanceVendor
+      .post("/resetpassword", values, { withCredentials: true })
+        .then((response) => {
+          toast.success("password updated successfully..")
+          navigate("/");
+     })
+     .catch((error) => {
+      toast.error(error.response.data.message);
+      console.log(error.response.data.message);
+    })
+    :
       axiosInstance
         .post("/resetpassword", values, { withCredentials: true })
         .then((response) => {
@@ -43,14 +56,20 @@ const ResetPassword = () => {
         })
         .catch((error) => {
           toast.error(error.response.data.message);
-          console.log("here", error);
+          console.log("error", error);
         });
-    },
+    }}
   });
 
   return (
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage:`url('https://img.freepik.com/premium-vector/password-reset-icon-apps-vector_116137-6219.jpg')`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backdropFilter:"revert-layer"}}>
+      {/* <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
+      <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p> */}
+    </div>
+    <div className="w-full md:w-1/2 mt-10 md:mt-0">
     <Card
-      className="w-96 mt-50 m-auto bg-dark"
+      className="w-96 mt-50 m-auto bg-dark border border-black"
       placeholder={undefined}
       shadow={false}
     >
@@ -111,6 +130,8 @@ const ResetPassword = () => {
         </CardBody>
       </form>
     </Card>
+    </div>
+    </div>
   );
 };
 

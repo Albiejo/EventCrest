@@ -9,13 +9,15 @@ import VendorRootState from "../../../redux/rootstate/VendorState";
 import { DialogWithImage } from "./DialogWithImage";
 import { AxiosResponse } from 'axios'; // Import AxiosResponse
 
-// Define the interface for your response data
+
 interface Post {
  imageUrl: string;
  _id: string;
 }
 
 const VendorPosts: React.FC = () => {
+
+
  const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
  const vendorId = vendor?._id;
  const [posts, setPosts] = useState<Post[]>([]);
@@ -26,10 +28,16 @@ const VendorPosts: React.FC = () => {
  const location = useLocation();
  const path=location.pathname;
 
+ //taking vendor id from url as query
+ const queryParams = new URLSearchParams(location.search);
+ const vendorid :string= queryParams.get('vid') as string;
+
+
  useEffect(() => {
-    axiosInstanceVendor.get<Post[]>(`/posts?vendorid=${vendorId}` , {withCredentials:true}).then((response: AxiosResponse<Post[]>) => {
+    console.log("vendor id is " + vendorid);
+    axiosInstanceVendor.get<Post[]>(`/posts?vendorid=${vendorid}` , {withCredentials:true}).then((response: AxiosResponse<Post[]>) => {
       setPosts(response.data);
-      console.log("data received", response.data);
+      console.log("received data length :", response.data.length);
     }).catch((error) => {
       console.log("here", error);
     });

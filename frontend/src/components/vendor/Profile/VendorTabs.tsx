@@ -8,8 +8,14 @@ import {
   Button,
 } from "@material-tailwind/react";
 import VendorPosts from "./VendorPosts";
+import ReviewCard from "../ReviewCard";
 
-export default function VendorTabs() {
+
+
+
+export default function VendorTabs({ reviews }) {
+
+
   const [activeTab, setActiveTab] = useState("images");
 
   const handleTabChange = (value: SetStateAction<string>) => {
@@ -38,6 +44,7 @@ export default function VendorTabs() {
       onChange={handleTabChange}
       className="ml-20 mr-20 mb-20"
     >
+
       <TabsHeader placeholder={undefined}>
         {data.map(({ label, value }) => (
           <Tab key={value} value={value} placeholder={undefined}>
@@ -45,11 +52,23 @@ export default function VendorTabs() {
           </Tab>
         ))}
       </TabsHeader>
+
       <TabsBody placeholder={undefined}>
+        
         {data.map(({ value, desc }) => (
           <TabPanel key={value} value={value}>
+            
+            
             {value === "images" && <VendorPosts />}
-            {value === "reviews" && <div>{desc}</div>}
+            
+            {value === 'reviews' && ( 
+            <div className="grid grid-cols-1 gap-4 ">
+                {reviews?.map((review, index) => (
+                  <ReviewCard key={index} {...review} />
+                ))}
+              </div>
+            )}
+
             <div className="flex justify-center">
               <Button
                 variant="outlined"

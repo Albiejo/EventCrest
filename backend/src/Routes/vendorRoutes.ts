@@ -3,6 +3,7 @@ import { VendorController } from '../Controller/vendorController';
 import { VendorTypeController } from '../Controller/vendorTypeController';  
 import { PostController } from '../Controller/PostController';
 import multer from 'multer';
+import { BookingController } from '../Controller/BookingController';
 
 
 
@@ -22,7 +23,7 @@ router.post('/verifyotp' ,VendorController.verifyOtp)
 
 router.post('/login' , VendorController.VendorLogin)
 router.get('/logout' , VendorController.VendorLogout)
-
+router.get('/resendOtp' , VendorController.resendOtp)
 
 
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
@@ -33,12 +34,17 @@ router.post('/resetVendorPassword' , VendorController.ResetVendorPassword);
 
 
 router.get('/getvendors' ,VendorController.getAllVendors );
-
+router.get('/getVendor', VendorController.getVendor)
 router.patch('/updateProfilePassword' , VendorController.UpdateProfilePassword);
 
 router.post('/add-post' ,upload.single('image') ,PostController.addNewPost);
 router.get('/posts',PostController.getPosts);
 router.delete('/posts/:id',PostController.deletePost);
+
+router.put('/updateProfile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]) ,VendorController.updateProfiledetails );                                                                                                                                                                                                                                                  
+
+
+router.put('/add-review-reply',VendorController.addReviewReply)
 
 
 

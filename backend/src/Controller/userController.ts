@@ -25,31 +25,13 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import sharp from "sharp";
 import crypto from "crypto";
 import dotenv from 'dotenv';
-
+import { UserSession } from "../util/Interfaces";
+import { OTP } from "../util/Interfaces";
+import { DecodedData } from "../util/Interfaces";
 dotenv.config();
 
-interface UserSession {
-  otpSetTimestamp: number | undefined;
-  email: string;
-  password: string;
-  name: string;
-  phone: number;
-  otpCode: string | undefined;
-}
 
-interface OTP {
-  otp: string | undefined;
-  email: string;
-  otpSetTimestamp: number | undefined;
-}
 
-//for google login
-interface DecodedData {
-  name: string;
-  email: string;
-  picture: string;
-  jti: string;
-}
 
 declare module "express-session" {
   interface Session {
@@ -66,6 +48,7 @@ const s3 = new S3Client({
   region:process.env.BUCKET_REGION!,
 });
 
+
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 
@@ -76,7 +59,7 @@ export const UserController = {
       const { email, password, name, phone } = req.body;
 
       const otpCode = await generateOtp(email);
-      console.log("generated otp is :", otpCode)
+  
       if (otpCode !== undefined) {
         req.session.user = {
           email: email,
@@ -86,7 +69,6 @@ export const UserController = {
           otpCode: otpCode,
           otpSetTimestamp: Date.now(),
         };
-
         res.status(200).json({ message: "OTP send to email for verification..", email: email });
       } else {
         console.log("couldn't generate otp, error occcured ,please fix !!");
@@ -108,13 +90,12 @@ export const UserController = {
   
   async verifyOtp(req: Request, res: Response): Promise<void> {
     try {
+     
       const otp = req.body.otp;
       const userData: UserSession | undefined = req.session.user;
-
+      
       if (!userData) {
-        res
-          .status(400)
-          .json({ error: "Session data not found. Please sign up again." });
+        res.status(400).json({ error: "Session data not found. Please sign up again." });
         return;
       }
 
@@ -129,12 +110,10 @@ export const UserController = {
 
       if (otp === otpCode) {
         const user = await signup(email, password, name, phone);
+
         if (user) {
           delete req.session.user;
-          console.log(
-            "signup data in session after storing in DB: ",
-            req.session
-          );
+        //signup data in session deleted  after storing in DB
           res.status(201).json(user);
         }
       } else {
@@ -244,12 +223,7 @@ export const UserController = {
           email: email,
           otpSetTimestamp: Date.now(),
         };
-        res
-          .status(200)
-          .json({
-            message: "otp sent to email for password updation request ",
-            email: email,
-          });
+        res.status(200).json({ message: "OTP sent to email",email: email});
       } else {
         res.status(400).json({ error: "Email not Registered with us !!" });
       }
@@ -268,7 +242,7 @@ export const UserController = {
       const generatedOtp = req.session.otp?.otp;
 
       if (!req.session.otp) {
-        throw new CustomError("OTP Expired...Try to resend OTP !!", 400);
+        throw new CustomError("OTP Expired.Try again.", 400);
       }
 
       if (ReceivedOtp === generatedOtp) {
@@ -310,11 +284,13 @@ export const UserController = {
 
   async ResendOtp(req: Request, res: Response): Promise<void> {
     try {
+      
       const userData: UserSession | undefined = req.session.user;
+      console.log("userData", userData);
+
+      
       if (!userData) {
-        res
-          .status(400)
-          .json({ error: "Session data not found. Please sign up again." });
+        res.status(400).json({ error: "Session data not found. Please sign up again." });
         console.log("no session data found");
         return;
       }
@@ -329,14 +305,10 @@ export const UserController = {
         req.session.user.otpCode = newOtp;
       } else {
         console.error("Session user data is unexpectedly undefined.");
-        res
-          .status(500)
-          .json({
-            message:
-              "Server Error: Session user data is unexpectedly undefined.",
-          });
+        res.status(500).json({ message:"Server Error: Session user data is unexpectedly undefined." });
         return;
       }
+      console.log("user session after resend" , req.session.user);
       res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
       console.error(error);

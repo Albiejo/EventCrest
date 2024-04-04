@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createVendor , findvendorByEmail , findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId } from '../Repository/vendorRepository';
+import { createVendor , findvendorByEmail , findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId , updateVendorprofData  , addReviewReplyById} from '../Repository/vendorRepository';
 import { ObjectId } from 'mongoose';
 import vendor , { VendorDocument } from '../Model/vendor';
 import { findVerndorIdByType } from '../Repository/vendorTypeRepository';
@@ -196,6 +196,27 @@ export const UpdateVendorPasswordService=async(newPassword:string , vendorid:str
   }
 }
 
-const CheckPasswordMatch=()=>{
-  
+export const updateVendorprof=async(vendorId: string, formData: any, coverpicUrl: string|undefined, logoUrl: string|undefined,logo:string|undefined,coverpic:string|undefined): Promise<any> =>{
+  try {
+    console.log("inside update service");
+    
+    await updateVendorprofData(vendorId, formData, coverpicUrl, logoUrl,logo,coverpic);
+   
+    const updatedVendor = await findVerndorId(vendorId);
+
+    return updatedVendor;
+} catch (error) {
+    throw new Error('Failed to update vendor data');
+}
+}
+
+
+
+export const addReviewReplyController=async(vendorId:string,content:string,reviewId:string): Promise<any>=>{
+  try {
+    const vendordata=await addReviewReplyById(vendorId,content,reviewId)
+    return vendordata;
+  } catch (error) {
+    throw error
+  }
 }

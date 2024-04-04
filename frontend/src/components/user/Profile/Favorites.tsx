@@ -12,6 +12,7 @@ interface Vendors {
     city:string;
     isActive: boolean;
     totalBooking:number;
+    coverpicUrl:string;
   }
 
   
@@ -26,7 +27,6 @@ function Favorites() {
         axiosInstance
       .get(`/get-favorite-vendor?userid=${user?._id}`,{withCredentials:true})
       .then((response) => {
-        console.log("data is :",response.data);
         setVendors(response.data.data);
       })
       .catch((error) => {

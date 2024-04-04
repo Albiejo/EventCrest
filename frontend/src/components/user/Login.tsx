@@ -66,8 +66,14 @@ const UserLoginForm=()=> {
 
 
   return (
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage:`url('/public/imgs/dj.jpg')`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backdropFilter:"revert-layer"}}>
+      {/* <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
+      <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p> */}
+    </div>
+    <div className="w-full md:w-1/2 mt-10 md:mt-0">
     <GoogleOAuthProvider clientId={clientId}>
-    <Card className="w-96 mt-50 bg-dark m-auto bg-dark mx-auto max-w-md bg-white rounded-lg shadow-lg"  placeholder={undefined} shadow={false}>
+    <Card className="w-full md:w-96 m-auto mt-10  bg-dark border border-gray-800 rounded-lg"  placeholder={undefined} shadow={false}>
 
       <CardHeader
         floated={false}
@@ -194,6 +200,8 @@ const UserLoginForm=()=> {
       </CardFooter>
     </Card>
     </GoogleOAuthProvider>
+    </div>
+    </div>
   );
 }
 

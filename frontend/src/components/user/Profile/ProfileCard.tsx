@@ -49,6 +49,8 @@ const ProfileCard = () => {
 
 useEffect(() =>console.log("data is ",user));
 
+
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData();
@@ -77,6 +79,9 @@ useEffect(() =>console.log("data is ",user));
     setInputs({ ...inputs, [name]: value });
   };
 
+
+
+  
   return (
     <Card
       className="w-96 mx-auto"

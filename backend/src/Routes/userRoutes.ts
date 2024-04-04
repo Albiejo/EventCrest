@@ -3,7 +3,7 @@ import { UserController } from '../Controller/userController';
 import isBlocked from '../middleware/UserAuth';
 import { VendorController } from '../Controller/vendorController';
 import multer from 'multer';
-
+import { BookingController } from '../Controller/BookingController';
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ const upload = multer({ storage: storage })
 
 router.post('/signup', UserController.UserSignup );
 router.post('/verify' ,UserController.verifyOtp);
-router.post('/resendOtp' ,UserController.ResendOtp)
+router.get('/resendOtp' ,UserController.ResendOtp)
 router.post('/login', UserController.UserLogin );
 router.get('/logout' , UserController.UserLogout);
 
@@ -26,6 +26,7 @@ router.post('/resetpassword' , UserController.ResetUserPassword)
 
 
 router.get('/getvendors' ,VendorController.getAllVendors )
+router.get('/getVendor', VendorController.getVendor)
 
 router.post('/google/login' , UserController.UseGoogleLogin)
 router.post('/google/register' , UserController.UseGoogleRegister)
@@ -39,5 +40,9 @@ router.patch('/updatePassword' , UserController.UpdatePasswordController)
 router.post('/addVendorReview' , VendorController.addVendorReview)
 
 router.put('/updateProfile' ,upload.single('image'), UserController.UpdateProfileDetails)
+
+
+
+
 
 export default router;

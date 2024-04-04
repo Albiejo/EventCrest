@@ -24,10 +24,7 @@ app.use(cors({
 }))
 
 
-app.use(bodyParser.json());
-// app.use(userOtpExpiration)
-// app.use(vendorOtpExpiration)
-// app.use(userEmailVerifyOtp)
+
 
 
 
@@ -40,9 +37,14 @@ const sessionMiddleware :RequestHandler=session({
   sameSite:'lax'}
 })
 
+
+
 app.use(sessionMiddleware);
 app.use(cookieParser());
-
+app.use(bodyParser.json());
+app.use(userOtpExpiration)
+app.use(vendorOtpExpiration)
+app.use(userEmailVerifyOtp)
 app.use('/api/admin' , adminRoutes);
 app.use('/api/user' , userRoutes);
 app.use('/api/vendor',vendorRoutes)

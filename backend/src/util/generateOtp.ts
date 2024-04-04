@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 
 export default async function generateOtp(email: string){
+    
     try {
         const otpCode: string = Math.floor(1000 + Math.random() * 9000).toString();
 

@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { Rating } from "@material-tailwind/react";
 import { axiosInstance } from '../../../api/axiosinstance';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import VendorRootState from '../../../redux/rootstate/VendorState';
 import { useSelector } from "react-redux";
 import UserRootState from '../../../redux/rootstate/UserState';
 
 
 
-export default function Review() {
 
-  const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
-  const vendorId = vendor?._id;
+
+export  const Review: React.FC=() => {
+
+  
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const vendorId :string= queryParams.get('vid') as string;
   const user   = useSelector((state: UserRootState) => state.user.userdata);
+
   const [rating, setRating] = useState<number>(0);
   const [review, setReview] = useState<string>('');
+
   const navigate=useNavigate();
 
 
@@ -27,8 +32,10 @@ export default function Review() {
     setReview(event.target.value);
   };
 
+
+
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
     event.preventDefault();
     if (rating === 0) {
       toast.error("Please select a rating.");
@@ -42,12 +49,13 @@ export default function Review() {
     setRating(0);
     setReview('');
 
+    
     axiosInstance
     .post(`/addVendorReview?vendorid=${vendorId}&&username=${user?.name}`, {content:review,rate:rating},{withCredentials:true})
     .then((response) => {
       console.log(response);
       toast.success(response.data.message)
-      navigate("/viewVendor");
+      navigate(`/viewVendor?vid=${vendorId}`);
     })
     .catch((error) => {
       toast.error(error.response.data.message)
