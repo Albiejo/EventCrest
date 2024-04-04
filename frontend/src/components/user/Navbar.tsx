@@ -29,6 +29,7 @@ const MyNavbar=()=> {
   const dispatch= useDispatch();
 
   React.useEffect(() => {
+    console.log("user data is ",user)
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false)
@@ -104,7 +105,7 @@ const MyNavbar=()=> {
                   variant="circular"
                   alt="tania andrew"
                   className="cursor-pointer"
-                  src={user?.imageUrl ? user.imageUrl : 'fallback-image-url'} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        />
+                  src={user?.imageUrl ? user.imageUrl:"" } placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}        />
       </MenuHandler>
       <MenuList  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <MenuItem className="flex items-center gap-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>

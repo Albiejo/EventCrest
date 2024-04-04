@@ -100,17 +100,18 @@ import {
             <div className="container mx-auto">
               <div className="flex flex-col lg:flex-row justify-between">
                 <div className="relative flex gap-6 items-start">
-                  <div className="-mt-20 w-40 ml-20">
-                    <Avatar
-                      src={vendor?.logoUrl}
-                      alt="Profile picture"
-                      variant="circular"
-                      className="h-40 w-50"
-                      placeholder={undefined}
-                      onPointerEnterCapture={undefined}
-                      onPointerLeaveCapture={undefined}
-                    />
-                  </div>
+                <div className="-mt-20 w-40 ml-20 border-4 border-gray-300 rounded-full p-1">
+                      <Avatar
+                        src={vendor?.logoUrl}
+                        alt="Profile picture"
+                        variant="circular"
+                        className="h-40 w-50 rounded-full"
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                      />
+                    </div>
+
                   <div className="flex flex-col mt-2">
                     <Typography
                       variant="h4"

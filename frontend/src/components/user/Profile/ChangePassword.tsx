@@ -46,6 +46,7 @@ import {
   
   
     const submitHandler = async (e: { preventDefault: () => void }) => {
+
       e.preventDefault();
 
       const errors = validate(formValues);
@@ -71,7 +72,7 @@ import {
   
     return (
       <Card
-        className="w-96 mx-auto m-auto"
+        className="w-96 mx-auto m-auto mt-10 border border-black "
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}

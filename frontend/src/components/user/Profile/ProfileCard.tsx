@@ -84,12 +84,13 @@ useEffect(() =>console.log("data is ",user));
   
   return (
     <Card
-      className="w-96 mx-auto"
+      className="w-96 mx-auto mt-10"
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}
     >
       <form onSubmit={handleSubmit}>
+
         <CardHeader
           floated={false}
           className="h-50 bg-transparent shadow-none flex items-center justify-center"
@@ -101,12 +102,6 @@ useEffect(() =>console.log("data is ",user));
             <img
               src={previewUrl}
               alt="Selected Profile"
-              className="h-40 w-40 rounded-full"
-            />
-          ) : user?.image? (
-            <img
-              src={user.imageUrl}
-              alt="ProfilePic"
               className="h-40 w-40 rounded-full"
             />
           ) : (
