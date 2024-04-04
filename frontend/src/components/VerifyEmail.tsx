@@ -66,15 +66,13 @@ const VerifyEmail=()=> {
           ? axiosInstanceVendor
               .post("/verifyotp", values, { withCredentials: true })
               .then((response) => {
-                console.log(response);
                 dispatch(setVendorInfo(response.data.vendor));
                 toast.success("Successfully registered..!");
                 navigate("/vendor");
               })
               .catch((error) => {
                 toast.error(error.response.data.message);
-                console.log(error);
-                
+                console.log(error.response.data.message);
               })
           : axiosInstance
               .post("/verify", values, { withCredentials: true })
@@ -95,10 +93,10 @@ const VerifyEmail=()=> {
 const handleResendOtp=()=>{
  location.pathname === "/vendor/verify"
           ? axiosInstanceVendor
-              .post("/verifyotp", { withCredentials: true })
+              .get("/resendOtp", { withCredentials: true })
               .then((response) => {
-                console.log(response);
-                toast.success("Otp resend to email..!");
+                startTimer();
+                toast.success("Successfully resend otp..!");
                 navigate("/verify");
               })
               .catch((error) => {
@@ -106,8 +104,9 @@ const handleResendOtp=()=>{
                 console.log("here", error);
               })
           : axiosInstance
-              .post("/resendOtp",  { withCredentials: true })
+              .get("/resendOtp",  { withCredentials: true })
               .then((response) => {
+                startTimer();
                 toast.success("Successfully resend otp..!");
                 navigate("/verify");
               })
@@ -118,8 +117,14 @@ const handleResendOtp=()=>{
 } 
 
   return (
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage:`url('https://ds9xi3hub5xxi.cloudfront.net/cdn/farfuture/otEn1mSO8Tk3mLVPFxYMCMwRn-qtie_ueonsviYMy0w/mtime:1608563955/sites/default/files/nodeicon/plugins_email-verification-plugin.png')`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backdropFilter:"revert-layer"}}>
+      {/* <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
+      <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p> */}
+    </div>
+    <div className="w-full md:w-1/2 mt-10 md:mt-0">
     <Card
-      className="w-96 mt-50 m-auto bg-dark"
+      className="w-96 mt-50 m-auto bg-dark border border-black"
       placeholder={undefined}
       shadow={false}
     >
@@ -182,6 +187,8 @@ const handleResendOtp=()=>{
         </CardBody>
       </form>
     </Card>
+    </div>
+    </div>
   );
 }
 

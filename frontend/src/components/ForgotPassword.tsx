@@ -98,7 +98,7 @@ const ForgotPassword = () => {
               .post("/verifyVendorotp", values, { withCredentials: true })
               .then((response) => {
                 console.log(response);
-                toast.success(response.data.message);
+                toast.success(response.data.data);
                 navigate("/vendor/reset-password");
               })
               .catch((error) => {
@@ -121,8 +121,14 @@ const ForgotPassword = () => {
   });
 
   return (
+    <div className="w-full h-screen flex flex-col md:flex-row items-start">
+    <div className="w-full md:w-1/2 h-full object-cover" style={{backgroundImage:`url('https://img.freepik.com/premium-vector/forgot-password-concept-isolated-white_263070-194.jpg')`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backdropFilter:"revert-layer"}}>
+      {/* <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
+      <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p> */}
+    </div>
+    <div className="w-full md:w-1/2 mt-10 md:mt-0">
     <Card
-      className="w-96 mt-50 m-auto bg-dark"
+      className="w-96 mt-30 m-auto bg-dark border border-black"
       placeholder={undefined}
       shadow={false}
     >
@@ -210,6 +216,9 @@ const ForgotPassword = () => {
         </form>
       </CardBody>
     </Card>
+    
+    </div>
+    </div>
   );
 };
 
