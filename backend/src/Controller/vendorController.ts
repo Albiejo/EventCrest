@@ -360,7 +360,7 @@ export const VendorController = {
           let coverpicFile,coverpicUrl;
           let logoFile,logoUrl;
 
-          console.log("before re.files");
+      console.log("before re.files");
         
       if (req.files) {
         if (

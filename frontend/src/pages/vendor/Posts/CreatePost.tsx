@@ -72,7 +72,7 @@ import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
         <Breadcrumb pageName="Add Post" folderName="Posts"/>
       <div className="flex justify-center flex-wrap">
         <Card
-          className="sm:w-96 md:w-1/2 lg:w-2/3 xl:w-96 mx-4 my-20"
+          className="sm:w-96 md:w-1/2 lg:w-2/3 xl:w-96 mx-4 my-20 border border-black"
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
@@ -80,6 +80,7 @@ import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
           <CardHeader
             variant="gradient"
             className="mb-4 grid h-28 place-items-center bg-graydark"
+            style={{background:'#446879'}}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
@@ -136,6 +137,7 @@ import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
+                style={{background:'#446879'}}
               >
                 Add
               </Button>
@@ -146,7 +148,7 @@ import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
   
         {/* Preview Image Card */}
         <Card
-          className="sm:w-96 md:w-1/2 lg:w-1/3 xl:w-96 mx-4 my-20"
+          className="sm:w-96 md:w-1/2 lg:w-1/3 xl:w-96 mx-4 my-20 border border-gray-800"
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}

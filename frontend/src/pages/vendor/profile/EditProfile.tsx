@@ -136,7 +136,7 @@ const EditProfile: React.FC = () => {
   return (
     <DefaultLayout>
     <Breadcrumb pageName="Edit-Profile" folderName="Profile"/>
-    <div className="max-w-md mx-auto rounded-xl shadow-md overflow-hidden md:max-w-2xl lg:max-w-4xl bg-gray-100">
+    <div className="max-w-md mx-auto rounded-xl shadow-md overflow-hidden md:max-w-2xl lg:max-w-4xl bg-gray-100 border border-black">
     <div className="md:flex">
     <div className="p-8 md:flex md:space-x-4 w-full">
 

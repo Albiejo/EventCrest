@@ -60,6 +60,7 @@ const router = createBrowserRouter(
           <Route path="" element={<UserPrivateRoute/>}>
               <Route path="/profile/*" element={<Profile/>}/>
               <Route path="/bookevent" element={<BookEventForm/>}/>
+              
           </Route>
     </Route>
 

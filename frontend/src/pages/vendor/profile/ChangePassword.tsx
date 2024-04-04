@@ -75,7 +75,7 @@ import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
       <DefaultLayout>
          <Breadcrumb pageName="Change-Password" folderName="Profile"/>
          <Card
-           className="w-full sm:w-96 mx-auto m-auto" // Adjusted width and margin for responsiveness
+           className="w-full sm:w-96 mx-auto m-auto border border-black" // Adjusted width and margin for responsiveness
            placeholder={undefined}
            onPointerEnterCapture={undefined}
            onPointerLeaveCapture={undefined}
