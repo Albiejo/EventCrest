@@ -41,7 +41,8 @@ router.post('/addVendorReview' , VendorController.addVendorReview)
 
 router.put('/updateProfile' ,upload.single('image'), UserController.UpdateProfileDetails)
 
-
+router.post('/bookevent',BookingController.bookAnEvent)
+router.get('/get-bookings',BookingController.getBookingsByUser)
 
 
 

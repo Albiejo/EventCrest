@@ -46,7 +46,7 @@ router.put('/updateProfile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { 
 
 router.put('/add-review-reply',VendorController.addReviewReply)
 
-
+router.get('/booking-details',BookingController.getAllBookings);
 
 
 export default router;
