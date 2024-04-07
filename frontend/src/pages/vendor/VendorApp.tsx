@@ -16,7 +16,8 @@ import CreatePost from './Posts/CreatePost'
 import BookingHistory from './Booking/BookingHistory'
 import { Reviews } from './Reviews'
 import Notifications from './Notifications'
-import AddDates from "./Booking/Dates";
+// import AddDates from "./Booking/Dates";
+import ViewBooking from "./Booking/ViewBooking";
 
 
 
@@ -134,8 +135,16 @@ const VendorApp = () => {
           }
         />
 
-
           <Route
+          index
+          path="/vendor/view-booking"
+          element={
+            <>
+              <ViewBooking/>
+            </>
+          }
+        />
+          {/* <Route
           index
           path="/vendor/add-date"
           element={
@@ -144,7 +153,7 @@ const VendorApp = () => {
               <AddDates/>
             </>
           }
-        />
+        /> */}
 
 
         <Route

@@ -38,3 +38,11 @@ export interface vendorSession{
     vendor_type:string;
     otpSetTimestamp: number | undefined;
   }
+
+
+export interface PaymentSession {
+    amount:number;
+    userId:string;
+    bookingId:string;
+    vendorId:string;
+  }

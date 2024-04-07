@@ -21,7 +21,7 @@ interface VendorCardProps {
 const VendorCard:React.FC<VendorCardProps>=({name,city,_id,coverpicUrl}) =>{
 
   return (
-    <Card className="lg:w-full max-w-[30rem] shadow-lg"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <Card className="lg:w-full max-w-[20rem] shadow-lg border-2 border-gray-300"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <CardHeader floated={false} color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <img
           src={coverpicUrl}

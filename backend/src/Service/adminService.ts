@@ -1,13 +1,14 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { findAdminByEmail} from "../Repository/adminRepository";
-import { CustomError } from "../Controller/adminController";
-
+import admin from "../Model/admin";
 
 interface LoginResponse {
     token: string;
     adminData: object; 
     message: string;
+    refreshToken:string;
+
   }
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
@@ -21,9 +22,22 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     if (!passwordMatch) {
       throw new CustomError('Incorrect password..', 404);
     }
-    const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
-    return { token, adminData: existingAdmin, message: "Successfully logged in.." };
+    let refreshToken = existingAdmin.refreshToken;
+
+   
+    if (!refreshToken) {
+     
+      refreshToken = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+    }
+
+
+    existingAdmin.refreshToken = refreshToken;
+    await existingAdmin.save();
+
+    const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+
+    return {refreshToken , token, adminData: existingAdmin, message: "Successfully logged in.." };
   } catch (error) {
     throw error;
   }
@@ -31,3 +45,30 @@ export const login = async (email: string, password: string): Promise<LoginRespo
 
 
 
+export class CustomError extends Error {
+  statusCode: number;
+
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+
+export const createRefreshTokenAdmin = async (refreshToken:string)=>{
+  try {
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
+    const Admin = await admin.findById(decoded._id);
+
+    if (!Admin || Admin.refreshToken !== refreshToken) {
+        throw new Error('Invalid refresh token');
+      }
+
+    const accessToken = jwt.sign({ _id: Admin._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    return accessToken;
+
+  } catch (error) {
+    
+  }
+}

@@ -61,13 +61,32 @@ export default function VendorTabs({ reviews }) {
             
             {value === "images" && <VendorPosts />}
             
-            {value === 'reviews' && ( 
+            {/* {value === 'reviews' && ( 
             <div className="grid grid-cols-1 gap-4 ">
                 {reviews?.map((review, index) => (
                   <ReviewCard key={index} {...review} />
                 ))}
               </div>
-            )}
+            )} */}
+
+{value === 'reviews' && ( 
+  <div className="grid grid-cols-1 gap-4 ">
+    {reviews?.map((review, index) => (
+      <div key={index}>
+        <ReviewCard {...review} />
+        {review.reply && review.reply.length > 0 && (
+          <div className="ml-8">
+            {review.reply.map((reply, replyIndex) => (
+              <div key={replyIndex} className="bg-gray-100 p-2 rounded-md mb-2">
+                <p style={{color:'black'}}> replied : {reply}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+)}
 
             <div className="flex justify-center">
               <Button

@@ -9,12 +9,12 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate  , useLocation} from "react-router-dom";
-import { axiosInstance , axiosInstanceVendor } from "../api/axiosinstance";
-import { setUserInfo } from "../redux/slices/UserSlice";
-import { setVendorInfo } from "../redux/slices/VendorSlice";
+import { axiosInstance , axiosInstanceVendor } from "../../api/axiosinstance";
+import { setUserInfo } from "../../redux/slices/UserSlice";
+import { setVendorInfo } from "../../redux/slices/VendorSlice";
 import {toast} from "react-toastify";
 import { useFormik } from "formik";
-import { validate } from "../validations/otpValidation";
+import { validate } from "../../validations/otpValidation";
 
 
 
@@ -54,10 +54,14 @@ const VerifyEmail=()=> {
   };
 
 
+
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const formik = useFormik({
+
+
+const formik = useFormik({
     initialValues,
     validate,
     onSubmit: (values) => {
@@ -67,8 +71,8 @@ const VerifyEmail=()=> {
               .post("/verifyotp", values, { withCredentials: true })
               .then((response) => {
                 dispatch(setVendorInfo(response.data.vendor));
-                toast.success("Successfully registered..!");
-                navigate("/vendor");
+                toast.success("Successfully registered..! Login now");
+                navigate("/vendor/login");
               })
               .catch((error) => {
                 toast.error(error.response.data.message);
@@ -78,8 +82,8 @@ const VerifyEmail=()=> {
               .post("/verify", values, { withCredentials: true })
               .then((response) => {
                 dispatch(setUserInfo(response.data.user));
-                toast.success("Successfully registered..!");
-                navigate("/");
+                toast.success("Successfully registered..! Login now");
+                navigate("/login");
               })
               .catch((error) => {
                 console.log("error received:", error)
@@ -87,7 +91,7 @@ const VerifyEmail=()=> {
               });
       }
     },
-  });
+});
 
 
 const handleResendOtp=()=>{

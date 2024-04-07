@@ -14,7 +14,7 @@ import UserRootState from "../../redux/rootstate/UserState";
 import { axiosInstance } from "../../api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../validations/user/userRegisterVal";
-import LoadingSpinner from "../LoadingSpinner";
+import LoadingSpinner from "../Common/LoadingSpinner";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const clientId = import.meta.env.VITE_CLIENT_ID || "";

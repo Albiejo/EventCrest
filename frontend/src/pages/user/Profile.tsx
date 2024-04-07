@@ -4,7 +4,7 @@ import Favorites from "../../components/user/Profile/Favorites";
 import UserSidebar from "../../components/user/Profile/Sidebar";
 import  ProfileCard  from "../../components/user/Profile/ProfileCard";
 import BookingDetails from "../../components/user/Profile/BookingDetails";
-
+import SingleBooking from "../../components/user/Profile/SingleBooking";
 
 
 const Profile = () => {
@@ -17,6 +17,8 @@ const Profile = () => {
           <Route path="/change-password" element={<ChangePassword/>} />
           <Route path="/Favorites" element={<Favorites/>} />
           <Route path="/Bookings" element={<BookingDetails/>} />
+          <Route path="/booking" element={<SingleBooking />} />
+
         </Routes>
       </div>
     </div>

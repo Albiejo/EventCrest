@@ -4,12 +4,16 @@ import isBlocked from '../middleware/UserAuth';
 import { VendorController } from '../Controller/vendorController';
 import multer from 'multer';
 import { BookingController } from '../Controller/BookingController';
+import { PaymentController } from '../Controller/PaymentController';
+
 
 const router = express.Router();
 
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
+
+
 
 
 router.post('/signup', UserController.UserSignup );
@@ -24,6 +28,7 @@ router.post('/getotp' , UserController.UserForgotPassword)
 router.post('/verify-otp' , UserController.VerifyOtpForPassword)
 router.post('/resetpassword' , UserController.ResetUserPassword)
 
+router.post('/refresh-token' , UserController.createRefreshToken)
 
 router.get('/getvendors' ,VendorController.getAllVendors )
 router.get('/getVendor', VendorController.getVendor)
@@ -43,6 +48,10 @@ router.put('/updateProfile' ,upload.single('image'), UserController.UpdateProfil
 
 router.post('/bookevent',BookingController.bookAnEvent)
 router.get('/get-bookings',BookingController.getBookingsByUser)
+
+router.post('/create-checkout-session',PaymentController.makePayment);
+router.post('/add-payment',PaymentController.addPayment);
+router.get('/single-booking',BookingController.getBookingsById);
 
 
 

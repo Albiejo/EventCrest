@@ -31,7 +31,8 @@ export interface Vendor {
     isActive:boolean;
     coverpicUrl:string;
     logoUrl:string;
-    bookedDates:Array<string>
+    bookedDates:Array<string>;
+    refreshToken:string
 }
 
 export interface VendorDocument extends Vendor, Document {}
@@ -53,7 +54,8 @@ const VendorSchema: Schema = new Schema({
     isActive:{type:Boolean},
     coverpicUrl:{type:String},
     logoUrl:{type:String},
-    bookedDates:{type:Array<String>}
+    bookedDates:{type:Array<String>},
+    refreshToken:{type:String},
 
 });
 

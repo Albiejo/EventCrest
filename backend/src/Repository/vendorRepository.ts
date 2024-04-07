@@ -21,14 +21,24 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
 
 
 
-export const findAllVendors = async (): Promise<VendorDocument[] | null> => {
+export const findAllVendors = async (page: number, pageSize: number): Promise<VendorDocument[] | null> => {
   try {
-    return await Vendor.find({}).exec();
+    const skip = (page - 1) * pageSize;
+
+    return await Vendor.find({}).skip(skip).limit(pageSize).exec();
   } catch (error) {
     throw error;
   }
 };
 
+
+export const getTotalVendorsCount = async (): Promise<number> => {
+  try {
+    return await Vendor.countDocuments({});
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const UpdateVendorPassword = async(password:string , mail:string) =>{
   try {
@@ -126,5 +136,26 @@ export const addReviewReplyById = async(vendorId: string, content: string, revie
    return newvendordata;
   } catch (error) {
     throw new Error('Failed to add reply');
+  }
+}
+
+
+export async function requestForVerification(vendorId:string){
+  try {
+    const data=await Vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:true}})
+    return data;
+  } catch (error) {
+    
+  }
+}
+
+
+
+export async function updateVerificationStatus(vendorId:string,status:string){
+  try {
+    const data=await Vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:false,isVerified: status === "Accepted"}})
+    return data;
+  } catch (error) {
+    
   }
 }

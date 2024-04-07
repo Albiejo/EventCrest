@@ -55,6 +55,8 @@ const AdminLogin=()=> {
     if(Object.values(errors).length===0){
     axiosInstanceAdmin.post("/login", formValues)
     .then((response) => {
+      localStorage.setItem("adminToken",response.data.token);
+      localStorage.setItem("refreshToken",response.data.refreshToken);
       dispatch(setAdminInfo(response.data.adminData))
       navigate("/admin/dashboard")
     })

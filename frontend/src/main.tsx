@@ -23,13 +23,13 @@ import Wallet from './pages/admin/Wallet.tsx';
 
 //common routes
 import HomePage from './pages/HomePage.tsx'
-import ForgotPassword from './components/ForgotPassword.tsx';
-import ResetPassword from './components/ResetPassword.tsx'
+import ForgotPassword from './components/Common/ForgotPassword.tsx';
+import ResetPassword from './components/Common/ResetPassword.tsx'
 import AboutPage from './pages/AboutPage.tsx';
 //user
 import UserLoginForm from './components/user/Login.tsx';
 import UserSignupForm from './components/user/Signup.tsx'
-import VerifyEmail from './components/VerifyEmail.tsx';
+import VerifyEmail from './components/Common/VerifyEmail.tsx';
 import UsersList from './pages/admin/UsersList.tsx';
 import UserPrivateRoute from './components/user/UserPrivateRoute.tsx';
 import UserVendorProfile from './pages/user/UserVendorProfile.tsx';
@@ -41,6 +41,11 @@ import VendorProfile from './components/admin/vendorList/VendorProfile.tsx';
 import VendorListing from './pages/VendorListing.tsx';
 import Profile from './pages/user/Profile.tsx';
 import BookEventForm from './pages/BookEventForm.tsx';
+import PaymentSuccess from './pages/PaymentSuccess.tsx';
+
+
+
+
 
 
 const router = createBrowserRouter(
@@ -56,11 +61,13 @@ const router = createBrowserRouter(
               <Route path='/about' element={<AboutPage/>} />
               <Route path="/viewVendor" element={<UserVendorProfile/>}/>
               <Route path="/vendors" element={<VendorListing/>}/>
+            
+              
            {/* User Private Routes */}
           <Route path="" element={<UserPrivateRoute/>}>
               <Route path="/profile/*" element={<Profile/>}/>
               <Route path="/bookevent" element={<BookEventForm/>}/>
-              
+              <Route path="/payment-success" element={<PaymentSuccess/>}/>
           </Route>
     </Route>
 
@@ -92,9 +99,9 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
      <PersistGate persistor={persistor}>
-  <React.StrictMode>
+  {/* <React.StrictMode> */}
    <RouterProvider router={router} />
-  </React.StrictMode>
+  {/* </React.StrictMode> */}
   </PersistGate>
   </Provider>
 )

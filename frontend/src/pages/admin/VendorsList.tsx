@@ -3,7 +3,7 @@ import { Button } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { axiosInstanceAdmin } from "../../api/axiosinstance";
-
+import VendorProfile from "../../components/admin/vendorList/VendorProfile";
 
 interface Vendor {
   _id: string;
@@ -57,7 +57,7 @@ function VendorsList() {
       <div className="flex flex-wrap">
         {vendors.map((vendor, index) => (
           <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="m-3">
-            <VendorCard {...vendor} className="max-w-xs" />
+            <VendorProfile {...vendor} className="max-w-xs" />
           </Link>
         ))}
       </div>

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { addABooking , getAllBookingsByUser , getAllBookingsByVendor } from "../Service/BookingService";
+import { addABooking , getAllBookingsByUser , getAllBookingsByVendor , getAllBookingsById , updateStatusById , countTotalBookingsByUser} from "../Service/BookingService";
+import moment from 'moment';
 
 export const BookingController={
 
@@ -10,7 +11,7 @@ export const BookingController={
             const eventName=req.body.eventName;
             const name=req.body.name;
             const city=req.body.city;
-            const date=req.body.date;
+            const date = moment(req.body.date).format('DD-MM-YYYY');
             const pin=parseInt(req.body.pin);
             const mobile=parseInt(req.body.mobile);
             
@@ -25,9 +26,20 @@ export const BookingController={
 
     async getBookingsByUser(req: Request, res: Response): Promise<void> {
         try {
+        
           const userId: string = req.query.userId as string;
-          const bookings = await getAllBookingsByUser(userId);
-          res.status(201).json({bookings});
+
+          const page: number = parseInt(req.query.page as string) || 1; 
+          const pageSize: number = parseInt(req.query.pageSize as string) || 10; 
+          const skip = (page - 1) * pageSize; 
+          
+          const totalBookings = await countTotalBookingsByUser(userId);
+          const totalPages = Math.ceil(totalBookings / pageSize);
+
+
+          const bookings = await getAllBookingsByUser(userId , skip, pageSize);
+          
+          res.status(201).json({bookings , totalPages });
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: "Server Error" });
@@ -46,5 +58,30 @@ export const BookingController={
           res.status(500).json({ message: "Server Error" });
         }
       },
+
+
+
+      async getBookingsById(req: Request, res: Response): Promise<void> {
+        try {
+          const bookingId: string = req.query.bookingId as string;
+          const bookings = await getAllBookingsById(bookingId);
+          res.status(201).json({bookings});
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      },
    
+
+      async updateStatus(req: Request, res: Response): Promise<void> {
+        try {
+          const bookingId: string = req.query.bookingId as string;
+          const status=req.body.status
+          const bookings = await updateStatusById(bookingId,status);
+          res.status(201).json({bookings});
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      },
 }

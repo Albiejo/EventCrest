@@ -84,7 +84,7 @@ useEffect(() =>console.log("data is ",user));
   
   return (
     <Card
-      className="w-96 mx-auto mt-10"
+      className="w-96 ml-60 mt-20  border-4 border-gray-600 "
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}

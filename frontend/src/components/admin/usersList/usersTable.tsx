@@ -28,6 +28,7 @@ const UsersTable=()=> {
   const [page, setPage] = useState<number>(1);
   const [value ,setValue] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+  
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -95,7 +96,7 @@ const UsersTable=()=> {
             </Typography>
           </div>
           
-          //search field 
+          
           <div className="w-full md:w-72">
             <Input
                 label="Search"
@@ -193,9 +194,11 @@ const UsersTable=()=> {
       </CardBody>
     
        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" placeholder={undefined}>
+       
         <Typography variant="small" color="blue-gray" className="font-normal" placeholder={undefined}>
           Page {page} of 10
         </Typography>
+
         <div className="flex gap-2">
           <Button
             variant="outlined"
@@ -220,6 +223,7 @@ const UsersTable=()=> {
             Next
           </Button>
         </div>
+
       </CardFooter>
     </Card>
   );

@@ -50,7 +50,8 @@ const VendorLoginForm = () => {
       axiosInstanceVendor
         .post("/login", values)
         .then((response) => {
-          console.log(response);
+           localStorage.setItem("vendorToken",response.data.token);
+           localStorage.setItem("refreshToken",response.data.refreshToken);
           dispatch(setVendorInfo(response.data.vendorData));
           navigate("/Vendor/dashboard");
         })

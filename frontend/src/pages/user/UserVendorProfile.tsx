@@ -17,6 +17,9 @@ import {
   import { useSelector } from 'react-redux';
   import {Review} from '../../components/vendor/Profile/Review';
   import ProfileButtons from '../../components/vendor/ProfileButtons';
+  import { useDispatch } from 'react-redux';
+  import { setUserInfo } from '../../redux/slices/UserSlice';
+
 
   interface Review {
     username: string;
@@ -40,6 +43,7 @@ import {
     coverpicUrl: string;
     favourite:Array<string>;
     bookedDates:Array<string>
+    isVerified:boolean;
   }
   
   export function UserVendorProfile() {
@@ -54,11 +58,14 @@ import {
     const [vendor, setVendor] = useState<Vendor>();
     const [favourite,setFavourite]=useState(false);
     
-
+    const dispatch = useDispatch();
   
     useEffect(() => {
+     
       if (user?.favorite.includes(id)) { 
-        setFavourite(true);
+        setFavourite(false);
+    }else{
+      setFavourite(true);
     }
     
       axiosInstance
@@ -69,16 +76,22 @@ import {
         .catch((error) => {
           console.log('here', error);
         });
-    }, [vendor?.reviews]);
+    }, [user]);
   
   
+
+
     const handleFavourite=async()=>{
       try {
+        if(!user){
+          toast.error("Please login first..");
+          return;
+        }
         axiosInstance
         .post(`/add-Favorite-Vendor?vendorId=${id}&userId=${user?._id}`, { withCredentials: true })
         .then((response) => {
-          setFavourite(true);
-          toast.success(response.data.message)
+          dispatch(setUserInfo(response.data.data.userData))
+          toast.success(response.data.data.message)
         })
         .catch((error) => {
           console.log('here', error);
@@ -89,9 +102,11 @@ import {
       }
     }
   
+
+    
     return (
       <>
-      <section className="relative block h-[80vh] overflow-hidden">
+  <section className="relative block h-[80vh] overflow-hidden">
     <div className="absolute top-0 left-0 w-full h-full bg-cover scale-105" style={{ backgroundImage: `url(${vendor?.coverpicUrl})` }} />
     <div className="absolute top-0 h-full w-full bg-black/20 bg-cover bg-center" />
   </section>
@@ -163,9 +178,11 @@ import {
                     4.7
                   </Button>
 
-                
+              
                 </div>
+                {console.log("booked dates just before passing :",vendor?.bookedDates)}
                 <ProfileButtons vendorId={vendor?._id} bookedDates={vendor?.bookedDates}/>
+                
               </div>
 
 

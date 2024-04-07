@@ -1,11 +1,11 @@
-
+ 
 import { Card, CardBody, Typography } from '@material-tailwind/react';
 import VendorFilters from '../components/Home/VendorFilter';
 import VendorSort from '../components/Home/VendorSort';
 import Footer from '../components/Home/Footer';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { axiosInstance } from '../api/axiosinstance';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/Common/LoadingSpinner';
 //lazy loading here for vendor listing
 const VendorCard = lazy(() => import('../components/Home/VendorListingCard'));
 
@@ -23,19 +23,33 @@ interface Vendors {
 
 
 const VendorsListing = () => {
+  
   const [vendors,setVendors]=useState<Vendors[]>([])
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
-  useEffect(()=>{
-      axiosInstance
-    .get('/getvendors',{withCredentials:true})
-    .then((response) => {
-      console.log("vendor data",response.data)
-      setVendors(response.data);
-    })
-    .catch((error) => {
-      console.error("Error fetching users:", error);
-    });
-  },[])
+  useEffect(() => {
+    fetchVendors(currentPage);
+  }, [currentPage]);
+
+
+  const fetchVendors = async (page: number) => {
+    try {
+      const response = await axiosInstance.get(`/getvendors?page=${page}`, { withCredentials: true });
+      console.log("vendor data",response.data.vendors);
+      setVendors(response.data.vendors);
+      const totalPagesFromResponse =response.data.totalPages
+      console.log("totalPagesFromResponse", totalPagesFromResponse)
+      setTotalPages(totalPagesFromResponse);
+    } catch (error) {
+      console.error("Error fetching vendors:", error);
+    }
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   
   return (
 
@@ -81,6 +95,42 @@ const VendorsListing = () => {
           </Suspense>
       </div>
       </div>
+
+
+      {vendors.length > 0 && (
+  <div className="flex justify-center mt-8">
+    <div className="space-x-2">
+      {currentPage > 1 && (
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          className="px-4 py-2 rounded-md bg-blue-900 text-gray-700"
+        >
+          Previous
+        </button>
+      )}
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <button
+          key={page}
+          onClick={() => handlePageChange(page)}
+          className={`px-4 py-2 rounded-md ${page === currentPage ? 'bg-blue-900 text-white' : 'bg-gray-300 text-gray-700'}`}
+        >
+          {page}
+        </button>
+      ))}
+      {currentPage < totalPages && (
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          className="px-4 py-2 rounded-md bg-blue-900 text-gray-700"
+        >
+          Next
+        </button>
+      )}
+    </div>
+  </div>
+)}
+
+
+        
 </section>
 
 

@@ -24,7 +24,7 @@ router.post('/verifyotp' ,VendorController.verifyOtp)
 router.post('/login' , VendorController.VendorLogin)
 router.get('/logout' , VendorController.VendorLogout)
 router.get('/resendOtp' , VendorController.resendOtp)
-
+router.post('/refresh-token' , VendorController.createRefreshToken)
 
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
 router.post('/vgetotp' , VendorController.VendorForgotPassword);
@@ -46,7 +46,12 @@ router.put('/updateProfile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { 
 
 router.put('/add-review-reply',VendorController.addReviewReply)
 
-router.get('/booking-details',BookingController.getAllBookings);
 
+
+router.get('/booking-details',BookingController.getAllBookings);
+router.get('/single-booking-details',BookingController.getBookingsById);
+router.put('/update-booking-status',BookingController.updateStatus)
+
+router.post('/verification-request',VendorController.sendVerifyRequest)
 
 export default router;

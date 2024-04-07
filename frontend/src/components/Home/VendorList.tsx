@@ -14,6 +14,7 @@ interface Vendors {
     city:string;
     isActive: boolean;
     totalBooking:number;
+    logoUrl:string;
   }
 
 
@@ -25,8 +26,7 @@ const VendorList=()=> {
         axiosInstance
       .get('/getvendors',{withCredentials:true})
       .then((response) => {
-        console.log(response.data)
-        setVendors(response.data);
+        setVendors(response.data.vendors);
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
@@ -41,7 +41,7 @@ const VendorList=()=> {
         <Typography
         variant="h5"
         color="black"
-        className="mx-5 w-full leading-snug !text-3xl lg:max-w-xl lg:!text-3xl mb-5 font-serif"
+        className="mx-5 w-full leading-snug !text-3xl lg:max-w-xl lg:!text-3xl mb-5 font-bold"
         placeholder={undefined}>
             TOP RATED VENDORS
       </Typography>

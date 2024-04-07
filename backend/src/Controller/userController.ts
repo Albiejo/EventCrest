@@ -12,7 +12,7 @@ import {
   FavoriteVendor,
   checkCurrentPassword,
   UpdatePasswordService,
-  UpdateUserProfile,FavoriteVendors
+  UpdateUserProfile,FavoriteVendors,createRefreshToken
 } from "../Service/userService";
 
 import generateOtp from "../util/generateOtp";
@@ -127,7 +127,7 @@ export const UserController = {
           .status(500)
           .json({
             message: `The ${duplicateField} '${duplicateValue}' is already in use.`,
-          });
+        });
       } else if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
       } else {
@@ -142,10 +142,11 @@ export const UserController = {
   async UserLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { token, userData, message } = await login(email, password);
+      const {refreshToken,  token, userData, message } = await login(email, password);
      
       res.cookie("jwtToken", token, { httpOnly: true });
-      res.status(200).json({ token, userData, message });
+      
+      res.status(200).json({ token, userData, message , refreshToken });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -168,6 +169,24 @@ export const UserController = {
       res.status(500).json({ message: "Server Error" });
     }
   },
+
+
+
+  async createRefreshToken(req: Request, res: Response):Promise<void>{
+    try {
+     
+      const { refreshToken } = req.body;
+
+      const token = await createRefreshToken(refreshToken);
+      
+      res.status(200).json({ token });
+
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Failed to refresh token' });
+    }
+  },
+
 
 
 
@@ -392,6 +411,7 @@ export const UserController = {
 
   async AddFavVendor(req: Request, res: Response): Promise<void> {
     try {
+
       const vendorId: string = req.query.vendorId as string;
       const userId: string = req.query.userId as string;
 
@@ -399,18 +419,15 @@ export const UserController = {
         res.status(400).json({ error: "Invalid vendor id." });
       }
       if (!userId) {
-        res.status(400).json({ error: "Invalid user id." });
+        res.status(400).json({ message: "Invalid user id." });
       }
-      console.log("Userid: " + userId);
-      console.log("vendorId: ", vendorId);
+    
       
       const data = await FavoriteVendor(vendorId, userId);
 
-      if (data) {
-        res.status(200).json({ message: "vendor added to Favorite list.." });
-      } else {
-        res.status(400).json({ message: "vendor already present in favorites." });
-      }
+     
+        res.status(200).json({ data: data});
+      
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server Error" });

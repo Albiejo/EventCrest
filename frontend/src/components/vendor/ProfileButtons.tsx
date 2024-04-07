@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import {
   Button,
   Dialog,
@@ -11,15 +11,22 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Link} from 'react-router-dom';
 
+
 interface ProfileButtonsProps {
   vendorId: string | undefined; 
   bookedDates:Array<string> | undefined;
 }
 
+
+
+
+
 const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates }) => {
+
+
+
+
   const [open, setOpen] = useState(false);
-
-
   const handleOpen = () => setOpen((cur) => !cur);
 
   return (
@@ -62,6 +69,9 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates })
           </Button>
         </div>
       </div>
+
+
+      
       <Dialog
         size="xs"
         open={open}

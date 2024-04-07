@@ -23,6 +23,7 @@ interface LoginResponse {
   token: string;
   userData: object;
   message: string;
+  refreshToken: string;
 }
 
 export const signup = async (
@@ -48,13 +49,8 @@ export const signup = async (
       isActive,
     });
 
-    //creating a access token and refresh token and stroing the refresh token in the database for the user.
 
-    const Accesstoken = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!  , { expiresIn: "1h"});
-    // const refreshToken = jwt.sign({ _id: newUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
-    // await findbyIdandUpdate(newUser._id, refreshToken);
-
-    return { token: Accesstoken, user: newUser };
+    return {user: newUser };
 
   } catch (error) {
     throw error;
@@ -62,7 +58,23 @@ export const signup = async (
 };
 
 
+export const createRefreshToken = async (refreshToken:string)=>{
+  try {
 
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
+    const user = await User.findById(decoded._id);
+
+    if (!user || user.refreshToken !== refreshToken) {
+        throw new Error('Invalid refresh token');
+      }
+
+    const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    return accessToken;
+
+  } catch (error) {
+    
+  }
+}
 
 
 export const login = async (
@@ -70,24 +82,41 @@ export const login = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    console.log("login data" , email , password)
+    
     const existingUser = await findUserByEmail(email);
     if (!existingUser) {
       throw new CustomError("User not exists..", 404);
     }
+
+
     if (!existingUser.isActive) {
       throw new CustomError(`User is Blocked, can't login`, 401);
     }
 
     const passwordMatch = await bcrypt.compare(password, existingUser.password);
-    console.log(passwordMatch);
+
 
     if (!passwordMatch) {
       throw new CustomError("Incorrect password..", 401);
     }
+    
     const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+    
+    let refreshToken = existingUser.refreshToken;
+
+   
+    if (!refreshToken) {
+     
+      refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+    }
+
+
+    existingUser.refreshToken = refreshToken;
+    await existingUser.save();
+
     return {
       token,
+      refreshToken,
       userData: existingUser,
       message: "Successfully logged in..",
     };
@@ -202,8 +231,32 @@ export const googleSignup = async (
 
 export const FavoriteVendor = async(vendorId:string , userId:string)=>{
   try {
-    const result = await addVendorToFavorites(userId, vendorId);
-    return result;
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error("User not found.");
+  }
+
+  const vendorIndex = user.favorite.indexOf(vendorId);
+  if (vendorIndex === -1) {
+    user.favorite.push(vendorId);
+  } else {
+      user.favorite.splice(vendorIndex, 1);
+  }
+
+    await user.save();
+  if(vendorIndex === -1){
+    return {
+      userData:user ,
+      message:"vendor removed from Favorites."
+    }
+  }else{
+    return {
+      userData:user ,
+      message:"vendor Added to  Favorites."
+    }
+  }
+    return vendorIndex === -1;
+    
 } catch (error) {
     console.error("Error in addToFavorites service:", error);
     throw new Error("Failed to add vendor to favorites.");

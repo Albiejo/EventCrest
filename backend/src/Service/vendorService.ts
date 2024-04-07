@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createVendor , findvendorByEmail , findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId , updateVendorprofData  , addReviewReplyById} from '../Repository/vendorRepository';
+import { createVendor , findvendorByEmail ,updateVerificationStatus, getTotalVendorsCount,findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId , updateVendorprofData  , addReviewReplyById , requestForVerification} from '../Repository/vendorRepository';
 import { ObjectId } from 'mongoose';
 import vendor , { VendorDocument } from '../Model/vendor';
 import { findVerndorIdByType } from '../Repository/vendorTypeRepository';
@@ -10,6 +10,7 @@ interface LoginResponse {
   token: string;
   vendorData: object; 
   message: string;
+  refreshToken:string
 }
 
 export const signup = async (email:string ,password:string, name:string , phone:number, city:string,vendor_type:string): Promise<string> => {
@@ -29,9 +30,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
 
       const newVendor = await createVendor({ email , password: hashedPassword , name , phone , city , isActive , isVerified , verificationRequest , totalBooking ,vendor_type:vendorType?._id});
   
-      const token = jwt.sign({ _id: newVendor._id }, process.env.JWT_SECRET!);
-     
-      return token;
+      return "vendor created";
 
     } catch (error) {
       throw error;
@@ -60,8 +59,21 @@ export const signup = async (email:string ,password:string, name:string , phone:
         const vendorData = await findvendorByEmail(email);
 
         // If the password matches, generate and return a JWT token
-        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-        return {token,vendorData:existingVendor,message:"Successfully logged in.."};
+        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+
+        let refreshToken = existingVendor.refreshToken;
+
+   
+        if (!refreshToken) {
+         
+          refreshToken = jwt.sign({ _id: existingVendor._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+        }
+    
+    
+        existingVendor.refreshToken = refreshToken;
+        await existingVendor.save();
+
+        return {refreshToken , token,vendorData:existingVendor,message:"Successfully logged in.."};
         
       } catch (error) {
         throw error;
@@ -80,10 +92,30 @@ export const CheckExistingVendor = async(email:string)=>{
 
 
 
-export const getVendors=async()=>{
+export const createRefreshToken = async (refreshToken:string)=>{
   try {
-    const vendors=await findAllVendors();
-    return vendors;
+
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
+    const Vendor = await vendor.findById(decoded._id);
+
+    if (!Vendor || Vendor.refreshToken !== refreshToken) {
+        throw new Error('Invalid refresh token');
+      }
+
+    const accessToken = jwt.sign({ _id: Vendor._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    return accessToken;
+
+  } catch (error) {
+    
+  }
+}
+
+
+export const getVendors=async(page: number, pageSize: number)=>{
+  try {
+    const vendors=await findAllVendors(page ,pageSize);
+    const totalVendorsCount = await getTotalVendorsCount();
+    return { vendors, totalVendorsCount };
   } catch (error) {
     throw error;
   }
@@ -218,5 +250,26 @@ export const addReviewReplyController=async(vendorId:string,content:string,revie
     return vendordata;
   } catch (error) {
     throw error
+  }
+}
+
+
+
+export const  verificationRequest=async(vendorId:string)=>{
+  try {
+    const data=await requestForVerification(vendorId)
+    return data
+  } catch (error) {
+    
+  }
+}
+
+
+export async function changeVerifyStatus(vendorId:string,status:string){
+  try {
+    const data=await updateVerificationStatus(vendorId,status)
+    return data
+  } catch (error) {
+    
   }
 }

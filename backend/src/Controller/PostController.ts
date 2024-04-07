@@ -10,9 +10,11 @@ import sharp from "sharp";
 import { createPost, deletePost, getAllPosts, getPostById } from "../Service/PostService";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
-
 dotenv.config();
 
+
+
+//configuring s3
 const s3 = new S3Client({
   credentials: {
     accessKeyId:process.env.ACCESS_KEY!,
@@ -23,10 +25,12 @@ const s3 = new S3Client({
 
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
+
+
+
+
 export const PostController = {
   
-
-
   async addNewPost(req: Request, res: Response): Promise<void> {
     try {
       const caption = req.body.caption;
@@ -63,9 +67,6 @@ export const PostController = {
 
       const vendor_id:string=req.query.vendorid as string;
       const posts=await getAllPosts(vendor_id)
-      
-      
-      
 
       for(const post of posts){
         const getObjectParams={

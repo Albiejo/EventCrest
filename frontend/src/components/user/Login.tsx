@@ -53,7 +53,8 @@ const UserLoginForm=()=> {
       axiosInstance
         .post("/login", values)
         .then((response) => {
-          console.log(response);
+          localStorage.setItem("userToken", response.data.token)
+          localStorage.setItem("refreshToken", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
           navigate("/");
         })

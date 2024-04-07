@@ -1,14 +1,20 @@
 import { Request, Response } from "express";
-import { login } from "../Service/adminService";
+import { login , createRefreshTokenAdmin} from "../Service/adminService";
+import { CustomError } from "../Error/CustomError";
+
+
+
 
 export const AdminController = {
   async Adminlogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { token, adminData, message } = await login(email, password);
+      const {refreshToken ,  token, adminData, message } = await login(email, password);
+      
       res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
       
-      res.status(200).json({token, adminData, message });
+      res.status(200).json({token, refreshToken , adminData, message });
+      
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -30,16 +36,22 @@ export const AdminController = {
   },
 
 
-  
+  async createRefreshToken(req: Request, res: Response):Promise<void>{
+    try {
+     
+      const { refreshToken } = req.body;
+
+      const token = await createRefreshTokenAdmin(refreshToken);
+      
+      res.status(200).json({ token });
+
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Failed to refresh token' });
+    }
+  },
   
 };
 
 
-export class CustomError extends Error {
-  statusCode: number;
 
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}

@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
-import DropdownMessage from './DropdownMessage';
-import DropdownNotification from './DropdownNotification';
-import DarkModeSwitcher from './DarkModeSwitcher';
+
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -61,26 +59,6 @@ const Header = (props: {
 
         <div className="hidden sm:block">
           
-        </div>
-
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center gap-2 2xsm:gap-4">
-            {/* <!-- Dark Mode Toggler --> */}
-            <DarkModeSwitcher />
-            {/* <!-- Dark Mode Toggler --> */}
-
-            {/* <!-- Notification Menu Area --> */}
-            <DropdownNotification />
-            {/* <!-- Notification Menu Area --> */}
-
-            {/* <!-- Chat Notification Area --> */}
-            <DropdownMessage />
-            {/* <!-- Chat Notification Area --> */}
-          </ul>
-
-          {/* <!-- User Area --> */}
-          {/* <DropdownUser /> */}
-          {/* <!-- User Area --> */}
         </div>
       </div>
     </header>

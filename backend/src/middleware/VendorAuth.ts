@@ -4,9 +4,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Define a new interface that extends the existing Request interface
+
 interface AuthenticatedRequest extends Request {
-  user?: any;
+  Vendor?: any;
 }
 
 export default function authenticate(req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -25,7 +25,7 @@ export default function authenticate(req: AuthenticatedRequest, res: Response, n
       return res.status(401).json({ message: 'Invalid token' });
     }
     // Attach the decoded user information to the request object
-    req.user = decoded;
+    req.Vendor = decoded;
     next();
   });
 }

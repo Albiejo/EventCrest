@@ -6,6 +6,7 @@ export interface AdminDocument extends Document{
     password:string;
     createdAt:Date;
     isAdmin:boolean;
+    refreshToken:string
 }
 
 const adminSchema=new Schema<AdminDocument>({
@@ -24,7 +25,8 @@ const adminSchema=new Schema<AdminDocument>({
     isAdmin:{
         type:Boolean,
         required:true
-    }
+    },
+    refreshToken:{type:String}
 })
 
 export default model<AdminDocument>('Admin',adminSchema)

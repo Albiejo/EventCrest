@@ -68,7 +68,7 @@ const BookEventForm: React.FC = () => {
         .then((response) =>{
           console.log(response);
           toast.success(response.data.message);
-          navigate("/profile/booking-details")
+          navigate("/profile/Bookings")
         })
         .catch((error) => {
           console.log("here", error);

@@ -15,7 +15,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import { axiosInstanceVendor } from "../../../api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../../validations/vendor/registerVal";
-import LoadingSpinner from "../../../components/LoadingSpinner";
+import LoadingSpinner from "../../../components/Common/LoadingSpinner";
 
 
 interface VendorType {
@@ -46,19 +46,26 @@ const initialValues: VendorFormValues = {
 
 const VendorSignupForm = () => {
   
+
   const [vendorTypes, setvendorTypes] = useState<VendorType[]>([]);
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState<VendorFormValues>({
-    name: "",
+
+  name: "",
   email: "",
   password: "",
   city: "",
   phone: "",
   vendor_type: "",
   });
+
+
+
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+
+
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
@@ -74,6 +81,8 @@ const VendorSignupForm = () => {
   };
   
 
+
+
   useEffect(() => {
     axiosInstanceVendor
       .get("/vendor-types")
@@ -87,6 +96,8 @@ const VendorSignupForm = () => {
   }, []);
 
 
+
+
   const submitHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const errors = validate(formValues);
@@ -94,12 +105,12 @@ const VendorSignupForm = () => {
     console.log(errors);
     console.log(Object.values(errors))
     if (Object.values(errors).every((error) => error === "")) {
-      console.log(formValues)
+    
       setIsLoading(true);
       axiosInstanceVendor
         .post("/signup", formValues, { withCredentials: true })
         .then((response) => {
-          console.log(response);
+         
           if (response.data.email) {
             toast.success(response.data.message);
             navigate("/vendor/verify");
@@ -113,12 +124,19 @@ const VendorSignupForm = () => {
     }
   };
 
+
+
   return (
     <div>
       {isLoading ?(<LoadingSpinner/>) : (
         <>
-        <Card
-      className="w-96 mt-50 m-auto bg-dark m-auto bg-dark mx-auto max-w-md bg-white rounded-lg shadow-lg"
+         <div className="w-full h-screen flex flex-col md:flex-row items-start">
+         <div className="w-full md:w-1/2 h-full object-cover " style={{backgroundImage:`url('/public/imgs/dj.jpg')`,backgroundSize:"cover",backgroundRepeat:"no-repeat",backdropFilter:"revert-layer", minHeight: '300px', maxHeight: '800px'}}>
+          
+         </div>
+         <div className="w-full md:w-1/2 mt-10 md:mt-0">
+    <Card
+      className="w-96 border-4 border-gray-500 bg-dark lg:mt-10 bg-dark mx-auto max-w-md bg-white rounded-lg shadow-lg"
       placeholder={undefined}
       shadow={false}
     >
@@ -175,6 +193,8 @@ const VendorSignupForm = () => {
               </Option>
             ):'')}
           </Select>
+
+
           {formErrors.vendor_type ? (
             <p
               className="text-sm"
@@ -309,6 +329,8 @@ const VendorSignupForm = () => {
         </Typography>
       </CardFooter>
     </Card>
+    </div>
+        </div>
         </>
       )}
     </div>
