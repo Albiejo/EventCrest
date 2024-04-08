@@ -182,8 +182,10 @@ export const UpdateUserProfileDetails = async(userId:string , name:string , phon
 }
 
 
-export const getfavVendors=async( userid:string)=>{
+export const getfavVendors=async( userid:string , page: number, pageSize: number)=>{
 try {
+
+  const skip = (page - 1) * pageSize;
   const userData = await User.findById(userid);
   if (!userData) {
     throw new Error('User not found');
@@ -195,9 +197,9 @@ try {
     throw new Error('No favorite vendors found for this user');
   }
 
-  const favoriteVendors = await vendor.find({ _id: { $in: favoriteVendorIds } });
+  const favoriteVendors = await vendor.find({ _id: { $in: favoriteVendorIds } }).skip(skip).limit(pageSize)
 
-  return favoriteVendors;
+  return {favoriteVendors:favoriteVendors , totalFavVendorsCount:favoriteVendors.length};
   
 } catch (error) {
  throw error; 

@@ -89,7 +89,7 @@ const MyNavbar=()=> {
   return (
 
 
-    <Navbar className=" border-4 border-gray-600 lg:px-8  lg:mb-6 bg-dark lg:w-full fixed z-10 max-w-screen-3xl rounded-none" placeholder={undefined} style={{background:"#002F5E" , }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
+    <Navbar className=" border-4 border-gray-600 lg:px-8  lg:mb-6 bg-dark lg:w-full fixed z-10 max-w-screen-3xl rounded-none" placeholder={undefined} style={{background:"#002F5E" }}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
       
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
       
@@ -111,15 +111,19 @@ const MyNavbar=()=> {
         <Menu>
 
           <MenuHandler>
-                      <Avatar
-                      size="md"
-                      variant="circular"
-                      alt="tania andrew"
-                      className="cursor-pointer"
-                      src={ user && user.imageUrl ? user.imageUrl : ""} 
-                      placeholder={undefined} onPointerEnterCapture={undefined} 
-                      onPointerLeaveCapture={undefined}/>
-
+          <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 "
+              fill="white"
+              stroke="white"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
           </MenuHandler>
 
           <MenuList  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>

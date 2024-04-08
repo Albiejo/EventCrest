@@ -76,8 +76,10 @@ export const BookingController={
       async updateStatus(req: Request, res: Response): Promise<void> {
         try {
           const bookingId: string = req.query.bookingId as string;
+          const vendorid : string = req.query.vid as string;
+          console.log("vendorid:",vendorid);
           const status=req.body.status
-          const bookings = await updateStatusById(bookingId,status);
+          const bookings = await updateStatusById(bookingId,status ,vendorid);
           res.status(201).json({bookings});
         } catch (error) {
           console.error(error);

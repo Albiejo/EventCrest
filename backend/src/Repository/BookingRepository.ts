@@ -9,8 +9,7 @@ export const createNewBooking=async(  bookingData: Partial<bookingDocument> ): P
         let vendorId = bookingData.vendorId;
         await vendor.findByIdAndUpdate(vendorId, {
           $push: { bookedDates: bookingData.date },
-        });
-    
+        }); 
         return result;
       } catch (error) {
         throw error;
@@ -59,11 +58,14 @@ export const findBookingsByVendorId = async (
 
   export const updateBookingStatusById=async (
     bookingId: string,
-    status:string
+    status:string,
+    vid:string
   ) => {
     try {
       const result = await Booking.findByIdAndUpdate(bookingId,{$set:{status:status}});
-      return result
+      const vendordata = await vendor.findById(vid);
+      // vendordata?.totalBooking = vendordata?.totalBooking+1; 
+      return result;
       
     } catch (error) {
       throw error;

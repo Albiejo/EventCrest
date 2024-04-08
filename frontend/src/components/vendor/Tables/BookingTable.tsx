@@ -15,6 +15,7 @@ interface Booking{
   mobile:number;
   status:string;
   payment_status:string;
+  vendorId:string;
 }
 
 const BookingTable = () => {
@@ -32,7 +33,7 @@ const BookingTable = () => {
       .get(`/booking-details?vendorId=${vendorData?._id}`, { withCredentials: true })
       .then((response) => {
         setBookings(response.data.bookings);
-        console.log(response.data.bookings);
+       
       })
       .catch((error) => {
         console.log('here', error);
@@ -102,7 +103,7 @@ const BookingTable = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <Link to={`/vendor/view-booking?id=${item._id}`}>
+                    <Link to={`/vendor/view-booking?id=${item._id}&&vid=${item.vendorId}`}>
                     <button className="hover:text-primary">
                       <svg
                         className="fill-current"

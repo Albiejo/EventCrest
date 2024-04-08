@@ -180,7 +180,6 @@ import {
 
               
                 </div>
-                {console.log("booked dates just before passing :",vendor?.bookedDates)}
                 <ProfileButtons vendorId={vendor?._id} bookedDates={vendor?.bookedDates}/>
                 
               </div>
@@ -191,7 +190,7 @@ import {
                 <div className="flex items-center gap-2">
                   <MapPinIcon className="-mt-px h-4 w-4 text-blue-gray-500" />
                   <Typography
-                    className="font-medium text-blue-gray-500"
+                    className="font-medium text-blue-gray-900 font-bold"
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
@@ -204,7 +203,7 @@ import {
               <div className="mb-10 py-6 lg:pl-20">
                 <div className="flex w-full flex-col items-start lg:w-1/2">
                   <Typography
-                    className="mb-6 font-normal text-blue-gray-500"
+                    className="mb-6 font-normal text-blue-gray-900 font-bold"
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}

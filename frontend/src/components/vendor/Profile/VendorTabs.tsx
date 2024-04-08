@@ -45,7 +45,7 @@ export default function VendorTabs({ reviews }) {
       className="ml-20 mr-20 mb-20"
     >
 
-      <TabsHeader placeholder={undefined}>
+      <TabsHeader placeholder={undefined} style={{background:'gray'}}>
         {data.map(({ label, value }) => (
           <Tab key={value} value={value} placeholder={undefined}>
             {label}

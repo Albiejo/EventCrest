@@ -36,6 +36,7 @@ const ViewBooking = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
+  const vid =  queryParams.get('vid');
 
 
 
@@ -45,7 +46,6 @@ const ViewBooking = () => {
       .get(`/single-booking-details?bookingId=${id}`, { withCredentials: true })
       .then((response) => {
         setBookings(response.data.bookings[0]);
-        console.log(response.data.bookings[0]);
       })
       .catch((error) => {
         console.log('here', error);
@@ -268,6 +268,7 @@ const ViewBooking = () => {
         <UpdateStatus
           bookingId={bookings._id}
           onStatusChange={handleStatusChange}
+          vendorid={vid}
         />
       </div>
       <Card

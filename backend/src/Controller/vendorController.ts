@@ -213,7 +213,7 @@ export const VendorController = {
 
           const { vendors, totalVendorsCount } = await getVendors(page, pageSize);
           const totalPages = Math.ceil(totalVendorsCount / pageSize);
-         console.log("data is :",vendors?.length);
+  
          
           res.status(200).json({ vendors:vendors, totalPages:totalPages });
         }catch(error){

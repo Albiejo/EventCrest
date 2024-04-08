@@ -36,10 +36,8 @@ const VendorsListing = () => {
   const fetchVendors = async (page: number) => {
     try {
       const response = await axiosInstance.get(`/getvendors?page=${page}`, { withCredentials: true });
-      console.log("vendor data",response.data.vendors);
       setVendors(response.data.vendors);
       const totalPagesFromResponse =response.data.totalPages
-      console.log("totalPagesFromResponse", totalPagesFromResponse)
       setTotalPages(totalPagesFromResponse);
     } catch (error) {
       console.error("Error fetching vendors:", error);

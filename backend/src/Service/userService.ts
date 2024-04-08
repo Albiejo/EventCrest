@@ -324,10 +324,10 @@ export const UpdateUserProfile=async(userId:string , name:string , phone:number 
 }
 
 
-export const FavoriteVendors=async(userid:string)=>{
+export const FavoriteVendors=async(userid:string , page: number, pageSize: number)=>{
     try {
-      const data = await getfavVendors(userid);
-      return data;
+      const {favoriteVendors , totalFavVendorsCount} = await getfavVendors(userid , page ,pageSize);
+      return {favoriteVendors , totalFavVendorsCount}
     } catch (error) {
       throw error;
     }

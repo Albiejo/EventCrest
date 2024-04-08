@@ -21,11 +21,12 @@ import { toast } from 'react-toastify';
 interface UpdateStatusProps {
   bookingId: string | undefined;
   onStatusChange: (newStatus: string) => void;
+  vid:string
 }
 
 
 
-const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange  }) => {
+const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,vid}) => {
 
 
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>('');
@@ -47,7 +48,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange  }
 
     axiosInstanceVendor
       .put(
-        `/update-booking-status?bookingId=${bookingId}`,
+        `/update-booking-status?bookingId=${bookingId}&&vid=${vid}`,
         { status: selectedStatus },
         { withCredentials: true },
       )

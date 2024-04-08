@@ -46,9 +46,9 @@ export const getAllBookingsById=async(bookingId:string):Promise<bookingDocument|
 
 
 
-export const updateStatusById=async(bookingId:string,status:string)=>{
+export const updateStatusById=async(bookingId:string,status:string , vid:string)=>{
   try{
-    const bookings=await updateBookingStatusById(bookingId,status)
+    const bookings=await updateBookingStatusById(bookingId,status , vid)
     return bookings;
   } catch (error) {
     throw error;
