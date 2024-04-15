@@ -10,7 +10,7 @@ import {
   import { useSelector } from "react-redux";
   import { useState } from "react";
 import VendorRootState from "../../redux/rootstate/VendorState";
-import { axiosInstanceVendor } from "../../api/axiosinstance";
+import { axiosInstanceVendor } from "../../Api/axiosinstance";
 import { validate } from "../../validations/changePwdValidation";
   
   interface FormValues {

@@ -9,7 +9,7 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../Api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 
 interface FormValues {

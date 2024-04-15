@@ -5,12 +5,12 @@ import {
     Button,
     Typography,
   } from "@material-tailwind/react";
-  import { axiosInstance } from "../../../api/axiosinstance";
+  import { axiosInstance } from "../../../Api/axiosinstance";
   import { toast } from "react-toastify";
   import { useNavigate } from "react-router-dom";
-  import { validate } from "../../../validations/changePwdValidation";
+  import { validate } from "../../../Validations/changePwdValidation";
   import { useSelector } from "react-redux";
-  import UserRootState from "../../../redux/rootstate/UserState";
+  import UserRootState from "../../../Redux/rootstate/UserState";
   import { useState } from "react";
   
   interface FormValues {

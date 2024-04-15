@@ -1,11 +1,11 @@
 import { Button, Progress, Rating, Textarea } from '@material-tailwind/react';
-import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
+import Breadcrumb from '../../Components/vendor/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../Layout/DefaultLayout';
 import {  useDispatch, useSelector } from 'react-redux';
-import VendorRootState from '../../redux/rootstate/VendorState';
+import VendorRootState from '../../Redux/rootstate/VendorState';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
-import { axiosInstanceVendor } from '../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../Api/axiosinstance';
 import { toast } from 'react-toastify';
 import {
   Accordion,
@@ -13,7 +13,7 @@ import {
   AccordionBody,
 } from '@material-tailwind/react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { setVendorInfo } from '../../redux/slices/VendorSlice';
+import { setVendorInfo } from '../../Redux/slices/VendorSlice';
 
 
 

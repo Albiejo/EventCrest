@@ -7,15 +7,17 @@ import {
   UpdatePassword,
   addVendorToFavorites
   ,findUserById,
-  UpdateUserProfileDetails,getfavVendors,findbyIdandUpdate
+  UpdateUserProfileDetails,getfavVendors,findbyIdandUpdate,updateNotificationstatus
 } from "../Repository/userRepository";
 
 
-import User, { UserDocument } from "../Model/user";
+import User, { UserDocument } from "../Model/User";
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
 import dotenv from 'dotenv';
-
+import vendor from "../Model/Vendor";
+import mongoose from "mongoose";
+import admin from "../Model/Admin";
 dotenv.config();
 
 
@@ -60,19 +62,27 @@ export const signup = async (
 
 export const createRefreshToken = async (refreshToken:string)=>{
   try {
-
+    
+    
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
+ 
+
     const user = await User.findById(decoded._id);
+    console.log("user",user)
+      
+  
 
     if (!user || user.refreshToken !== refreshToken) {
         throw new Error('Invalid refresh token');
       }
 
     const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    
     return accessToken;
 
+
   } catch (error) {
-    
+   throw error 
   }
 }
 
@@ -102,16 +112,9 @@ export const login = async (
     
     const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
     
-    let refreshToken = existingUser.refreshToken;
-
-   
-    if (!refreshToken) {
-     
-      refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
-    }
-
-
+    let refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
     existingUser.refreshToken = refreshToken;
+    
     await existingUser.save();
 
     return {
@@ -134,6 +137,7 @@ export const getUsers = async (page: number, limit: number, search: string) => {
   }
 };
 
+
 export const toggleUserBlock = async (userId: string): Promise<void> => {
   try {
     const user = await User.findById(userId);
@@ -143,10 +147,33 @@ export const toggleUserBlock = async (userId: string): Promise<void> => {
 
     user.isActive = !user.isActive; // Toggle the isActive field
     await user.save();
+
+    const admindata = await admin.find();
+    const Admin:any= admindata[0];
+    Admin.notifications.push({
+      _id: new mongoose.Types.ObjectId(),
+      message:`${user.name}'s status was toggled , ${user.isActive ? "active" : "blocked"} now`,
+      timestamp: new Date()
+    })
+  
+    await Admin.save();
+    console.log("notifi pushed",Admin);
   } catch (error) {
     throw error;
   }
 };
+
+
+export const  findUser = async (userId: string)=>{
+try {
+  const user = await findUserById(userId)
+  return user;
+} catch (error) {
+  throw error ;
+}
+
+};
+
 
 export const generateOtpForPassword = async (email: string) => {
   try {
@@ -231,31 +258,46 @@ export const googleSignup = async (
 
 export const FavoriteVendor = async(vendorId:string , userId:string)=>{
   try {
+
     const user = await User.findById(userId);
-    if (!user) {
-      throw new Error("User not found.");
+  if (!user) {
+  throw new Error("User not found.");
   }
 
   const vendorIndex = user.favorite.indexOf(vendorId);
+
   if (vendorIndex === -1) {
     user.favorite.push(vendorId);
+  //setting notifications for vendor 
+  const vendordata = await vendor.findById(vendorId)
+  const data ={
+    _id: new mongoose.Types.ObjectId(),
+    message:`${user.name} like your profile`,
+    timestamp: new Date() ,
+    Read:false
+  }
+  vendordata?.notifications.push(data)
+//setting notifications for user
+  user.notifications.push({
+    _id: new mongoose.Types.ObjectId(),
+    message:`You have favorited a profile. Congrats!`,
+    timestamp: new Date(),
+    Read:false
+  })
+  await user.save();
+
   } else {
       user.favorite.splice(vendorIndex, 1);
   }
+  await user.save();
 
-    await user.save();
-  if(vendorIndex === -1){
-    return {
-      userData:user ,
-      message:"vendor removed from Favorites."
-    }
-  }else{
-    return {
-      userData:user ,
-      message:"vendor Added to  Favorites."
-    }
-  }
-    return vendorIndex === -1;
+
+
+  const isFavorite = user.favorite.indexOf(vendorId) === -1 ? false : true;
+  return {
+    userData: user,
+    isFavorite: isFavorite 
+};
     
 } catch (error) {
     console.error("Error in addToFavorites service:", error);
@@ -302,6 +344,13 @@ export const UpdatePasswordService = async(newPassword:string , userId:string)=>
 
     const updatedValue = await UpdatePassword(hashedPassword , email);
     if(updatedValue){
+      existingUser.notifications.push({
+        _id: new mongoose.Types.ObjectId(),
+        message:`You have updated your password , Congrats!`,
+        timestamp: new Date(),
+        Read:false
+      })
+      await existingUser.save();
       return true;
     }
     return false
@@ -309,6 +358,7 @@ export const UpdatePasswordService = async(newPassword:string , userId:string)=>
     throw error;
   }
 }
+
 
 
 export const UpdateUserProfile=async(userId:string , name:string , phone:number , image:string , imageUrl:string)=>{
@@ -331,4 +381,14 @@ export const FavoriteVendors=async(userid:string , page: number, pageSize: numbe
     } catch (error) {
       throw error;
     }
+}
+
+
+export const updateNotification = async(userid:string ,notifiID:string ):Promise<object>=>{
+  try {
+    const data = await updateNotificationstatus(userid ,notifiID)
+    return data
+  } catch (error) {
+    throw error;
+  }
 }

@@ -1,13 +1,13 @@
  
 import { Card, CardBody, Typography } from '@material-tailwind/react';
-import VendorFilters from '../components/Home/VendorFilter';
-import VendorSort from '../components/Home/VendorSort';
-import Footer from '../components/Home/Footer';
+import VendorFilters from '../Components/home/VendorFilter';
+import VendorSort from '../Components/home/VendorSort';
+import Footer from '../Components/home/Footer';
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { axiosInstance } from '../api/axiosinstance';
-import LoadingSpinner from '../components/Common/LoadingSpinner';
+import { axiosInstance } from '../Api/axiosinstance';
+import LoadingSpinner from '../Components/common/LoadingSpinner';
 //lazy loading here for vendor listing
-const VendorCard = lazy(() => import('../components/Home/VendorListingCard'));
+const VendorCard = lazy(() => import('../Components/home/VendorListingCard'));
 
 
 interface Vendors {
@@ -55,9 +55,9 @@ const VendorsListing = () => {
 <div className="relative min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/imgs/church.jpg')" }}>
   <div className="absolute inset-0 " />
   <div className="max-w-md mx-auto">
-    <Card className="mt-6 bg-gray-200" placeholder={undefined}>
+    <Card className="mt-6 bg-gray-300" placeholder={undefined}>
       <CardBody  placeholder={undefined}>
-        <Typography variant="h5" color="blue-gray" className="mb-2"  placeholder={undefined}>
+        <Typography variant="h5" color="black" className="mb-2"  placeholder={undefined}>
           Find Vendors
         </Typography>
         <Typography  placeholder={undefined}>

@@ -9,11 +9,11 @@ import {
   import { useNavigate } from "react-router-dom";
   import { useSelector } from "react-redux";
   import { useState } from "react";
-import VendorRootState from "../../../redux/rootstate/VendorState";
-import { validate } from "../../../validations/changePwdValidation";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
-import DefaultLayout from "../../../layout/DefaultLayout";
-import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
+import VendorRootState from "../../../Redux/rootstate/VendorState";
+import { validate } from "../../../Validations/changePwdValidation";
+import { axiosInstanceVendor } from "../../../Api/axiosinstance";
+import DefaultLayout from "../../../Layout/DefaultLayout";
+import Breadcrumb from "../../../Components/vendor/Breadcrumbs/Breadcrumb";
 
   
   interface FormValues {

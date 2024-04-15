@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../Api/axiosinstance';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../redux/rootstate/VendorState';
 import { Link } from 'react-router-dom';
@@ -33,7 +33,6 @@ const BookingTable = () => {
       .get(`/booking-details?vendorId=${vendorData?._id}`, { withCredentials: true })
       .then((response) => {
         setBookings(response.data.bookings);
-       
       })
       .catch((error) => {
         console.log('here', error);
@@ -92,10 +91,10 @@ const BookingTable = () => {
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
                       item.status === 'Accepted'
-                        ? 'bg-success text-success'
+                        ? 'bg-green-900 text-green-900' 
                         : item.status === 'Rejected'
-                        ? 'bg-danger text-danger'
-                        : 'bg-blue-200 text-blue-200'
+                        ? 'bg-red-600 text-red-900'
+                        : 'bg-blue-900 text-red-900'
                     }`}
                   >
                     {item.status}

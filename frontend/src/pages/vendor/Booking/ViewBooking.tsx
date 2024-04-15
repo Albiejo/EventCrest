@@ -1,5 +1,5 @@
-import DefaultLayout from '../../../layout/DefaultLayout';
-import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../../Layout/DefaultLayout';
+import Breadcrumb from '../../../Components/vendor/Breadcrumbs/Breadcrumb';
 import {
   Card,
   CardBody,
@@ -8,7 +8,7 @@ import {
 } from '@material-tailwind/react';
 import UpdateStatus from './UpdateStatus';
 import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../Api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 
 
@@ -68,7 +68,7 @@ const ViewBooking = () => {
       <Breadcrumb pageName="View" folderName="Booking" />
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <Card
-          className="mt-6 w-full px-5"
+          className="mt-6 w-full px-5 bg-gray-400 border-4 border-gray-900"
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
@@ -86,7 +86,7 @@ const ViewBooking = () => {
               <div>
                 <Typography
                   variant="h5"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -96,7 +96,7 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -108,7 +108,7 @@ const ViewBooking = () => {
               <div>
                 <Typography
                   variant="h5"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -118,7 +118,7 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -130,7 +130,7 @@ const ViewBooking = () => {
               <div>
                 <Typography
                   variant="h5"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -140,7 +140,7 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -152,7 +152,7 @@ const ViewBooking = () => {
               <div>
                 <Typography
                   variant="h5"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -162,14 +162,8 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color={
-                    bookings.status === 'Accepted'
-                      ? 'green'
-                      : bookings.status === 'Rejected'
-                        ? 'red'
-                        : 'blue'
-                  }
-                  className="mb-2"
+                  color="red"
+                  className="mb-2 font-bold"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}
@@ -189,7 +183,7 @@ const ViewBooking = () => {
               <div>
                 <Typography
                   variant="h6"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -199,7 +193,7 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -211,7 +205,7 @@ const ViewBooking = () => {
               <div>
                 <Typography
                   variant="h6"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -221,7 +215,7 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -233,7 +227,7 @@ const ViewBooking = () => {
               <div>
                 <Typography
                   variant="h6"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -243,7 +237,7 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -253,7 +247,7 @@ const ViewBooking = () => {
                 </Typography>
                 <Typography
                   variant="small"
-                  color="gray"
+                  color="black"
                   className="mb-2"
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
@@ -265,14 +259,16 @@ const ViewBooking = () => {
             </div>
           </CardBody>
         </Card>
+        
         <UpdateStatus
           bookingId={bookings._id}
           onStatusChange={handleStatusChange}
           vendorid={vid}
         />
       </div>
+
       <Card
-        className="mt-6 w-full mb-20"
+        className="mt-6 w-full mb-20 bg-gray-400 border-4 border-gray-900"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -288,8 +284,8 @@ const ViewBooking = () => {
         >
           <Typography
             variant="h5"
-            color="gray"
-            className="mb-2"
+            color="black"
+            className="mb-2 font-bold"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
@@ -298,14 +294,14 @@ const ViewBooking = () => {
           </Typography>
           <Typography
             variant="h6"
-            color="gray"
+            color="black"
             className="mb-2"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
             Status :{' '}
-            <span className="text-blue-200">{bookings.payment_status}</span>
+            <span className="text-red-900">{bookings.payment_status}</span>
           </Typography>
         </CardHeader>
 

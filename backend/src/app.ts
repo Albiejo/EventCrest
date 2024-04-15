@@ -1,14 +1,16 @@
-import express, { RequestHandler } from  'express';
+import express, { RequestHandler } from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import connectDB from './config/db.config';
 import adminRoutes from "./Routes/adminRoutes"
+import { router as chatRoute } from './Routes/conversation';
+import { router as messageRoute } from './Routes/messageRoute';
 import userRoutes from "./Routes/userRoutes"
 import vendorRoutes from "./Routes/vendorRoutes"
 import cors from 'cors';
 import session from 'express-session';
 import cookieParser from "cookie-parser";
-import { userEmailVerifyOtp, userOtpExpiration, vendorOtpExpiration } from './middleware/otpExpiration';
+import { userEmailVerifyOtp, userOtpExpiration, vendorOtpExpiration } from './Middleware/otpExpiration';
 
 
 
@@ -48,7 +50,8 @@ app.use(userEmailVerifyOtp)
 app.use('/api/admin' , adminRoutes);
 app.use('/api/user' , userRoutes);
 app.use('/api/vendor',vendorRoutes)
-
+app.use('/api/conversation' , chatRoute)
+app.use('/api/messages', messageRoute)
 
 
 const PORT = process.env.PORT;

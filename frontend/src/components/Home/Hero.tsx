@@ -8,7 +8,7 @@ const navigate = useNavigate()
     <>
        <header  style={{ marginBottom: -40 }}>
 
-       <div className="grid min-h-[70vh]  w-full  lg:h-[50rem] md:h-[40rem] bg-[url('/imgs/herosea.jpg')] bg-cover bg-no-repeat border-4 border-gray-900 ">
+       <div className="grid min-h-[70vh]  w-full  lg:h-[50rem] md:h-[40rem] bg-[url('/imgs/herosea.jpg')] bg-cover bg-no-repeat ">
 
           <div className="container mx-auto text-center md:text-right my-auto">
 

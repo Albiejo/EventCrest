@@ -7,18 +7,18 @@ import {
   import {
     MapPinIcon,
   } from '@heroicons/react/24/solid';
-  import Footer from '../../components/Home/Footer';
+  import Footer from '../../Components/home/Footer';
   import { useLocation } from 'react-router-dom';
   import { useEffect, useState } from 'react';
-  import { axiosInstance } from '../../api/axiosinstance';
-  import VendorTabs from '../../components/vendor/Profile/VendorTabs';
+  import { axiosInstance } from '../../Api/axiosinstance';
+  import VendorTabs from '../../Components/vendor/Profile/VendorTabs';
   import { toast } from 'react-toastify';
-  import UserRootState from '../../redux/rootstate/UserState';
+  import UserRootState from '../../Redux/rootstate/UserState';
   import { useSelector } from 'react-redux';
-  import {Review} from '../../components/vendor/Profile/Review';
-  import ProfileButtons from '../../components/vendor/ProfileButtons';
+  import {Review} from '../../Components/vendor/Profile/Review';
+  import ProfileButtons from '../../Components/vendor/ProfileButtons';
   import { useDispatch } from 'react-redux';
-  import { setUserInfo } from '../../redux/slices/UserSlice';
+  import { setUserInfo } from '../../Redux/slices/UserSlice';
 
 
   interface Review {
@@ -44,6 +44,7 @@ import {
     favourite:Array<string>;
     bookedDates:Array<string>
     isVerified:boolean;
+    OverallRating:number;
   }
   
   export function UserVendorProfile() {
@@ -57,16 +58,16 @@ import {
 
     const [vendor, setVendor] = useState<Vendor>();
     const [favourite,setFavourite]=useState(false);
-    
+    const [isFavorite  , setisFavorite ] = useState(false)
     const dispatch = useDispatch();
   
     useEffect(() => {
      
       if (user?.favorite.includes(id)) { 
         setFavourite(false);
-    }else{
-      setFavourite(true);
-    }
+        }else{
+          setFavourite(true);
+        }
     
       axiosInstance
         .get(`/getVendor?Id=${id}`, { withCredentials: true })
@@ -78,7 +79,8 @@ import {
         });
     }, [user]);
   
-  
+  const bookedDates = vendor?.bookedDates;
+  console.log(bookedDates);
 
 
     const handleFavourite=async()=>{
@@ -91,7 +93,14 @@ import {
         .post(`/add-Favorite-Vendor?vendorId=${id}&userId=${user?._id}`, { withCredentials: true })
         .then((response) => {
           dispatch(setUserInfo(response.data.data.userData))
-          toast.success(response.data.data.message)
+          setisFavorite(response.data.data.isFavorite)
+          console.log(response.data.data.isFavorite);
+          
+          if (response.data.data.isFavorite) {
+            toast.success("Vendor added to favorites.");
+        } else {
+            toast.success("Vendor removed from favorites.");
+        }
         })
         .catch((error) => {
           console.log('here', error);
@@ -136,17 +145,51 @@ import {
                       onPointerLeaveCapture={undefined}
                     >
                       {vendor?.name}
+
                     </Typography>
+                   
                     <Typography
                       variant="paragraph"
-                      color="gray"
-                      className="!mt-0 font-normal"
+                      color="black"
+                      className="!mt-0 font-bold"
                       placeholder={undefined}
                       onPointerEnterCapture={undefined}
                       onPointerLeaveCapture={undefined}
                     >
                       {vendor?.email}
                     </Typography>
+
+                    {vendor?.isVerified ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                className=" h-10  w-10"
+              >
+                <polygon
+                  fill="#42a5f5"
+                  points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"
+                ></polygon>
+                <polygon
+                  fill="#fff"
+                  points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"
+                ></polygon>
+              </svg>
+            ): (
+              <Typography
+                      variant="paragraph"
+                      color="blue"
+                      className="!mt-0 font-bold"
+                      placeholder={undefined}
+                      onPointerEnterCapture={undefined}
+                      onPointerLeaveCapture={undefined}
+                    >
+                    Profile Not Verified
+                    </Typography>
+            )}
                   </div>
                 </div>
   
@@ -155,7 +198,8 @@ import {
 
              
               <IconButton
-               style={favourite?{  backgroundColor: 'red'} :{  backgroundColor: 'black'}}
+              
+               style={isFavorite ?{  backgroundColor: 'red'} :{  backgroundColor: 'black'}}
               
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
@@ -163,7 +207,7 @@ import {
                     onClick={handleFavourite}
                   >
                     <i className="fas fa-heart w-fit lg:ml-auto" />
-                  </IconButton>
+                </IconButton>
 
              
 
@@ -175,12 +219,14 @@ import {
                     onPointerLeaveCapture={undefined}
                     color="green"
                   >
-                    4.7
+                    {vendor?.OverallRating.toFixed(1)}
                   </Button>
 
               
                 </div>
-                <ProfileButtons vendorId={vendor?._id} bookedDates={vendor?.bookedDates}/>
+
+
+                <ProfileButtons vendorId={vendor?._id} bookedDates={bookedDates} userId={user?._id}/>
                 
               </div>
 

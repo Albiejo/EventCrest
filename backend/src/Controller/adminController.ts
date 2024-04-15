@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { login , createRefreshTokenAdmin} from "../Service/adminService";
+import { login , createRefreshTokenAdmin ,updateNotification} from "../Service/adminService";
 import { CustomError } from "../Error/CustomError";
+
 
 
 
@@ -12,7 +13,6 @@ export const AdminController = {
       const {refreshToken ,  token, adminData, message } = await login(email, password);
       
       res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-      
       res.status(200).json({token, refreshToken , adminData, message });
       
     } catch (error) {
@@ -44,13 +44,28 @@ export const AdminController = {
       const token = await createRefreshTokenAdmin(refreshToken);
       
       res.status(200).json({ token });
-
     } catch (error) {
       console.error('Error refreshing token:', error);
       res.status(401).json({ message: 'Failed to refresh token' });
     }
   },
   
+
+  async MarkasRead(req: Request, res: Response):Promise<void>{
+
+    try {
+      const adminId:string  = req.query.id as string;
+      const notifiID:string = req.query.notifid as string;
+      
+      const data  = await updateNotification(adminId ,notifiID );
+      if(data){
+        res.status(200).json({data:data});
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "server error..." });
+    }
+  }
 };
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../../api/axiosinstance';
+import { axiosInstance } from '../../../Api/axiosinstance';
 import { useSelector } from 'react-redux';
-import UserRootState from '../../../redux/rootstate/UserState';
+import UserRootState from '../../../Redux/rootstate/UserState';
 import { Link } from 'react-router-dom';
 
 
@@ -38,7 +38,6 @@ const BookingDetails = () => {
     .then((response) => {
       setBookings(response.data.bookings);
       setTotalPages(response.data.totalPages); 
-      console.log(response.data.totalPages);
     })
     .catch((error) => {
       console.log('Error fetching bookings', error);
@@ -49,7 +48,7 @@ const BookingDetails = () => {
 
 
   return (
-    <div className="mt-20 border-4 border-blue-900  rounded-sm border border-stroke mx-20  bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1" style={{ marginLeft: '-9vw'  }}>
+    <div className="mt-10 border-4 border-blue-900  rounded-sm border border-stroke mx-20  bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1" style={{ marginLeft: '-9vw'  }}>
       <div className="max-w-full overflow-x-auto">
         <table className="w-full table-auto">
           <thead>
@@ -84,15 +83,17 @@ const BookingDetails = () => {
               ) : (
                 bookings.map((item, key) => (
                   <tr key={key}>
+                    
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <h5 className="font-medium text-black dark:text-white">
+                      <h5 className="font-bold bg-red-300">
                         <Link to={`/viewVendor?vid=${item.vendorId}`}>
                          {item.vendorId.name}
                         </Link>
                       
                       </h5>
-                    
                     </td>
+
+
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p className="text-black dark:text-white">
                         
@@ -110,10 +111,10 @@ const BookingDetails = () => {
                       <p
                         className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
                           item.status === 'Accepted'
-                            ? 'bg-green-200 text-green-400'
+                            ? 'bg-green-900 text-green-900'
                             : item.status === 'Rejected'
-                            ? 'bg-red-200 text-red-400'
-                            : 'bg-blue-300 text-blue-400'
+                            ? 'bg-red-900 text-red-900'
+                            : 'bg-blue-900 text-blue-900'
                         }`}
                       >
                         {item.status}
@@ -122,14 +123,14 @@ const BookingDetails = () => {
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                       <p
                         className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                          item?.payment_status === 'Accepted'
-                            ? 'bg-green-200 text-green-400'
+                          item?.payment_status === 'Completed'
+                            ? 'bg-green-500 text-green-700'
                             : item?.payment_status === 'Rejected'
-                            ? 'bg-red-200 text-red-400'
-                            : 'bg-blue-300 text-blue-400'
+                            ? 'bg-red-300 text-white'
+                            : 'bg-blue-500 text-blue-900'
                         }`}
                       >
-                        {item.status}
+                        {item.payment_status}
                       </p>
                     </td>
                     <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

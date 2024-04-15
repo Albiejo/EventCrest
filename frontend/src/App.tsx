@@ -1,28 +1,29 @@
 // App.tsx
 
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import Layout from './components/Layout';
+import { Outlet    } from 'react-router-dom';
+import Layout from './Components/Layout';
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import MyNavbar from './components/user/Navbar';
-
+import MyNavbar from './Components/user/Navbar';
 
 
 
 const App: React.FC = () => {
   const role = 'user'; 
 
-
   return (
     
     <>
-
+    
       <Layout role={role}>
         <ToastContainer/>
+        <div className='pb-20'>
           <MyNavbar />
-        <Outlet />
+        </div>
+        <Outlet/>
       </Layout>
+     
     </>
   );
 };

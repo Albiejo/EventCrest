@@ -1,15 +1,6 @@
-import mongoose, { Schema, Document } from 'mongoose';
-
-
-
-export interface Review {
-    _id: mongoose.Types.ObjectId;
-    username: string;
-    rating: number;
-    content: string;
-    date:Date;
-    reply:Array<string>
-}
+import mongoose, { Schema, Document, Types } from 'mongoose';
+import { Notification } from '../util/Interfaces';
+import { Review } from '../util/Interfaces';
 
 
 
@@ -32,7 +23,10 @@ export interface Vendor {
     coverpicUrl:string;
     logoUrl:string;
     bookedDates:Array<string>;
-    refreshToken:string
+    refreshToken:string;
+    notifications:Array<Notification>;
+    OverallRating:Number;
+
 }
 
 export interface VendorDocument extends Vendor, Document {}
@@ -56,6 +50,13 @@ const VendorSchema: Schema = new Schema({
     logoUrl:{type:String},
     bookedDates:{type:Array<String>},
     refreshToken:{type:String},
+    notifications:[{
+        _id: { type: Schema.Types.ObjectId, default: Types.ObjectId },
+        message: String,
+        timestamp: { type: Date, default: Date.now },
+        Read:{type:Boolean, default: false}
+    }],
+    OverallRating:{ type: Number, default: 0 }
 
 });
 

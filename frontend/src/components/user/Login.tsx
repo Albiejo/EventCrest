@@ -10,11 +10,11 @@ import {
 } from "@material-tailwind/react";
 import { useEffect} from 'react';
 import {Link,useNavigate} from 'react-router-dom'
-import {axiosInstance} from '../../api/axiosinstance';
+import {axiosInstance} from '../../Api/axiosinstance';
 import {  useSelector,useDispatch } from 'react-redux';
-import { setUserInfo } from "../../redux/slices/UserSlice";
-import UserRootState from '../../redux/rootstate/UserState';
-import { validate } from "../../validations/loginVal";
+import { setUserInfo } from "../../Redux/slices/UserSlice";
+import UserRootState from '../../Redux/rootstate/UserState';
+import { validate } from "../../Validations/loginVal";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import {GoogleLogin , GoogleOAuthProvider} from '@react-oauth/google';
@@ -54,6 +54,7 @@ const UserLoginForm=()=> {
         .post("/login", values)
         .then((response) => {
           localStorage.setItem("userToken", response.data.token)
+          console.log("first token", response.data.token)
           localStorage.setItem("refreshToken", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
           navigate("/");
@@ -72,7 +73,7 @@ const UserLoginForm=()=> {
       {/* <h1 className="text-4xl md:text-4xl text-white font-bold mt-20 mx-4">Elevate Your Event Experience</h1>
       <p className="text-xl md:text-2xl text-white font-normal mt-5 mx-4">Find, Connect, and Collaborate with Top Event Planners</p> */}
     </div>
-    <div className="w-full md:w-1/2 mt-10 md:mt-0">
+    <div className="w-full md:w-1/2 mt-20 md:mt-0 ">
     <GoogleOAuthProvider clientId={clientId}>
     <Card className="w-full md:w-96 m-auto mt-10  bg-dark border border-gray-800 rounded-lg"  placeholder={undefined} shadow={false}>
 

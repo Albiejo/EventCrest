@@ -6,7 +6,8 @@ export interface paymentDocument extends Document{
     vendorId:Schema.Types.ObjectId;
     userId:Schema.Types.ObjectId;
     bookingId:Schema.Types.ObjectId;
-    createdAt:Date
+    createdAt:Date;
+   
 }
 
 const paymentSchema=new Schema<paymentDocument>({

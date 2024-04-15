@@ -1,6 +1,6 @@
 import { Request , Response } from "express";
 import { signup , login , CheckExistingVendor , getVendors , toggleVendorBlock , getSingleVendor , ResetVendorPasswordService ,
-  PushFavoriteVendor,checkVendorCurrentPassword,changeVerifyStatus ,UpdateVendorPasswordService , updateVendorprof ,verificationRequest , addReviewReplyController ,
+  PushVendorReview,checkVendorCurrentPassword,changeVerifyStatus ,UpdateVendorPasswordService , updateVendorprof ,verificationRequest , addReviewReplyController ,
   createRefreshToken } from "../Service/vendorService";
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
@@ -240,7 +240,7 @@ export const VendorController = {
 
       async getVendor(req:Request , res: Response):Promise<void>{
         try {
-          const vendorId: string = req.query.Id as string; // or req.query.Id?.toString()
+          const vendorId: string = req.query.Id as string; 
     
           if (!vendorId) {
             res.status(400).json({ error: "Vendor ID is required." });
@@ -248,6 +248,7 @@ export const VendorController = {
           }
 
           const data = await getSingleVendor(vendorId);
+          console.log("data",data)
           if(!data){
             res.status(400).json({error:'Vendor not found , error occured'})
           }else{
@@ -292,7 +293,7 @@ export const VendorController = {
           if(username===undefined){
             username="GuestUser"
           }
-          const status = await PushFavoriteVendor(content,rating,username,vendorid);
+          const status = await PushVendorReview(content,rating,username,vendorid);
           if(!status){
             res.status(400).json({error:`couldn't add reviews, some error occured`})
           }

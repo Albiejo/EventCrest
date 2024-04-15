@@ -4,7 +4,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface AdminData{
     name:string,
     email:string ,
-    id : string,
+    _id : string,
+    notifications:Array<object>,
+    Wallet:number
 }
 export interface AdminState{
     admindata : AdminData | null;

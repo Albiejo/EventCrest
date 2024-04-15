@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { HeartIcon } from "@heroicons/react/24/solid";
-import { axiosInstance } from "../../../api/axiosinstance";
+import { axiosInstance } from "../../../Api/axiosinstance";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 

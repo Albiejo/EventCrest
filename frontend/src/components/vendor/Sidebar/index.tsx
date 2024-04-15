@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
-import { logout } from '../../../redux/slices/VendorSlice';
+import { axiosInstanceVendor } from '../../../Api/axiosinstance';
+import { logout } from '../../../Redux/slices/VendorSlice';
 import { Button } from '@material-tailwind/react';
 import { useDispatch } from 'react-redux';
 interface SidebarProps {
@@ -538,7 +538,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Reviews
                 </NavLink>
-              </li>
+                </li>
+
+                <li>
+                <NavLink
+                  to="/vendor/chat/"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('reviews') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <i className="fa-solid fa-message"></i>
+                  Messages
+                </NavLink>
+                </li>
                
                {/* Reviews end */}
 

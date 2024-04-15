@@ -3,11 +3,11 @@ import {
   Button, Card, CardBody, CardFooter, CardHeader, Chip, Input, Typography
 } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../Api/axiosinstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import {toast} from "react-toastify"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { logout } from "../../../redux/slices/UserSlice";
+import { logout } from "../../../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
 
 interface User {
@@ -44,7 +44,7 @@ const UsersTable=()=> {
   
     fetchData(pageParam, searchParam);
 
-  }, [ location.search , value]);
+  }, [ location.search , value , users]);
 
   
 
@@ -52,7 +52,6 @@ const UsersTable=()=> {
     axiosInstanceAdmin
     .get(`/users?page=${pageParam || page}&search=${searchParam || search}`)
     .then((response) => {
-      console.log("data is ",response.data.users)
       setUsers(response.data.users);
     })
     .catch((error) => {

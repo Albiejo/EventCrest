@@ -12,8 +12,10 @@ import {
   DialogHeader,
   DialogFooter,
 } from '@material-tailwind/react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../Api/axiosinstance';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import UserRootState from '../../../Redux/rootstate/UserState';
 
 
 
@@ -21,14 +23,15 @@ import { toast } from 'react-toastify';
 interface UpdateStatusProps {
   bookingId: string | undefined;
   onStatusChange: (newStatus: string) => void;
-  vid:string
+  vendorid:string
 }
 
 
 
-const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,vid}) => {
+const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,vendorid}) => {
 
-
+  const user = useSelector((state: UserRootState) => state.user.userdata);
+  
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>('');
   const [errorStatus, setErrorStatus] = useState<string>('');
   const [open, setOpen] = useState(false);
@@ -48,7 +51,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,vi
 
     axiosInstanceVendor
       .put(
-        `/update-booking-status?bookingId=${bookingId}&&vid=${vid}`,
+        `/update-booking-status?bookingId=${bookingId}&&vid=${vendorid}&&userId=${user?._id}`,
         { status: selectedStatus },
         { withCredentials: true },
       )
@@ -67,7 +70,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,vi
     <>
      
         <Card
-          className="w-80 mt-6"
+          className="w-80 mt-6 border-4 border-gray-900"
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}

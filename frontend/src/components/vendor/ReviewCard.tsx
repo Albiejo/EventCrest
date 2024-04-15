@@ -26,7 +26,7 @@ import {
           <i className="fa-solid fa-user" ></i>
           <div className="flex w-full flex-col gap-0.5">
             <div className="flex items-center justify-between">
-              <Typography variant="h6" color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <Typography className="font-bold" variant="h6" color="black"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 {username}
               </Typography>
               <Rating value={rating} readonly placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} />
@@ -35,7 +35,7 @@ import {
           </div>
         </CardHeader>
         <CardBody className="mb-6 p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <Typography  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-black font-bold">
             {content}
           </Typography>
         </CardBody>

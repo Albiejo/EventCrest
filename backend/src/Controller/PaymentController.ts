@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addNewPayment , getPayments } from "../Service/PaymentService";
+import { addNewPayment , getPayments , updateAdminWallet , CountTotalPayments} from "../Service/paymentService";
 const Stripe = require("stripe");
 require("dotenv").config();
 import { PaymentSession } from "../util/Interfaces";
@@ -8,7 +8,7 @@ import { PaymentSession } from "../util/Interfaces";
   
   declare module "express-session" {
     interface Session {
-      payment: PaymentSession;
+      payment: PaymentSession ;
       
     }
   }
@@ -58,7 +58,6 @@ async makePayment(req: Request, res: Response) {
       vendorId:req.body._id
     };
 
-    console.log(req.session)
     res.send({ url: session.url });
   },
 
@@ -72,16 +71,28 @@ async makePayment(req: Request, res: Response) {
       const vendorId=paymentData.vendorId;
       const bookingId=paymentData.bookingId;
       const payment=await addNewPayment(amount,userId,vendorId,bookingId);
+      await updateAdminWallet(amount);
       res.status(201).json({payment})
     } catch (error) {
       console.log(error)
     }
   },
 
+
+
   async getAllPayments(req: Request, res: Response){
     try {
-      const payment=await getPayments()
-      res.status(200).json({payment})
+   
+
+      const page: number = parseInt(req.query.page as string) || 1; 
+      const pageSize: number = parseInt(req.query.pageSize as string) || 4; 
+      const skip = (page - 1) * pageSize;
+      const totalPayements = await CountTotalPayments();
+      const totalPages = Math.ceil(totalPayements / pageSize);
+
+
+      const payment=await getPayments(skip , pageSize)
+      res.status(200).json({payment , totalPages})
     } catch (error) {
       console.log(error)
     }

@@ -9,12 +9,12 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate  , useLocation} from "react-router-dom";
-import { axiosInstance , axiosInstanceVendor } from "../../api/axiosinstance";
-import { setUserInfo } from "../../redux/slices/UserSlice";
-import { setVendorInfo } from "../../redux/slices/VendorSlice";
+import { axiosInstance , axiosInstanceVendor } from "../../Api/axiosinstance";
+import { setUserInfo } from "../../Redux/slices/UserSlice";
+import { setVendorInfo } from "../../Redux/slices/VendorSlice";
 import {toast} from "react-toastify";
 import { useFormik } from "formik";
-import { validate } from "../../validations/otpValidation";
+import { validate } from "../../Validations/otpValidation";
 
 
 

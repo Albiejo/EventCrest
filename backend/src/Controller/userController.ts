@@ -12,12 +12,12 @@ import {
   FavoriteVendor,
   checkCurrentPassword,
   UpdatePasswordService,
-  UpdateUserProfile,FavoriteVendors,createRefreshToken
+  UpdateUserProfile,FavoriteVendors,createRefreshToken,findUser,updateNotification
 } from "../Service/userService";
 
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
-import user from "../Model/user";
+import user from "../Model/User";
 import Jwt from "jsonwebtoken";
 import { json } from "body-parser";
 import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
@@ -28,6 +28,7 @@ import dotenv from 'dotenv';
 import { UserSession } from "../util/Interfaces";
 import { OTP } from "../util/Interfaces";
 import { DecodedData } from "../util/Interfaces";
+import { Data } from "emoji-mart";
 dotenv.config();
 
 
@@ -143,9 +144,7 @@ export const UserController = {
     try {
       const { email, password } = req.body;
       const {refreshToken,  token, userData, message } = await login(email, password);
-     
       res.cookie("jwtToken", token, { httpOnly: true });
-      
       res.status(200).json({ token, userData, message , refreshToken });
     } catch (error) {
       if (error instanceof CustomError) {
@@ -158,6 +157,19 @@ export const UserController = {
   },
 
 
+  async getUser(req: Request, res: Response): Promise<void>{
+    try {
+      
+      const userId:string = req.query.userId as string;
+
+      const data = await findUser(userId);
+      res.status(200).json(data);
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
 
 
   async UserLogout(req: Request, res: Response): Promise<void> {
@@ -176,9 +188,9 @@ export const UserController = {
     try {
      
       const { refreshToken } = req.body;
-
-      const token = await createRefreshToken(refreshToken);
       
+      const token = await createRefreshToken(refreshToken);
+    
       res.status(200).json({ token });
 
     } catch (error) {
@@ -216,11 +228,6 @@ export const UserController = {
 
       await toggleUserBlock(userId);
       const User = await user.findById(userId);
-
-      if (!User || !User.isActive) {
-        res.clearCookie("jwtToken");
-        localStorage.removeItem("jwtToken");
-      }
 
       res.status(200).json({ message: "User block status updated." });
     } catch (error) {
@@ -463,7 +470,6 @@ export const UserController = {
     try {
 
       const currentPassword = req.body.current_password;
-      console.log("cpassword in controller " + currentPassword)
       const newPassword = req.body.new_password;
 
       const userId: string = req.query.userid as string;
@@ -545,6 +551,19 @@ export const UserController = {
   }
   },
 
-   
+  async MarkRead(req: Request, res: Response): Promise<void> {
+    try {
+      
+      const userId:string  = req.query.userId as string;
+      const notifiID:string = req.query.notifiId as string;
+      const data  = await updateNotification(userId ,notifiID );
+      if(data){
+        res.status(200).json({data:data});
+      }
+    } catch (error) {
+      res.status(500).json({message: "server error"});
+    }
+
+  },
 }
 

@@ -1,6 +1,6 @@
-import DefaultLayout from '../../layout/DefaultLayout'
-import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb'
-import ChatCard from '../../components/vendor/Chat/ChatCard'
+import DefaultLayout from '../../Layout/DefaultLayout'
+import Breadcrumb from '../../Components/vendor/Breadcrumbs/Breadcrumb'
+import ChatCard from '../../Components/vendor/Chat/ChatCard'
 
 const Notifications = () => {
   return (

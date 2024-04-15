@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import { addABooking , getAllBookingsByUser , getAllBookingsByVendor , getAllBookingsById , updateStatusById , countTotalBookingsByUser} from "../Service/BookingService";
+import { addABooking , getAllBookingsByUser , getAllBookingsByVendor , getAllBookingsById , updateStatusById , countTotalBookingsByUser,
+  MarkBookingCancel
+} from "../Service/bookingService";
 import moment from 'moment';
 
 export const BookingController={
@@ -52,6 +54,7 @@ export const BookingController={
         try {
           const vendorId: string = req.query.vendorId as string;
           const bookings = await getAllBookingsByVendor(vendorId);
+          console.log("bookings are ",bookings)
           res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
@@ -75,15 +78,27 @@ export const BookingController={
 
       async updateStatus(req: Request, res: Response): Promise<void> {
         try {
+          const userId  :string = req.query.userId as string;
           const bookingId: string = req.query.bookingId as string;
           const vendorid : string = req.query.vid as string;
-          console.log("vendorid:",vendorid);
           const status=req.body.status
-          const bookings = await updateStatusById(bookingId,status ,vendorid);
+          const bookings = await updateStatusById(bookingId,status ,vendorid , userId);
           res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: "Server Error" });
         }
       },
+
+
+      async MarkasCancel(req: Request, res: Response): Promise<void>{
+        try {
+          const bookingId:string = req.query.bookingId as string;
+          const data = await MarkBookingCancel(bookingId);
+          res.status(200).json({data:data});
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      }
 }

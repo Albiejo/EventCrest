@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { createNewPaymnet , findAllPayments} from "../Repository/PaymentRepository";
+import { createNewPaymnet , findAllPayments ,updateAdminWalletAmount , findPaymentCount} from "../Repository/paymentRepository";
 
 
 
@@ -19,10 +19,29 @@ export const addNewPayment=async(amount:number,userId:string,vendorId:string,boo
 }
 
 
-export const getPayments=async()=>{
+export const getPayments=async(skip:number , limit:number)=>{
   try {
-    const payment=await findAllPayments();
+    const payment=await findAllPayments(skip, limit);
     return payment;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const updateAdminWallet= async(amount:number)=>{
+try {
+  await updateAdminWalletAmount(amount);
+  
+} catch (error) {
+  console.log(error);
+  throw error;
+}
+}
+
+export const CountTotalPayments = async()=>{
+  try {
+    const count=await findPaymentCount();
+    return count;
   } catch (error) {
     throw error;
   }

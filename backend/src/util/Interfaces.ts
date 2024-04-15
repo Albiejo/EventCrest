@@ -1,4 +1,4 @@
-
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
 //Interfaces for backend
 
@@ -46,3 +46,23 @@ export interface PaymentSession {
     bookingId:string;
     vendorId:string;
   }
+
+
+export  interface Notification {
+  _id: Types.ObjectId; 
+  message: string;
+  timestamp: Date;
+  Read: boolean;
+  
+}
+
+
+
+export interface Review {
+  _id: mongoose.Types.ObjectId;
+  username: string;
+  rating: number;
+  content: string;
+  date:Date;
+  reply:Array<string>
+}

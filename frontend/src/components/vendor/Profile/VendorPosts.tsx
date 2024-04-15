@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
-import {axiosInstanceVendor} from "../../../api/axiosinstance";
+import {axiosInstanceVendor} from "../../../Api/axiosinstance";
 import VendorRootState from "../../../redux/rootstate/VendorState";
 import { DialogWithImage } from "./DialogWithImage";
 import { AxiosResponse } from 'axios'; // Import AxiosResponse

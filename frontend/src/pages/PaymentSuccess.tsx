@@ -2,7 +2,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline'
 import { Card, CardBody, Typography, CardFooter, Button } from '@material-tailwind/react'
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { axiosInstance } from '../api/axiosinstance'
+import { axiosInstance } from '../Api/axiosinstance'
 
 
 export default function PaymentSuccess() {

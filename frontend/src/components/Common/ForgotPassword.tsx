@@ -9,10 +9,10 @@ import {
     Button,
 } from "@material-tailwind/react";
 
-import { axiosInstance , axiosInstanceVendor } from "../../api/axiosinstance";
+import { axiosInstance , axiosInstanceVendor } from "../../Api/axiosinstance";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { validateEmailValue , validateOTP } from "../../validations/forgotPassword";
+import { validateEmailValue , validateOTP } from "../../Validations/forgotPassword";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 

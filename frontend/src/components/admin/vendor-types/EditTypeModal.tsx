@@ -10,9 +10,9 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../Api/axiosinstance";
 import { useNavigate } from "react-router-dom";
-import { validate } from "../../../validations/admin/vendorTypeValidation";
+import { validate } from "../../../Validations/admin/vendorTypeValidation";
 
 
 interface Props {

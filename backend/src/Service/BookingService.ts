@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
 import Booking , { bookingDocument } from "../Model/Booking";
-import { createNewBooking  , findBookingsByVendorId , findBookingsByUserId , findBookingsByBookingId , updateBookingStatusById} from "../Repository/BookingRepository";
-import vendor from "../Model/vendor"
+import { createNewBooking  , findBookingsByVendorId , findBookingsByUserId , findBookingsByBookingId , updateBookingStatusById , 
+  updatebookingCancel
+} from "../Repository/bookingRepository";
+import vendor from "../Model/Vendor"
+
+
+
 
 export const addABooking=async(eventName:string, name:string, city:string,date:string,pin:number,mobile:number,vendorId:string,userId:string):Promise<object>=>{
     try{
@@ -46,9 +51,9 @@ export const getAllBookingsById=async(bookingId:string):Promise<bookingDocument|
 
 
 
-export const updateStatusById=async(bookingId:string,status:string , vid:string)=>{
+export const updateStatusById=async(bookingId:string,status:string , vid:string , userId:string)=>{
   try{
-    const bookings=await updateBookingStatusById(bookingId,status , vid)
+    const bookings=await updateBookingStatusById(bookingId,status , vid, userId)
     return bookings;
   } catch (error) {
     throw error;
@@ -63,4 +68,13 @@ export const countTotalBookingsByUser =async(userId: string)=>{
   } catch (error) {
     throw error;
   }
+}
+
+export const MarkBookingCancel = async(bookingId:string)=>{
+try {
+  const result = await updatebookingCancel(bookingId);
+  return result
+} catch (error) {
+  throw error;
+}
 }

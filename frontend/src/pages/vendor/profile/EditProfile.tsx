@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Input, Button } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
-import VendorRootState from "../../../redux/rootstate/VendorState";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
+import VendorRootState from "../../../Redux/rootstate/VendorState";
+import { axiosInstanceVendor } from "../../../Api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import DefaultLayout from "../../../layout/DefaultLayout";
-import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
+import DefaultLayout from "../../../Layout/DefaultLayout";
+import Breadcrumb from "../../../Components/vendor/Breadcrumbs/Breadcrumb";
 
 
 const initialFormState = {

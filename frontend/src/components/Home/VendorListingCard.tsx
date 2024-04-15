@@ -16,12 +16,16 @@ interface VendorCardProps {
   city: string;
   _id:string;
   coverpicUrl:string;
+  OverallRating:number;
 }
  
-const VendorCard:React.FC<VendorCardProps>=({name,city,_id,coverpicUrl}) =>{
+const VendorCard:React.FC<VendorCardProps>=({name,city,_id,coverpicUrl,OverallRating}) =>{
+
+  const roundedOverallRating = OverallRating.toFixed(1);
+
 
   return (
-    <Card className="lg:w-full max-w-[20rem] shadow-lg border-2 border-gray-300"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <Card className="lg:w-full max-w-[20rem] shadow-lg border-2 border-gray-600 "  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <CardHeader floated={false} color="blue-gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <img
           src={coverpicUrl}
@@ -50,7 +54,7 @@ const VendorCard:React.FC<VendorCardProps>=({name,city,_id,coverpicUrl}) =>{
                 clipRule="evenodd"
               />
             </svg>
-            5.0
+           {roundedOverallRating}
           </Typography>
         </div>
         <Typography color="gray"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
@@ -60,7 +64,7 @@ const VendorCard:React.FC<VendorCardProps>=({name,city,_id,coverpicUrl}) =>{
       <CardFooter className="pt-3 -mt-5"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         
       <Link to={`/viewVendor?vid=${_id}`}>
-        <Button size="md" fullWidth={true}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Button size="md" fullWidth={true}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}  className="bg-black hover:bg-red-500 text-white font-bold = rounded">
           View Profile
         </Button>
       </Link>

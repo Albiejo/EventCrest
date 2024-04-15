@@ -1,4 +1,4 @@
-import React from 'react'
+
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -11,38 +11,42 @@ import {
 } from "react-router-dom";
 
 import { Provider } from 'react-redux';
-import {store,persistor} from './redux/store.ts'
+import {store ,persistor} from './Redux/store.ts';
 import { PersistGate } from 'redux-persist/integration/react';
 
+
 //admin
-import AdminApp from './pages/admin/AdminApp.tsx'
-import Dashboard from './pages/admin/Dahboard.tsx';
-import AdminLogin from './components/admin/Login.tsx'
-import AdminPrivateRoute from './components/admin/AdminPrivateRoute.tsx';
-import Wallet from './pages/admin/Wallet.tsx';
+import AdminApp from './Pages/admin/AdminApp.tsx'
+import Dashboard from './Pages/admin/Dahboard.tsx';
+import AdminLogin from './Components/admin/Login.tsx'
+import AdminPrivateRoute from './Components/admin/AdminPrivateRoute.tsx';
+import Wallet from './Pages/admin/Wallet.tsx';
+import AdminNotifications from './Pages/admin/AdminNotifications.tsx';
 
 //common routes
-import HomePage from './pages/HomePage.tsx'
-import ForgotPassword from './components/Common/ForgotPassword.tsx';
-import ResetPassword from './components/Common/ResetPassword.tsx'
-import AboutPage from './pages/AboutPage.tsx';
+import HomePage from './Pages/HomePage.tsx'
+import ForgotPassword from './Components/common/ForgotPassword.tsx';
+import ResetPassword from './Components/common/ResetPassword.tsx'
+import AboutPage from './Pages/AboutPage.tsx';
 //user
-import UserLoginForm from './components/user/Login.tsx';
-import UserSignupForm from './components/user/Signup.tsx'
-import VerifyEmail from './components/Common/VerifyEmail.tsx';
-import UsersList from './pages/admin/UsersList.tsx';
-import UserPrivateRoute from './components/user/UserPrivateRoute.tsx';
-import UserVendorProfile from './pages/user/UserVendorProfile.tsx';
+import UserLoginForm from './Components/user/Login.tsx';
+import UserSignupForm from './Components/user/Signup.tsx'
+import VerifyEmail from './Components/common/VerifyEmail.tsx';
+import UsersList from './Pages/admin/UsersList.tsx';
+import UserPrivateRoute from './Components/user/UserPrivateRoute.tsx';
+import UserVendorProfile from './Pages/user/UserVendorProfile.tsx';
 //vendor
-import VendorApp from './pages/vendor/VendorApp.tsx';
-import VendorsList from './pages/admin/VendorsList.tsx';
-import VendorTypes from './pages/admin/VendorTypes.tsx';
-import VendorProfile from './components/admin/vendorList/VendorProfile.tsx';
-import VendorListing from './pages/VendorListing.tsx';
-import Profile from './pages/user/Profile.tsx';
-import BookEventForm from './pages/BookEventForm.tsx';
-import PaymentSuccess from './pages/PaymentSuccess.tsx';
+import VendorApp from './Pages/vendor/VendorApp.tsx';
+import VendorsList from './Pages/admin/VendorsList.tsx';
+import VendorTypes from './Pages/admin/VendorTypes.tsx';
+import VendorProfile from './Components/admin/vendorList/VendorProfile.tsx';
+import VendorListing from './Pages/VendorListing.tsx';
+import Profile from './Pages/user/Profile.tsx';
+import BookEventForm from './Pages/BookEventForm.tsx';
+import PaymentSuccess from './Pages/PaymentSuccess.tsx';
+import Messenger from './Pages/user/messenger/Messenger.tsx';
 
+import NotFound from './Components/Error/NotFound.tsx';
 
 
 
@@ -51,8 +55,9 @@ import PaymentSuccess from './pages/PaymentSuccess.tsx';
 const router = createBrowserRouter(
   createRoutesFromElements(
   <>
+   
     <Route path="/" element={<App/>}>
-              <Route index={true}  path="/" element={<HomePage />} />
+              <Route index={true}  path="/" element={<HomePage/>} />
               <Route path="/login" element={<UserLoginForm />} />
               <Route path="/signup" element={<UserSignupForm />} />
               <Route path="/verify" element={<VerifyEmail />} />
@@ -61,18 +66,22 @@ const router = createBrowserRouter(
               <Route path='/about' element={<AboutPage/>} />
               <Route path="/viewVendor" element={<UserVendorProfile/>}/>
               <Route path="/vendors" element={<VendorListing/>}/>
-            
-              
+              <Route path="/chat" element={<Messenger/>}/>
+              <Route path="*" element={<NotFound role={"user"}/>}/>
            {/* User Private Routes */}
           <Route path="" element={<UserPrivateRoute/>}>
               <Route path="/profile/*" element={<Profile/>}/>
               <Route path="/bookevent" element={<BookEventForm/>}/>
-              <Route path="/payment-success" element={<PaymentSuccess/>}/>
+              <Route path="/payment-success" element={<PaymentSuccess/>}/> 
           </Route>
     </Route>
 
+
+
+    
     <Route path="/admin" element={<AdminApp/>}>
             <Route index={true} path="/admin" element={<AdminLogin />} />
+            <Route path="*" element={<NotFound role={"admin"}/>}/>
       {/* Admin Private Routes */}
        <Route path="" element={<AdminPrivateRoute/>}>
             <Route path="/admin/dashboard" element={<Dashboard />} />
@@ -81,16 +90,16 @@ const router = createBrowserRouter(
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/vendor" element={<VendorProfile />} />
             <Route path="/admin/wallet" element={<Wallet />} />
+            <Route path="/admin/notifications" element={<AdminNotifications />} />
        </Route>
     </Route>
-
+  
 
  
-    
+   
     <Route path="" element={<VendorApp/>}>
       <Route path="/vendor/*" element={<VendorApp/>} />
     </Route>
-
     
     </>
   )

@@ -10,8 +10,8 @@ import {
 
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { validate } from "../../validations/resetPassword";
-import { axiosInstance, axiosInstanceVendor } from "../../api/axiosinstance";
+import { validate } from "../../Validations/resetPassword";
+import { axiosInstance, axiosInstanceVendor } from "../../Api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 

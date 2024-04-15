@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Input, Typography } from '@material-tailwind/react';
-import Footer from '../components/Home/Footer';
+import Footer from '../Components/home/Footer';
 import 'react-datepicker/dist/react-datepicker.css';
-import { validate} from '../validations/BookingValidation';
-import { axiosInstance } from '../api/axiosinstance';
+import { validate} from '../Validations/bookingValidation';
+import { axiosInstance } from '../Api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import UserRootState from '../redux/rootstate/UserState';
+import UserRootState from '../Redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 
 
@@ -81,10 +81,10 @@ const BookEventForm: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="flex justify-center items-center min-h-screen bg-gray-100 ">
         <div className="bg-white shadow-md rounded px-6 pt-8 pb-8 w-full max-w-3xl mt-30 mb-30">
           <div className="grid grid-cols-2 gap-4 w-full">
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center  border-2 border-blue-600">
 
               <Typography
                 variant="h5"

@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../Api/axiosinstance";
 import { useLocation } from 'react-router-dom';
 import { toast } from "react-toastify";
 
@@ -71,6 +71,7 @@ const VendorProfile = () => {
         .put(`/update-verify-status`,{vendorId:vendor?._id,status:status},{withCredentials:true})
         .then((response) => {
           console.log(response);
+          handleOpen();
           toast.success(response.data.message);
         })
         .catch((error) => {
@@ -85,8 +86,8 @@ const VendorProfile = () => {
      {vendor?.verificationRequest ? (
         <div>
           <Card
-           style={{ border: '8px solid gray' }}
-            className="mt-6  ml-20 mr-20 bg-gray-100 text-center"
+           style={{ border: '8px solid #002F5E' }}
+            className="mt-6 w-1/2 m-auto mr-30 mb-4 bg-gray-900 text-center"
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
@@ -98,7 +99,7 @@ const VendorProfile = () => {
             >
               <Typography
                 variant="h5"
-                color="blue-gray"
+                color="white"
                 className="mb-2"
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
@@ -116,7 +117,7 @@ const VendorProfile = () => {
               <Button
                onClick={()=>updateVerifyStatus("Rejected")}
                 className="mr-5"
-                color="red"
+               style={{background:'red'}}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -125,7 +126,7 @@ const VendorProfile = () => {
               </Button>
               <Button
                onClick={handleOpen}
-                color="green"
+               style={{background:'green'}}
                 placeholder={undefined}
                 onPointerEnterCapture={undefined}
                 onPointerLeaveCapture={undefined}
@@ -139,11 +140,9 @@ const VendorProfile = () => {
         ''
       )}
    
-    <div className="w-85 m-10">
-
-
+    <div className="w-85 mr-10">
       <Card
-        className="mt-6"
+        className="h-96 "
         placeholder={undefined}
       style={{
             backgroundColor: '#E7E3E0',
@@ -154,32 +153,15 @@ const VendorProfile = () => {
         <CardBody placeholder={undefined} className="h-40" children={undefined}>
        
         </CardBody>
-        {vendor?.isVerified?<svg
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          width="48"
-          height="48"
-          viewBox="0 0 48 48"
-          className="absolute top-2 right-2 h-10 w-10"
-        >
-          <polygon
-            fill="#42a5f5"
-            points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"
-          ></polygon>
-          <polygon
-            fill="#fff"
-            points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"
-          ></polygon>
-        </svg>:""}
       </Card>
 
 
-      <Card className="" placeholder={undefined}>
+      <Card  style={{border:'2px solid black'}} placeholder={undefined}>
       <CardHeader
             style={{
               backgroundImage: `url(${vendor?.logoUrl})`,
               backgroundSize: 'cover',
+              border: '5px solid black'
             }}
             color="gray"
             className="mb-4 grid h-28 place-items-center w-40"
@@ -195,6 +177,32 @@ const VendorProfile = () => {
             placeholder={undefined}
           >
             {vendor?.name}
+           
+
+            {vendor?.isVerified?
+          <>
+          <Typography className="font-bold text-black"  placeholder={undefined}>Verified</Typography>
+          <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="48"
+          height="48"
+          viewBox="0 0 48 48"
+          className="absolute top-2 right-120 h-10 w-10"
+        >
+          <polygon
+            fill="#42a5f5"
+            points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"
+          ></polygon>
+          <polygon
+            fill="#fff"
+            points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"
+          ></polygon>
+         
+        </svg></>:""}
+
+
           </Typography>
           <div
             className="mt-5"
@@ -215,8 +223,7 @@ const VendorProfile = () => {
                 VENDOR-EMAIL
               </Typography>
               <Typography
-                textGradient
-                color="blue-gray"
+                color="black"
                 className="mb-2"
                 placeholder={undefined}
               >
@@ -233,8 +240,8 @@ const VendorProfile = () => {
                 CITY
               </Typography>
               <Typography
-                textGradient
-                color="blue-gray"
+               
+                color="black"
                 className="mb-2"
                 placeholder={undefined}
               >
@@ -246,14 +253,14 @@ const VendorProfile = () => {
               variant="h6"
               color="blue-gray"
               className="mb-2"
-              //   textGradient
+            
               placeholder={undefined}
             >
               TOTAL WORKS
             </Typography>
             <Typography
-                textGradient
-                color="blue-gray"
+                
+                color="black"
                 className="mb-2"
                 placeholder={undefined}
               >
@@ -271,8 +278,8 @@ const VendorProfile = () => {
               CONTACTS
             </Typography>
             <Typography
-                textGradient
-                color="blue-gray"
+                
+                color="black"
                 className="mb-2"
                 placeholder={undefined}
               >
@@ -311,6 +318,7 @@ const VendorProfile = () => {
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
+          className="text-black font-bold"
         >
          Confirmation
         </DialogHeader>
@@ -318,6 +326,7 @@ const VendorProfile = () => {
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
+          className="text-black font-bold"
         >
           Are you sure want to accept the request?
         </DialogBody>
@@ -328,7 +337,7 @@ const VendorProfile = () => {
         >
           <Button
             variant="text"
-            color="red"
+            style={{background:'red' , color:'white'}}
             onClick={handleOpen}
             className="mr-1"
             placeholder={undefined}
@@ -339,7 +348,7 @@ const VendorProfile = () => {
           </Button>
           <Button
             variant="gradient"
-            color="green"
+            style={{background:'green'}}
             onClick={()=>updateVerifyStatus("Accepted")}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
@@ -349,6 +358,8 @@ const VendorProfile = () => {
           </Button>
         </DialogFooter>
     </Dialog>
+
+    
     </>
   );
 };

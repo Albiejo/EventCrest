@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import VendorListingCard from "../../Home/VendorListingCard";
-import { axiosInstance } from "../../../api/axiosinstance";
+import VendorListingCard from "../../home/VendorListingCard";
+import { axiosInstance } from "../../../Api/axiosinstance";
 import UserRootState from "../../../redux/rootstate/UserState";
 import { useSelector } from "react-redux";
-import Footer from "../../Home/Footer";
+import Footer from "../../home/Footer";
 
 
 interface Vendors {

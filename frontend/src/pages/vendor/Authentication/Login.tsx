@@ -9,12 +9,12 @@ import {
 } from "@material-tailwind/react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
+import { axiosInstanceVendor } from "../../../Api/axiosinstance";
 import { useSelector, useDispatch } from "react-redux";
-import { setVendorInfo } from "../../../redux/slices/VendorSlice";
-import VendorRootState from "../../../redux/rootstate/VendorState";
+import { setVendorInfo } from "../../../Redux/slices/VendorSlice";
+import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { useFormik } from "formik";
-import { validate } from "../../../validations/loginVal";
+import { validate } from "../../../Validations/loginVal";
 import { toast } from "react-toastify";
 
 interface FormValues {

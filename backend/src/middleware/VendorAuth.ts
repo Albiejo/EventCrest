@@ -12,20 +12,23 @@ interface AuthenticatedRequest extends Request {
 export default function authenticate(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   
   const token = req.headers.authorization;
-
+  
   if (!token) {
+    console.log( 'Token not provided' )
     return res.status(401).json({ message: 'Token not provided' });
+   
   }
 
-  // Extract token from header string (Bearer <token>)
+  
   const accessToken = token.split(' ')[1];
 
   jwt.verify(accessToken, process.env.JWT_SECRET!, (err: any, decoded: any) => {
     if (err) {
       return res.status(401).json({ message: 'Invalid token' });
     }
-    // Attach the decoded user information to the request object
+    
     req.Vendor = decoded;
+    console.log("extracted info from vendor token", req.Vendor);
     next();
   });
 }

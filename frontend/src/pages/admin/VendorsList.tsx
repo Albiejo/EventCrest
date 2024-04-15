@@ -1,9 +1,9 @@
-import VendorCard from "../../components/admin/vendorList/VendorCard"
+import VendorCard from "../../Components/admin/vendorList/VendorCard"
 import { Button } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { axiosInstanceAdmin } from "../../api/axiosinstance";
-import VendorProfile from "../../components/admin/vendorList/VendorProfile";
+import { axiosInstanceAdmin } from "../../Api/axiosinstance";
+import Pagination from "../../Components/common/Pagination";
 
 interface Vendor {
   _id: string;
@@ -25,17 +25,28 @@ function VendorsList() {
 
 
   const [vendors,setVendors]=useState<Vendor[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const vendorsPerPage = 8;
+
 
   useEffect(()=>{
     axiosInstanceAdmin
     .get("/getvendors", { withCredentials: true })
     .then((response) => {
-      setVendors(response.data)
+      setVendors(response.data.vendors)
     })
     .catch((error) => {
       console.log("error occurred", error);
     })
   },[vendors])
+
+  const indexOfLastVendor = currentPage * vendorsPerPage;
+  const indexOfFirstVendor = indexOfLastVendor - vendorsPerPage;
+  const currentVendors = vendors.slice(indexOfFirstVendor, indexOfLastVendor);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   
   return (
@@ -55,13 +66,17 @@ function VendorsList() {
       </div>
 
       <div className="flex flex-wrap">
-        {vendors.map((vendor, index) => (
+        {currentVendors.map((vendor, index) => (
           <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="m-3">
-            <VendorProfile {...vendor} className="max-w-xs" />
+            <VendorCard {...vendor} className="max-w-xs" />
           </Link>
         ))}
       </div>
-      
+      <Pagination
+        currentPage={currentPage}
+        totalPages={Math.ceil(vendors.length / vendorsPerPage)}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

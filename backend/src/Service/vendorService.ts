@@ -1,10 +1,12 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createVendor , findvendorByEmail ,updateVerificationStatus, getTotalVendorsCount,findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId , updateVendorprofData  , addReviewReplyById , requestForVerification} from '../Repository/vendorRepository';
-import { ObjectId } from 'mongoose';
-import vendor , { VendorDocument } from '../Model/vendor';
+import mongoose, { ObjectId } from 'mongoose';
+import vendor , { VendorDocument } from '../Model/Vendor';
 import { findVerndorIdByType } from '../Repository/vendorTypeRepository';
 import { CustomError } from '../Error/CustomError';
+import admin from '../Model/Admin';
+
 
 interface LoginResponse {
   token: string;
@@ -130,8 +132,18 @@ export const toggleVendorBlock = async(vendorId:string): Promise<void> =>{
         throw new Error('Vendor not found');
     }
     
-    Vendor.isActive = !Vendor.isActive; // Toggle the isActive field
+    Vendor.isActive = !Vendor.isActive; 
     await Vendor.save();
+    const admindata = await admin.find();
+    const Admin:any= admindata[0];
+    Admin.notifications.push({
+      _id: new mongoose.Types.ObjectId(),
+      message:`${Vendor.name}'s status was toggled , ${Vendor.isActive ? "active" : "blocked"} now`,
+      timestamp: new Date()
+    })
+  
+    await Admin.save();
+    console.log("notifi pushed",Admin);
 } catch (error) {
     throw error;
 }
@@ -168,7 +180,7 @@ export const ResetVendorPasswordService = async(password:string , email:string)=
 }
 
 
-export const PushFavoriteVendor = async(content:string , rating:number , username:string , vendorid:string)=>{
+export const PushVendorReview = async(content:string , rating:number , username:string , vendorid:string)=>{
   try {
     const data = await AddVendorReview(content , rating, username , vendorid)
     return  data;

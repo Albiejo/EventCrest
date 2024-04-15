@@ -8,7 +8,8 @@ import {
  
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
-import { axiosInstanceAdmin } from "../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../Api/axiosinstance";
+import Pagination from "../../Components/common/Pagination";
 
 
 interface User {
@@ -59,6 +60,10 @@ interface payment{
 
 function Wallet() {
 
+
+  
+
+  
   const formatDate = (createdAt:Date) => {
   const date = new Date(createdAt);
 
@@ -68,137 +73,83 @@ function Wallet() {
 
 
   const [payments,setPayments]=useState<payment[]>([])
+  const [admin , setadmin] = useState({})
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
 
   useEffect(()=>{
     axiosInstanceAdmin
-      .get(`/all-payment-details`, { withCredentials: true })
+      .get(`/all-payment-details?page=${currentPage}`, { withCredentials: true })
       .then((response) => {
-        setPayments(response.data.payment);
-        console.log(response.data.payment);
+        setPayments(response.data.payment.result);
+        setadmin(response.data.payment.AdminData);
+        setTotalPages(response.data.totalPages);
+      
       })
       .catch((error) => {
         console.log('here', error);
       });
-  },[])
+  },[currentPage])
 
   
   return (
-
-
     <>
-    <div className="flex justify-between bg-green-100 p-6 mr-20 mt-20">
-      <Card className="w-80"  placeholder={undefined}>
-        <CardBody  placeholder={undefined}>
-          <Typography variant="h5" color="blue-gray"  placeholder={undefined} className="mb-2">
-            Admin Wallet Amount
-          </Typography>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-</svg>
-
-          1000
-        </CardBody>
-      </Card>
-
-
-      <Card className="h-full w-full overflow-scroll"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-      <table className="w-full min-w-max table-auto text-left">
-        <thead>
-          <tr>
-          <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                  Payment_ID
-                </Typography>
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                  User
-                </Typography>
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                  Vendor
-                </Typography>
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                  Event
-                </Typography>
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                  Date
-                </Typography>
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                <Typography
-                  variant="small"
-                  color="blue-gray"
-                  className="font-normal leading-none opacity-70"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                >
-                  Amount
-                </Typography>
-              </th>
-          </tr>
-        </thead>
-        <tbody>
-          {payments.map((item, index) => (
-            <tr key={index} className="even:bg-blue-gray-50/50">
-              <td className="p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                {item._id}
-                </Typography>
-              </td>
-              <td className="p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              {item.userId.name}
-                </Typography>
-              </td>
-              <td className="p-4">
-                <Typography variant="small" color="blue-gray" className="font-normal"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            {item.vendorId.name}
-                </Typography>
-              </td>
-              <td className="p-4">
-                <Typography as="a" href="#" variant="small" color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                  {item.bookingId.eventName}
-                </Typography>
-              </td>
-              <td className="p-4">
-                <Typography as="a" href="#" variant="small" color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                  {formatDate(item.createdAt)}
-                </Typography>
-              </td>
-              <td className="p-4">
-                <Typography as="a" href="#" variant="small" color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                  {item.amount}
-                </Typography>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </Card>
-
+      <div className="flex justify-center items-center bg-gray-100 py-6 mt-20">
+        <Card className="w-80 border-4 border-green-500"  placeholder={undefined}>
+          <CardBody  placeholder={undefined}>
+            <Typography variant="h5" className="mb-2"  placeholder={undefined}>
+              Admin Wallet Amount
+            </Typography>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 8.25H9m6 3H9m3 6-3-3h1.5a3 3 0 1 0 0-6M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <Typography variant="h4" color="green"  placeholder={undefined}>
+             {admin?.Wallet}
+            </Typography>
+          </CardBody>
+        </Card>
       </div>
 
-      
-       </>
-  );
+      <div className="bg-white p-6 mt-4 mr-10 rounded-lg shadow">
+        <table className="w-full min-w-max table-auto text-left">
+          <thead className="bg-gray-900 border-4 border-gray-600">
+            <tr>
+              <th className="border-b border-gray-200 bg-gray-100 p-4">Payment ID</th>
+              <th className="border-b border-gray-200 bg-gray-100 p-4">User</th>
+              <th className="border-b border-gray-200 bg-gray-100 p-4">Vendor</th>
+              <th className="border-b border-gray-200 bg-gray-100 p-4">Event</th>
+              <th className="border-b border-gray-200 bg-gray-100 p-4">Date</th>
+              <th className="border-b border-gray-200 bg-gray-100 p-4">Amount</th>
+            </tr>
+          </thead>
+          <tbody className=" border-4 border-gray-600">
+            {payments.map((payment, index) => (
+              <>
+              <tr key={index} className={(index % 2 === 0) ? 'bg-gray-50' : 'bg-white'}>
+                <td className="p-4">{payment._id}</td>
+                <td className="p-4">{payment.userId.name}</td>
+                <td className="p-4">{payment.vendorId.name}</td>
+                <td className="p-4">{payment.bookingId.eventName}</td>
+                <td className="p-4">{formatDate(payment.createdAt)}</td>
+                <td className="p-4">{payment.amount}</td>
+              </tr>
+           
+              </>
+            ))}
+
+           
+          </tbody>
+         
+        </table>
+        <Pagination
+               currentPage={currentPage}
+               totalPages={totalPages}
+               onPageChange={setCurrentPage}
+            />
+      </div>
+    </>
+  )
 }
 
 export default Wallet

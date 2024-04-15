@@ -25,8 +25,8 @@ import {
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { axiosInstance } from "../../../api/axiosinstance";
-import { logout } from "../../../redux/slices/UserSlice";
+import { axiosInstance } from "../../../Api/axiosinstance";
+import { logout } from "../../../Redux/slices/UserSlice";
 
 
 export default function Sidebar() {
@@ -82,7 +82,7 @@ export default function Sidebar() {
             <hr className="my-2 border-blue-gray-50" />
             
             <Link to="/profile" >
-            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <UserCircleIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -91,7 +91,7 @@ export default function Sidebar() {
             </Link>
 
             <Link to="/profile/change-password">
-            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <LockClosedIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -100,7 +100,7 @@ export default function Sidebar() {
             </Link>
 
             <Link to="/profile/Favorites">
-            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <HeartIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -109,7 +109,7 @@ export default function Sidebar() {
             </Link>
 
             <Link to="/profile/Bookings">
-            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <BookmarkIcon className="h-5 w-5" />
               </ListItemPrefix>
@@ -117,7 +117,16 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <Link to="/profile/notifications">
+            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
+              <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <BookmarkIcon className="h-5 w-5" />
+              </ListItemPrefix>
+              Notifications
+            </ListItem>
+            </Link>
+
+            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <InboxIcon className="h-5 w-5 " />
               </ListItemPrefix>
@@ -135,7 +144,7 @@ export default function Sidebar() {
         
            
             <hr className="my-2 border-blue-gray-50" />
-            <ListItem  placeholder={undefined} onClick={handleLogout}>
+            <ListItem  placeholder={undefined} onClick={handleLogout} className="text-white">
                 <ListItemPrefix  placeholder={undefined}>
                   <PowerIcon className="h-5 w-5" />
                 </ListItemPrefix>

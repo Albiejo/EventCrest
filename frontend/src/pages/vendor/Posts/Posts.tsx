@@ -1,11 +1,11 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../../layout/DefaultLayout';
+import Breadcrumb from '../../../Components/vendor/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../../Layout/DefaultLayout';
 import { useSelector } from 'react-redux';
-import VendorRootState from '../../../redux/rootstate/VendorState';
+import VendorRootState from '../../../Redux/rootstate/VendorState';
 import { useEffect, useState } from 'react';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../../Api/axiosinstance';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 

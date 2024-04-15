@@ -1,10 +1,11 @@
-import { axiosInstance } from "../../api/axiosinstance";
+import { axiosInstance } from "../../Api/axiosinstance";
 import {useState ,useEffect} from "react"
-import VendorCard from "./VendorCard";
+
 import {
     Typography,
   } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import VendorCard from "./VendorListingCard";
 
 interface Vendors {
     _id: string;
@@ -15,6 +16,8 @@ interface Vendors {
     isActive: boolean;
     totalBooking:number;
     logoUrl:string;
+    coverpicUrl:string;
+    OverallRating:number;
   }
 
 
@@ -26,7 +29,8 @@ const VendorList=()=> {
         axiosInstance
       .get('/getvendors',{withCredentials:true})
       .then((response) => {
-        setVendors(response.data.vendors);
+        const sortedVendors = response.data.vendors.sort((a, b) => b.OverallRating - a.OverallRating);
+        setVendors(sortedVendors);
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
@@ -49,8 +53,10 @@ const VendorList=()=> {
         <div style={{ display: 'flex',flexWrap:"wrap"}}> 
         {vendors.map((vendor, index) => (
           <>    
-          <Link key={index} to={`/viewVendor?vid=${vendor._id}`}>    
+          <Link key={index} to={`/viewVendor?vid=${vendor._id}`}>   
+          <div className="ml-4 mr-4 mb-4">
             <VendorCard {...vendor} key={index}/>
+          </div> 
           </Link> 
           </>
         ))}

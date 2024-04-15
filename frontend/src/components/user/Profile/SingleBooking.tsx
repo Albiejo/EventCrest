@@ -11,11 +11,11 @@ import {
     DialogHeader,
   } from '@material-tailwind/react';
   import { useEffect, useState } from 'react';
-  import { axiosInstance } from '../../../api/axiosinstance';
-  import UserRootState from '../../../redux/rootstate/UserState';
+  import { axiosInstance } from '../../../Api/axiosinstance';
+  import UserRootState from '../../../Redux/rootstate/UserState';
   import { useSelector } from 'react-redux';
   import { useLocation } from 'react-router-dom';
-  
+  import Swal from 'sweetalert2';
 
 
   interface Vendor {
@@ -70,17 +70,39 @@ import {
   
 
 
+
+
 const SingleBooking = () => {
 
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(!open);
     const user = useSelector((state: UserRootState) => state.user.userdata);
-    const [booking, setBooking] = useState<Booking>({});
+    const [booking, setBooking] = useState<Booking>(Object);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get('id');
   
+
+    const handleCancelBooking = () => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to cancel this booking.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, cancel it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosInstance.patch(`/markCancel?bookingId=${id}`).then(() => {
+          console.log("booking marked as cancelled")
+          });
+          Swal.fire('Cancelled!', 'Your booking has been cancelled.', 'success');
+        }
+      });
+    };
+
 
 
     useEffect(() => {
@@ -89,7 +111,6 @@ const SingleBooking = () => {
         .get(`/single-booking?bookingId=${id}`, { withCredentials: true })
         .then((response) => {
           setBooking(response.data.bookings[0]);
-          console.log(response.data.bookings[0]);
         })
         .catch((error) => {
           console.log('here', error);
@@ -117,11 +138,24 @@ const SingleBooking = () => {
     return (
 
       <>
-       
-<div className="flex flex-col md:flex-row justify-between gap-4 mr-28  mt-20  " style={{ marginLeft: '-8vw' }}>
+      <div className='flex flex-col md:flex-row justify-between gap-4 ' style={{ marginLeft: '-7vw' }}>
+        <span className='font-bold text-black '>Booking Details</span>
+      </div>
 
+{booking.payment_status === 'Pending' && booking.status === "Accepted" ? (
+         <div className="flex flex-col md:flex-row justify-between gap-4 mr-28 "style={{ marginLeft: '-8vw' }}>
+         <Alert icon={<Icon />} color="red">
+           Complete your payment!
+         </Alert>
+       </div>
+       
+        ) : (
+          ''
+        )}
+
+<div className="flex flex-col md:flex-row justify-between gap-4 mr-28" style={{ marginLeft: '-8vw' }}>
 <Card
-    className="mt-6 w-full px-5 border-2 border-gray-300 bg-gray-500 text-white"
+    className="mt-6 w-full px-5 border-2 border-gray-700  text-black"
     placeholder={undefined}
     onPointerEnterCapture={undefined}
     onPointerLeaveCapture={undefined}
@@ -129,7 +163,7 @@ const SingleBooking = () => {
     <CardHeader
         floated={false}
         shadow={false}
-        className="m-0 mb-1 rounded-none  text-left p-5 bg-gray-500 text-white"
+        className="m-0 mb-1 rounded-none border-2 border-gray-500 mt-4 text-left p-5  text-black"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -198,7 +232,7 @@ const SingleBooking = () => {
             <div>
                 <Typography
                     variant="h5"
-                    className="mb-2"
+                    className="mb-2 "
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
@@ -207,7 +241,7 @@ const SingleBooking = () => {
                 </Typography>
                 <Typography
                     variant="small"
-                    className="mb-2"
+                    className="mb-2 text-blue-700 font-bold"
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
@@ -296,22 +330,10 @@ const SingleBooking = () => {
         </div>
     </CardBody>
 </Card>
-
 </div>
 
-        {booking.payment_status === 'Pending' && booking.status === "Accepted" ? (
-          <div className="mx-20 w-100">
-            <Alert icon={<Icon />} color="red">
-              Complete your payment !
-            </Alert>
-          </div>
-        ) : (
-          ''
-        )}
-
-
 <Card
-    className="mt-2 mr-28 border-2 border-gray-300 bg-gray-500 text-white"
+    className="mt-2 mr-28 border-2 border-gray-700 text-black"
     style={{ marginLeft: '-8vw' }}
     placeholder={undefined}
     onPointerEnterCapture={undefined}
@@ -321,7 +343,7 @@ const SingleBooking = () => {
         floated={false}
         shadow={false}
         color="transparent"
-        className="m-0 mb-1 rounded-none border-b border-white/10 text-left p-5"
+        className="m-0 mb-1 rounded-none border-2 border-white/10 text-left p-5"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -330,7 +352,7 @@ const SingleBooking = () => {
             <div>
                 <Typography
                     variant="h5"
-                    className="mb-2 text-white"
+                    className="mb-2 text-black"
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
@@ -339,7 +361,7 @@ const SingleBooking = () => {
                 </Typography>
                 <Typography
                     variant="h6"
-                    className="mb-2 text-white"
+                    className="mb-2 text-black"
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
@@ -349,11 +371,24 @@ const SingleBooking = () => {
                         {booking?.payment_status}
                     </span>
                 </Typography>
+
+                <Typography
+                variant="h6"
+                className="mb-2 text-black"
+                placeholder={undefined}
+                onPointerEnterCapture={undefined}
+                onPointerLeaveCapture={undefined}
+              >
+                  Please note: Token amount is non-refundable.
+              </Typography>
+
+
             </div>
             <div>
                 {booking.status === "Accepted" && booking.payment_status === "Pending" && (
                     <Button
                         onClick={handleOpen}
+                        style={{background:'green', border: '2px solid white'}}
                         placeholder={undefined}
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
@@ -361,6 +396,31 @@ const SingleBooking = () => {
                         Make Payment
                     </Button>
                 )}
+
+                {booking.status === "Pending" && booking.payment_status === "Pending" && (
+                    <Button
+                        onClick={handleCancelBooking}
+                        style={{background:'red', border: '2px solid black'}}
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                    >
+                     Cancel Booking
+                    </Button>
+                )}
+
+              {booking.status === "Cancelled" && booking.payment_status === "Cancelled" && (
+                    <Typography
+                       className='text-red-600 font-bold text-lg'
+                        placeholder={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                    >
+                  Your booking has been cancelled !
+                    </Typography>
+                )}  
+
+
             </div>
         </div>
     </CardHeader>
