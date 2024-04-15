@@ -3,6 +3,12 @@ import { Notification } from '../util/Interfaces';
 import { Review } from '../util/Interfaces';
 
 
+interface Lock {
+    date: string;
+    isLocked: boolean;
+    // lockExpiresAt?: Date;
+  }
+
 
 
 export interface Vendor {
@@ -26,6 +32,7 @@ export interface Vendor {
     refreshToken:string;
     notifications:Array<Notification>;
     OverallRating:Number;
+    locks: Lock[];
 
 }
 
@@ -56,7 +63,17 @@ const VendorSchema: Schema = new Schema({
         timestamp: { type: Date, default: Date.now },
         Read:{type:Boolean, default: false}
     }],
-    OverallRating:{ type: Number, default: 0 }
+    OverallRating:{ type: Number, default: 0 },
+    locks: [{
+        date: {
+          type: String,
+          required: true
+        },
+        isLocked: {
+          type: Boolean,
+          default: false
+        }
+      }]
 
 });
 

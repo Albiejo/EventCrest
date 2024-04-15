@@ -1,9 +1,19 @@
 import mongoose from "mongoose";
 import Booking , { bookingDocument } from "../Model/Booking";
 import { createNewBooking  , findBookingsByVendorId , findBookingsByUserId , findBookingsByBookingId , updateBookingStatusById , 
-  updatebookingCancel
+  updatebookingCancel,checkDate
 } from "../Repository/bookingRepository";
 import vendor from "../Model/Vendor"
+
+
+export const checkIfDatePresent = async(vendorId:string , date:string):Promise<boolean>=>{
+try {
+  const value =  await checkDate(vendorId , date);
+  return value? true : false;
+} catch (error) {
+  throw error;
+}
+}
 
 
 
@@ -78,3 +88,51 @@ try {
   throw error;
 }
 }
+
+export const acquireLockForDate = async (vendorId: string, date: string): Promise<void> => {
+  try {
+    const vendorData = await vendor.findById(vendorId);
+   
+    if (!vendorData) {
+      throw new Error("Vendor not found");
+    }
+
+    const existingLock = vendorData.locks.find(lock => lock.date === date);
+   
+    if (existingLock && existingLock.isLocked) {
+      throw new Error('Date is already locked');
+    }
+
+    vendorData.locks.push({
+      date: date,
+      isLocked: true
+    });
+    
+    await vendorData.save();
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const releaseLockForDate=async (vendorId: string, date: string): Promise<void> =>{
+  try {
+
+    const vendorData = await vendor.findById(vendorId);
+   
+    if (!vendorData) {
+      throw new Error("Vendor not found");
+    }
+
+    const lockIndex = vendorData.locks.findIndex(lock => lock.date === date);
+
+
+    if (lockIndex !== -1) {
+      vendorData.locks.splice(lockIndex, 1);
+      await vendorData.save();
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+

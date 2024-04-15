@@ -248,7 +248,6 @@ export const VendorController = {
           }
 
           const data = await getSingleVendor(vendorId);
-          console.log("data",data)
           if(!data){
             res.status(400).json({error:'Vendor not found , error occured'})
           }else{

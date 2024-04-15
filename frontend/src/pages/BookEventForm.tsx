@@ -62,16 +62,28 @@ const BookEventForm: React.FC = () => {
     const errors = validate(formValues);
     setFormErrors(errors)
     if (Object.values(errors).every((error) => error === "")) {
-      console.log(formValues);
       axiosInstance
         .post(`/bookevent?vendorId=${id}&userId=${user?._id}`, formValues, { withCredentials: true })
         .then((response) =>{
-          console.log(response);
-          toast.success(response.data.message);
-          navigate("/profile/Bookings")
+        
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            navigate("/profile/Bookings");
+          } else if (response.status === 400) {
+            toast.error(response.data.message);
+          } else {
+            toast.error("An error occurred while processing your Booking , try again later");
+          }
         })
         .catch((error) => {
-          console.log("here", error);
+          if (error.response.status === 400) {
+            toast.error(error.response.data.message);
+            console.log("error",error.response.data.message)
+          }
+          else{
+            console.error("Error:", error);
+            toast.error("An error occurred while processing your request");
+          }
         });
     }
   };

@@ -4,16 +4,36 @@ import vendor from "../Model/Vendor"
 import user from "../Model/User";
 
 
+
+
+export const checkDate = async (vendorId:string , date:string): Promise<boolean> => {
+try {
+  const vendorData = await vendor.findById(vendorId);
+    if (!vendorData) {
+      throw new Error('Vendor not found');
+    }
+    const isBooked = vendorData.bookedDates.includes(date);
+    return isBooked? true : false;
+} catch (error) {
+  throw error;
+}
+
+}
+
+
+
+
 export const createNewBooking=async(  bookingData: Partial<bookingDocument> ): Promise<bookingDocument> =>{
     try {
-        const result = await Booking.create(bookingData);
-        let vendorId = bookingData.vendorId;
+
+         let vendorId = bookingData.vendorId;
+         const result = await Booking.create(bookingData);
+       
 
         await vendor.findByIdAndUpdate(vendorId, {
           $push: { bookedDates: bookingData.date },
         }); 
         
-        console.log("date added to booked dates")
         const vendorData  = await vendor.findById(vendorId);
         if(!vendorData){
           throw Error;
@@ -24,7 +44,7 @@ export const createNewBooking=async(  bookingData: Partial<bookingDocument> ): P
           timestamp: new Date() ,
           Read:false
         })
-        console.log("notifications added for vendor since booking happened successfully");
+
         return result;
       } catch (error) {
         throw error;

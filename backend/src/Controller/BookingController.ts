@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { addABooking , getAllBookingsByUser , getAllBookingsByVendor , getAllBookingsById , updateStatusById , countTotalBookingsByUser,
-  MarkBookingCancel
+  MarkBookingCancel,checkIfDatePresent,acquireLockForDate,releaseLockForDate
 } from "../Service/bookingService";
 import moment from 'moment';
 
 export const BookingController={
 
-    async bookAnEvent(req: Request, res: Response): Promise<void>{
+    async bookAnEvent(req: Request, res: Response): Promise<Response>{
         try {
             const vendorId: string = req.query.vendorId as string;
             const userId: string = req.query.userId as string;
@@ -16,12 +16,28 @@ export const BookingController={
             const date = moment(req.body.date).format('DD-MM-YYYY');
             const pin=parseInt(req.body.pin);
             const mobile=parseInt(req.body.mobile);
+
+            const DateAlreadyBooked  = await checkIfDatePresent(vendorId , date );
             
-            const booking = await addABooking(eventName, name, city,date,pin,mobile,vendorId,userId);
-            res.status(201).json({booking:booking,message:"Booking done Successfully"});
+            if(DateAlreadyBooked){
+               return res.status(400).json({ message: "Sorry this date is not available!" });
+            }else{
+              try {
+                    await acquireLockForDate(vendorId, date);
+                    const booking = await addABooking(eventName, name, city,date,pin,mobile,vendorId,userId);
+                    await releaseLockForDate(vendorId, date);
+                    return res.status(201).json({booking:booking,message:"Booking done Successfully"});
+              } catch (error) {
+                    console.error("Error acquiring lock:", error);
+                    return res.status(400).json({ message: "Sorry, this date is currently not available." });
+              }
+         
+            }
+
+
           } catch (error) {
             console.error(error);
-            res.status(500).json({ message: "Server Error" });
+            return res.status(500).json({ message: "Server Error" });
           }
     },
 

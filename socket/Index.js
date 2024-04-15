@@ -52,15 +52,15 @@ io.on("connection", (socket) => {
   
 
     console.log("user connected to socket");
+
     
-    //take userid and socketid from user
     socket.on("adduser" , (userId)=>{
         addUser(userId, socket.id);
         io.emit("getUsers" , users)
     });
 
 
-    //send and get message
+
     socket.on("sendMessage", ({ senderId, receiverId, text }) => {
         const user = getUser(receiverId);
         if (user) {

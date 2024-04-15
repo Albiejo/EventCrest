@@ -15,6 +15,7 @@ export interface bookingDocument extends Document{
     payment_status:string;
     amount:number;
 
+
 }
 
 const bookingSchema=new Schema<bookingDocument>({
@@ -67,7 +68,8 @@ const bookingSchema=new Schema<bookingDocument>({
     amount:{
         type:Number,
         default:0
-    }
+    },
+   
 })
 
 export default model<bookingDocument>('Booking',bookingSchema)
