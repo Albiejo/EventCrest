@@ -1,6 +1,6 @@
 import React from 'react';
-import CardDataStats from '../../components/vendor/CardDataStats';
-import DefaultLayout from '../../layout/DefaultLayout';
+import CardDataStats from '../../Components/vendor/CardDataStats';
+import DefaultLayout from '../../Layout/DefaultLayout';
 
 
 

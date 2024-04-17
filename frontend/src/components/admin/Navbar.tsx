@@ -10,9 +10,9 @@ import {
   MobileNav,
 } from "@material-tailwind/react";
 import { useSelector,useDispatch } from 'react-redux';
-import AdminState  from '../../redux/rootstate/AdminState';
-import {axiosInstanceAdmin} from '../../api/axiosinstance';
-import { logout } from "../../redux/slices/AdminSlice";
+import AdminState  from '../../Redux/rootstate/AdminState';
+import {axiosInstanceAdmin} from '../../Api/axiosinstance';
+import { logout } from "../../Redux/slices/AdminSlice";
 
 
 const AdminNavbar=()=> {
@@ -44,28 +44,26 @@ const AdminNavbar=()=> {
 
  
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100 }}>
-    <Navbar className="px-4 lg:px-8 lg:py-2 max-w-screen-3xl" placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#36454F' }} >
+    <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100 }} >
+    <Navbar className="px-4 lg:px-8 lg:py-2 max-w-screen-3xl" placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#002F5E' }} >
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
         <Typography
-                  as="a"
-                  href="#"
-                  className="mr-4 cursor-pointer py-1.5 font-medium" color="pink" placeholder={undefined}        >
-          Event Crest
+                  className="mr-4 cursor-pointer py-1.5 font-medium" color="white" placeholder={undefined}        >
+          Event Crest-Admin Panel
         </Typography>
        
        
         <div className="flex items-center gap-x-1">
       {isAdminSignedIn?
-        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined} onClick={handleLogout}>
+        <Button variant="gradient" color="green" size="sm" className="hidden lg:inline-block" placeholder={undefined} onClick={handleLogout}>
           <span>Logout</span>
         </Button>
       :
-      <Link to="/admin/login">
-        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined}>
+     
+        <Button variant="gradient" color="black" size="sm" className="hidden lg:inline-block" placeholder={undefined}  onClick={handleLogout}>
           <span>Login</span>
         </Button>
-      </Link>
+      
       }
     </div>
         <IconButton
@@ -109,9 +107,11 @@ const AdminNavbar=()=> {
       <MobileNav  open={openNav}>
         <div className="container mx-auto">
           <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className=""  placeholder={undefined}>
+           
+            <Button fullWidth variant="text" size="sm" className=""  placeholder={undefined} onClick={handleLogout}>
               <span>Log In</span>
             </Button>
+            
           </div>
         </div>
       </MobileNav >

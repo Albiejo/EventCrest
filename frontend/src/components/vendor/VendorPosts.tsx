@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
-import { axiosInstance , axiosInstanceVendor } from "../../api/axiosinstance";
+import { axiosInstance , axiosInstanceVendor } from "../../Api/axiosinstance";
 import { DialogWithImage } from "./DialogWithImage";
 import { useSelector } from "react-redux";
 import VendorRootState from "../../redux/rootstate/VendorState";

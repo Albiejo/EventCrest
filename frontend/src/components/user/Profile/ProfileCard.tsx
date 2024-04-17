@@ -5,14 +5,15 @@ import {
   CardBody,
   Input,
   Button,
+
 } from "@material-tailwind/react";
-import UserRootState from "../../../redux/rootstate/UserState";
+import UserRootState from "../../../Redux/rootstate/UserState";
 import { useSelector,useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { axiosInstance } from "../../../api/axiosinstance";
+import { axiosInstance } from "../../../Api/axiosinstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { setUserInfo } from "../../../redux/slices/UserSlice";
+import { setUserInfo } from "../../../Redux/slices/UserSlice";
 
 interface FormInputs {
   name: string;
@@ -83,8 +84,10 @@ useEffect(() =>console.log("data is ",user));
 
   
   return (
+    <>
+    <div className="flex justify-center">
     <Card
-      className="w-96 mx-auto mt-10"
+    className="w-full md:w-96  lg:mt-20 md:mt-0 md:ml-4 border-4 border-gray-700 mr-40"
       placeholder={undefined}
       onPointerEnterCapture={undefined}
       onPointerLeaveCapture={undefined}
@@ -194,6 +197,9 @@ useEffect(() =>console.log("data is ",user));
         </CardBody>
       </form>
     </Card>
+    </div>
+    </>
+    
   );
 };
 

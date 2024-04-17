@@ -7,15 +7,17 @@ import {
   UpdatePassword,
   addVendorToFavorites
   ,findUserById,
-  UpdateUserProfileDetails,getfavVendors,findbyIdandUpdate
+  UpdateUserProfileDetails,getfavVendors,findbyIdandUpdate,updateNotificationstatus
 } from "../Repository/userRepository";
 
 
-import User, { UserDocument } from "../Model/user";
+import User, { UserDocument } from "../Model/User";
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
 import dotenv from 'dotenv';
-
+import vendor from "../Model/Vendor";
+import mongoose from "mongoose";
+import admin from "../Model/Admin";
 dotenv.config();
 
 
@@ -23,6 +25,7 @@ interface LoginResponse {
   token: string;
   userData: object;
   message: string;
+  refreshToken: string;
 }
 
 export const signup = async (
@@ -48,13 +51,8 @@ export const signup = async (
       isActive,
     });
 
-    //creating a access token and refresh token and stroing the refresh token in the database for the user.
 
-    const Accesstoken = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!  , { expiresIn: "1h"});
-    // const refreshToken = jwt.sign({ _id: newUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: '7d' });
-    // await findbyIdandUpdate(newUser._id, refreshToken);
-
-    return { token: Accesstoken, user: newUser };
+    return {user: newUser };
 
   } catch (error) {
     throw error;
@@ -62,7 +60,31 @@ export const signup = async (
 };
 
 
+export const createRefreshToken = async (refreshToken:string)=>{
+  try {
+    
+    
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { _id: string };
+ 
 
+    const user = await User.findById(decoded._id);
+    console.log("user",user)
+      
+  
+
+    if (!user || user.refreshToken !== refreshToken) {
+        throw new Error('Invalid refresh token');
+      }
+
+    const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    
+    return accessToken;
+
+
+  } catch (error) {
+   throw error 
+  }
+}
 
 
 export const login = async (
@@ -70,24 +92,34 @@ export const login = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
-    console.log("login data" , email , password)
+    
     const existingUser = await findUserByEmail(email);
     if (!existingUser) {
       throw new CustomError("User not exists..", 404);
     }
+
+
     if (!existingUser.isActive) {
       throw new CustomError(`User is Blocked, can't login`, 401);
     }
 
     const passwordMatch = await bcrypt.compare(password, existingUser.password);
-    console.log(passwordMatch);
+
 
     if (!passwordMatch) {
       throw new CustomError("Incorrect password..", 401);
     }
+    
     const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+    
+    let refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+    existingUser.refreshToken = refreshToken;
+    
+    await existingUser.save();
+
     return {
       token,
+      refreshToken,
       userData: existingUser,
       message: "Successfully logged in..",
     };
@@ -105,6 +137,7 @@ export const getUsers = async (page: number, limit: number, search: string) => {
   }
 };
 
+
 export const toggleUserBlock = async (userId: string): Promise<void> => {
   try {
     const user = await User.findById(userId);
@@ -114,10 +147,33 @@ export const toggleUserBlock = async (userId: string): Promise<void> => {
 
     user.isActive = !user.isActive; // Toggle the isActive field
     await user.save();
+
+    const admindata = await admin.find();
+    const Admin:any= admindata[0];
+    Admin.notifications.push({
+      _id: new mongoose.Types.ObjectId(),
+      message:`${user.name}'s status was toggled , ${user.isActive ? "active" : "blocked"} now`,
+      timestamp: new Date()
+    })
+  
+    await Admin.save();
+    console.log("notifi pushed",Admin);
   } catch (error) {
     throw error;
   }
 };
+
+
+export const  findUser = async (userId: string)=>{
+try {
+  const user = await findUserById(userId)
+  return user;
+} catch (error) {
+  throw error ;
+}
+
+};
+
 
 export const generateOtpForPassword = async (email: string) => {
   try {
@@ -202,8 +258,47 @@ export const googleSignup = async (
 
 export const FavoriteVendor = async(vendorId:string , userId:string)=>{
   try {
-    const result = await addVendorToFavorites(userId, vendorId);
-    return result;
+
+    const user = await User.findById(userId);
+  if (!user) {
+  throw new Error("User not found.");
+  }
+
+  const vendorIndex = user.favorite.indexOf(vendorId);
+
+  if (vendorIndex === -1) {
+    user.favorite.push(vendorId);
+  //setting notifications for vendor 
+  const vendordata = await vendor.findById(vendorId)
+  const data ={
+    _id: new mongoose.Types.ObjectId(),
+    message:`${user.name} like your profile`,
+    timestamp: new Date() ,
+    Read:false
+  }
+  vendordata?.notifications.push(data)
+//setting notifications for user
+  user.notifications.push({
+    _id: new mongoose.Types.ObjectId(),
+    message:`You have favorited a profile. Congrats!`,
+    timestamp: new Date(),
+    Read:false
+  })
+  await user.save();
+
+  } else {
+      user.favorite.splice(vendorIndex, 1);
+  }
+  await user.save();
+
+
+
+  const isFavorite = user.favorite.indexOf(vendorId) === -1 ? false : true;
+  return {
+    userData: user,
+    isFavorite: isFavorite 
+};
+    
 } catch (error) {
     console.error("Error in addToFavorites service:", error);
     throw new Error("Failed to add vendor to favorites.");
@@ -249,6 +344,13 @@ export const UpdatePasswordService = async(newPassword:string , userId:string)=>
 
     const updatedValue = await UpdatePassword(hashedPassword , email);
     if(updatedValue){
+      existingUser.notifications.push({
+        _id: new mongoose.Types.ObjectId(),
+        message:`You have updated your password , Congrats!`,
+        timestamp: new Date(),
+        Read:false
+      })
+      await existingUser.save();
       return true;
     }
     return false
@@ -256,6 +358,7 @@ export const UpdatePasswordService = async(newPassword:string , userId:string)=>
     throw error;
   }
 }
+
 
 
 export const UpdateUserProfile=async(userId:string , name:string , phone:number , image:string , imageUrl:string)=>{
@@ -271,11 +374,21 @@ export const UpdateUserProfile=async(userId:string , name:string , phone:number 
 }
 
 
-export const FavoriteVendors=async(userid:string)=>{
+export const FavoriteVendors=async(userid:string , page: number, pageSize: number)=>{
     try {
-      const data = await getfavVendors(userid);
-      return data;
+      const {favoriteVendors , totalFavVendorsCount} = await getfavVendors(userid , page ,pageSize);
+      return {favoriteVendors , totalFavVendorsCount}
     } catch (error) {
       throw error;
     }
+}
+
+
+export const updateNotification = async(userid:string ,notifiID:string ):Promise<object>=>{
+  try {
+    const data = await updateNotificationstatus(userid ,notifiID)
+    return data
+  } catch (error) {
+    throw error;
+  }
 }

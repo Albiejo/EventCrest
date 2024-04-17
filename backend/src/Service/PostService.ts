@@ -1,6 +1,6 @@
 
 import Post,{PostDocument} from "../Model/Post";
-import { createNewPost, deletePostById, findPostById, findPostsByVendorId } from '../Repository/PostRepo';
+import { createNewPost, deletePostById, findPostById, findPostsByVendorId } from '../Repository/postRepo';
 import mongoose from "mongoose";
 
 

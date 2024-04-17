@@ -3,11 +3,11 @@ import {
   Button, Card, CardBody, CardFooter, CardHeader, Chip, Input, Typography
 } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../Api/axiosinstance";
 import { useLocation, useNavigate } from "react-router-dom";
 import {toast} from "react-toastify"
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { logout } from "../../../redux/slices/UserSlice";
+import { logout } from "../../../Redux/slices/UserSlice";
 import { useDispatch } from "react-redux";
 
 interface User {
@@ -28,6 +28,7 @@ const UsersTable=()=> {
   const [page, setPage] = useState<number>(1);
   const [value ,setValue] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+  
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const UsersTable=()=> {
   
     fetchData(pageParam, searchParam);
 
-  }, [ location.search , value]);
+  }, [ location.search , value , users]);
 
   
 
@@ -51,7 +52,6 @@ const UsersTable=()=> {
     axiosInstanceAdmin
     .get(`/users?page=${pageParam || page}&search=${searchParam || search}`)
     .then((response) => {
-      console.log("data is ",response.data.users)
       setUsers(response.data.users);
     })
     .catch((error) => {
@@ -95,7 +95,7 @@ const UsersTable=()=> {
             </Typography>
           </div>
           
-          //search field 
+          
           <div className="w-full md:w-72">
             <Input
                 label="Search"
@@ -193,9 +193,11 @@ const UsersTable=()=> {
       </CardBody>
     
        <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4" placeholder={undefined}>
+       
         <Typography variant="small" color="blue-gray" className="font-normal" placeholder={undefined}>
           Page {page} of 10
         </Typography>
+
         <div className="flex gap-2">
           <Button
             variant="outlined"
@@ -220,6 +222,7 @@ const UsersTable=()=> {
             Next
           </Button>
         </div>
+
       </CardFooter>
     </Card>
   );

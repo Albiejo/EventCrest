@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import { axiosInstanceVendor } from '../../../api/axiosinstance';
-import { logout } from '../../../redux/slices/VendorSlice';
+import { axiosInstanceVendor } from '../../../Api/axiosinstance';
+import { logout } from '../../../Redux/slices/VendorSlice';
 import { Button } from '@material-tailwind/react';
 import { useDispatch } from 'react-redux';
 interface SidebarProps {
@@ -31,7 +31,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 
 
-  // close on click outside
+
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!sidebar.current || !trigger.current) return;
@@ -49,7 +49,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 
 
-  // close if the esc key is pressed
+ 
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!sidebarOpen || keyCode !== 27) return;
@@ -71,6 +71,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   }, [sidebarExpanded]);
 
 
+
+
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     axiosInstanceVendor
@@ -83,6 +85,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         console.log("here", error);
       });
   };
+
+
 
   return (
 
@@ -473,7 +477,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                               Booking History
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               to="/vendor/add-date"
                               className={({ isActive }) =>
@@ -483,7 +487,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             >
                               Add Date
                             </NavLink>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -534,7 +538,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Reviews
                 </NavLink>
-              </li>
+                </li>
+
+                <li>
+                <NavLink
+                  to="/vendor/chat/"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('reviews') &&
+                    'bg-graydark dark:bg-meta-4'
+                  }`}
+                >
+                  <i className="fa-solid fa-message"></i>
+                  Messages
+                </NavLink>
+                </li>
                
                {/* Reviews end */}
 

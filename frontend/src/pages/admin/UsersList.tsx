@@ -1,11 +1,10 @@
-import UsersTable from "../../components/admin/usersList/usersTable";
+import UsersTable from "../../Components/admin/usersList/usersTable";
 
 function UsersList() {
 
   return (
-    <div className="m-20">
+    <div className="mr-20 border-4 border-gray-600">
       <UsersTable/>
- 
     </div>
   )
 }

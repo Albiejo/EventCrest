@@ -1,6 +1,6 @@
 import {Navigate,Outlet} from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import AdminRootState from '../../redux/rootstate/AdminState';
+import AdminRootState from '../../Redux/rootstate/AdminState';
 
 
 const AdminPrivateRoute = () => {

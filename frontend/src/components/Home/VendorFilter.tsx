@@ -61,7 +61,7 @@ const VendorFilters = () => {
           Category
         </AccordionHeader>
         <AccordionBody>
-        <Card  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <Card  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className='border-4 border-gray-300'>
       <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <ListItem className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <label

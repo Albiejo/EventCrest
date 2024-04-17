@@ -1,5 +1,5 @@
-import AddVendorType from '../../components/admin/vendor-types/AddVendorType'
-import VendorTypeList from '../../components/admin/vendor-types/VendorTypeList'
+import AddVendorType from '../../Components/admin/vendor-types/AddVendorType'
+import VendorTypeList from '../../Components/admin/vendor-types/VendorTypeList'
 
 function VendorTypes() {
 

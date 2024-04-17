@@ -1,12 +1,12 @@
 import { Routes, Route } from "react-router-dom";
-import ChangePassword from "../../components/user/Profile/ChangePassword";
-import Favorites from "../../components/user/Profile/Favorites";
-import UserSidebar from "../../components/user/Profile/Sidebar";
-import  ProfileCard  from "../../components/user/Profile/ProfileCard";
-import BookingDetails from "../../components/user/Profile/BookingDetails";
-
-
-
+import ChangePassword from "../../Components/user/Profile/ChangePassword";
+import Favorites from "../../Components/user/Profile/Favorites";
+import UserSidebar from "../../Components/user/Profile/Sidebar";
+import  ProfileCard  from "../../Components/user/Profile/ProfileCard";
+import BookingDetails from "../../Components/user/Profile/BookingDetails";
+import SingleBooking from "../../Components/user/Profile/SingleBooking";
+import NotificationPage from "./NotificationPage";
+import NotFound from "../../Components/Error/NotFound";
 const Profile = () => {
   return (
     <div style={{ display: 'flex' }}>
@@ -17,6 +17,9 @@ const Profile = () => {
           <Route path="/change-password" element={<ChangePassword/>} />
           <Route path="/Favorites" element={<Favorites/>} />
           <Route path="/Bookings" element={<BookingDetails/>} />
+          <Route path="/booking" element={<SingleBooking />} />
+          <Route path="/notifications" element={<NotificationPage/>} />
+          <Route path="*" element={<NotFound role={'user'}/>}/>
         </Routes>
       </div>
     </div>

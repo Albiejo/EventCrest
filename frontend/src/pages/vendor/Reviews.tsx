@@ -1,11 +1,11 @@
 import { Button, Progress, Rating, Textarea } from '@material-tailwind/react';
-import Breadcrumb from '../../components/vendor/Breadcrumbs/Breadcrumb';
-import DefaultLayout from '../../layout/DefaultLayout';
-import { useSelector } from 'react-redux';
-import VendorRootState from '../../redux/rootstate/VendorState';
+import Breadcrumb from '../../Components/vendor/Breadcrumbs/Breadcrumb';
+import DefaultLayout from '../../Layout/DefaultLayout';
+import {  useDispatch, useSelector } from 'react-redux';
+import VendorRootState from '../../Redux/rootstate/VendorState';
 import React, { FormEvent, useEffect, useState } from 'react';
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react';
-import { axiosInstanceVendor } from '../../api/axiosinstance';
+import { axiosInstanceVendor } from '../../Api/axiosinstance';
 import { toast } from 'react-toastify';
 import {
   Accordion,
@@ -13,8 +13,7 @@ import {
   AccordionBody,
 } from '@material-tailwind/react';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
-import { setVendorInfo } from '../../redux/slices/VendorSlice';
-
+import { setVendorInfo } from '../../Redux/slices/VendorSlice';
 
 
 
@@ -33,10 +32,12 @@ export const Reviews = () => {
 
 
   const [openAccordions, setOpenAccordions] = useState<number[]>([]);
-
+  const dispatch = useDispatch()
   const [content, setContent] = useState('');
   const [open, setOpen] = useState(false);
   const [currentReviewId, setCurrentReviewId] = useState('');
+
+
 
   const handleOpen = (reviewId: string) => {
     setCurrentReviewId(reviewId); // Set the current review ID
@@ -54,6 +55,8 @@ export const Reviews = () => {
       }
     });
   };
+
+
 
   const handleReplySubmit = async (
     e: FormEvent<HTMLFormElement>,
@@ -80,10 +83,17 @@ export const Reviews = () => {
       });
   };
 
+
+
+
+
+
   return (
+
+
     <DefaultLayout>
       <Breadcrumb pageName="Reviews" folderName="" />
-      <div className="flex flex-col md:flex-row  justify-between w-full gap-2 m-10">
+      <div className="flex flex-col md:flex-row  justify-between w-full gap-2 m-10 ">
         <div className="flex flex-col items-start w-full">
           <div className="flex items-center mb-2">
             <div className="flex flex-col gap-2">
@@ -223,7 +233,7 @@ export const Reviews = () => {
       {vendor?.reviews.map((val, index) => (
         <React.Fragment key={index}>
           <hr className="border-bodydark2 mx-10 my-6" />
-          <div className="flex flex-col md:flex-row gap-8 m-10">
+          <div className="flex flex-col md:flex-row gap-8 m-10 ">
             <div className="md:w-1/2">
               <div className="mb-4 gap-1">
                 <Rating

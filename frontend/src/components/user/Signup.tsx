@@ -10,11 +10,11 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import UserRootState from "../../redux/rootstate/UserState";
-import { axiosInstance } from "../../api/axiosinstance";
+import UserRootState from "../../Redux/rootstate/UserState";
+import { axiosInstance } from "../../Api/axiosinstance";
 import { toast } from "react-toastify";
-import { validate } from "../../validations/user/userRegisterVal";
-import LoadingSpinner from "../LoadingSpinner";
+import { validate } from "../../Validations/user/userRegisterVal";
+import LoadingSpinner from "../common/LoadingSpinner";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 
 const clientId = import.meta.env.VITE_CLIENT_ID || "";

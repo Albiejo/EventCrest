@@ -1,6 +1,6 @@
-import DefaultLayout from '../../../layout/DefaultLayout'
-import Breadcrumb from '../../../components/vendor/Breadcrumbs/Breadcrumb';
-import BookingTable from '../../../components/vendor/Tables/BookingTable';
+import DefaultLayout from '../../../Layout/DefaultLayout'
+import Breadcrumb from '../../../Components/vendor/Breadcrumbs/Breadcrumb';
+import BookingTable from '../../../Components/vendor/Tables/BookingTable';
 
 const BookingHistory = () => {
   return (

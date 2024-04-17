@@ -7,8 +7,8 @@ import '../../public/css/vendor-unauth.css'
 import '../../public/css/vendorAuth.css'
 import '../../public/css/admin.css'
 import { useSelector } from 'react-redux';
-import UserRootState from '../redux/rootstate/UserState';
-import VendorRootState from '../redux/rootstate/VendorState';
+import UserRootState from '../Redux/rootstate/UserState';
+import VendorRootState from '../Redux/rootstate/VendorState';
 
 
 

@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
-
+import mongoose, { Schema, Document, Types } from 'mongoose';
+import { Notification } from '../util/Interfaces';
 
 export interface User {
     email : string;
@@ -10,7 +10,9 @@ export interface User {
     favorite:Array<string>;
     image:string;
     imageUrl:string;
-    refreshToken:string
+    refreshToken:string;
+    notifications:Array<Notification>;
+    
     
 }
 
@@ -25,7 +27,13 @@ const UserSchema: Schema = new Schema({
     favorite:{type:Array},
     image:{type:String},
     imageUrl:{type:String},
-    refreshToken: { type: String }
+    refreshToken: { type: String },
+    notifications:[{
+        _id: { type: Schema.Types.ObjectId, default: Types.ObjectId },
+        message: String,
+        timestamp: { type: Date, default: Date.now  },
+        Read: { type: Boolean, default: false }
+    }]
 
 });
 

@@ -1,33 +1,29 @@
 // App.tsx
 
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import Layout from './components/Layout';
+import { Outlet    } from 'react-router-dom';
+import Layout from './Components/Layout';
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import MyNavbar from './components/user/Navbar';
-
+import MyNavbar from './Components/user/Navbar';
 
 
 
 const App: React.FC = () => {
   const role = 'user'; 
-  const { pathname } = useLocation();
 
   return (
     
     <>
-
+    
       <Layout role={role}>
         <ToastContainer/>
-    {!(pathname == '/login' || pathname == '/signup' || pathname=='/forgot-password' || pathname=='/reset-password' || pathname=='/verify') && (
-        
-        <div className="container fixed left-2/4 z-10  mx-auto -translate-x-2/4 pt-4">
+        <div className='pb-20'>
           <MyNavbar />
         </div>
-      )}
-        <Outlet />
+        <Outlet/>
       </Layout>
+     
     </>
   );
 };

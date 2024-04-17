@@ -12,12 +12,12 @@ import {
   FavoriteVendor,
   checkCurrentPassword,
   UpdatePasswordService,
-  UpdateUserProfile,FavoriteVendors
+  UpdateUserProfile,FavoriteVendors,createRefreshToken,findUser,updateNotification
 } from "../Service/userService";
 
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
-import user from "../Model/user";
+import user from "../Model/User";
 import Jwt from "jsonwebtoken";
 import { json } from "body-parser";
 import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
@@ -28,6 +28,7 @@ import dotenv from 'dotenv';
 import { UserSession } from "../util/Interfaces";
 import { OTP } from "../util/Interfaces";
 import { DecodedData } from "../util/Interfaces";
+import { Data } from "emoji-mart";
 dotenv.config();
 
 
@@ -127,7 +128,7 @@ export const UserController = {
           .status(500)
           .json({
             message: `The ${duplicateField} '${duplicateValue}' is already in use.`,
-          });
+        });
       } else if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
       } else {
@@ -142,10 +143,9 @@ export const UserController = {
   async UserLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-      const { token, userData, message } = await login(email, password);
-     
+      const {refreshToken,  token, userData, message } = await login(email, password);
       res.cookie("jwtToken", token, { httpOnly: true });
-      res.status(200).json({ token, userData, message });
+      res.status(200).json({ token, userData, message , refreshToken });
     } catch (error) {
       if (error instanceof CustomError) {
         res.status(error.statusCode).json({ message: error.message });
@@ -157,6 +157,19 @@ export const UserController = {
   },
 
 
+  async getUser(req: Request, res: Response): Promise<void>{
+    try {
+      
+      const userId:string = req.query.userId as string;
+
+      const data = await findUser(userId);
+      res.status(200).json(data);
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  },
 
 
   async UserLogout(req: Request, res: Response): Promise<void> {
@@ -168,6 +181,24 @@ export const UserController = {
       res.status(500).json({ message: "Server Error" });
     }
   },
+
+
+
+  async createRefreshToken(req: Request, res: Response):Promise<void>{
+    try {
+     
+      const { refreshToken } = req.body;
+      
+      const token = await createRefreshToken(refreshToken);
+    
+      res.status(200).json({ token });
+
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Failed to refresh token' });
+    }
+  },
+
 
 
 
@@ -197,11 +228,6 @@ export const UserController = {
 
       await toggleUserBlock(userId);
       const User = await user.findById(userId);
-
-      if (!User || !User.isActive) {
-        res.clearCookie("jwtToken");
-        localStorage.removeItem("jwtToken");
-      }
 
       res.status(200).json({ message: "User block status updated." });
     } catch (error) {
@@ -392,6 +418,7 @@ export const UserController = {
 
   async AddFavVendor(req: Request, res: Response): Promise<void> {
     try {
+
       const vendorId: string = req.query.vendorId as string;
       const userId: string = req.query.userId as string;
 
@@ -399,18 +426,15 @@ export const UserController = {
         res.status(400).json({ error: "Invalid vendor id." });
       }
       if (!userId) {
-        res.status(400).json({ error: "Invalid user id." });
+        res.status(400).json({ message: "Invalid user id." });
       }
-      console.log("Userid: " + userId);
-      console.log("vendorId: ", vendorId);
+    
       
       const data = await FavoriteVendor(vendorId, userId);
 
-      if (data) {
-        res.status(200).json({ message: "vendor added to Favorite list.." });
-      } else {
-        res.status(400).json({ message: "vendor already present in favorites." });
-      }
+     
+        res.status(200).json({ data: data});
+      
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
@@ -420,13 +444,17 @@ export const UserController = {
   async getFavoriteVendors(req: Request, res: Response): Promise<void>{
     try {
       const userId: string = req.query.userid as string;
+      const page: number = parseInt(req.query.page as string) || 1; 
+      const pageSize: number = parseInt(req.query.pageSize as string) || 8;
 
       if (!userId) {
         res.status(400).json({ error: "Invalid user id." });
       }
-      const result = await FavoriteVendors( userId);
-      if (result) {
-        res.status(200).json({ data:result});
+      const {favoriteVendors , totalFavVendorsCount} = await FavoriteVendors( userId , page, pageSize);
+      const totalPages = Math.ceil(totalFavVendorsCount / pageSize);
+
+      if (favoriteVendors) {
+        res.status(200).json({ data:favoriteVendors ,totalPages:totalPages });
       } else {
         res.status(400).json({ message: "No vendors in favorites." });
       }
@@ -442,7 +470,6 @@ export const UserController = {
     try {
 
       const currentPassword = req.body.current_password;
-      console.log("cpassword in controller " + currentPassword)
       const newPassword = req.body.new_password;
 
       const userId: string = req.query.userid as string;
@@ -524,6 +551,19 @@ export const UserController = {
   }
   },
 
-   
+  async MarkRead(req: Request, res: Response): Promise<void> {
+    try {
+      
+      const userId:string  = req.query.userId as string;
+      const notifiID:string = req.query.notifiId as string;
+      const data  = await updateNotification(userId ,notifiID );
+      if(data){
+        res.status(200).json({data:data});
+      }
+    } catch (error) {
+      res.status(500).json({message: "server error"});
+    }
+
+  },
 }
 

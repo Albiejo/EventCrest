@@ -1,6 +1,6 @@
-import User, { UserDocument } from "../Model/user";
+import User, { UserDocument } from "../Model/User";
 import { Document } from "mongoose";
-import vendor from "../Model/vendor";
+import vendor from "../Model/Vendor";
 import mongoose from 'mongoose';
 
 
@@ -182,8 +182,10 @@ export const UpdateUserProfileDetails = async(userId:string , name:string , phon
 }
 
 
-export const getfavVendors=async( userid:string)=>{
+export const getfavVendors=async( userid:string , page: number, pageSize: number)=>{
 try {
+
+  const skip = (page - 1) * pageSize;
   const userData = await User.findById(userid);
   if (!userData) {
     throw new Error('User not found');
@@ -195,11 +197,36 @@ try {
     throw new Error('No favorite vendors found for this user');
   }
 
-  const favoriteVendors = await vendor.find({ _id: { $in: favoriteVendorIds } });
+  const favoriteVendors = await vendor.find({ _id: { $in: favoriteVendorIds } }).skip(skip).limit(pageSize)
 
-  return favoriteVendors;
+  return {favoriteVendors:favoriteVendors , totalFavVendorsCount:favoriteVendors.length};
   
 } catch (error) {
  throw error; 
 }
+}
+
+
+
+export const updateNotificationstatus=async(userid:string , notifiID:string)=>{
+  try {
+    let userdata = await User.findById(userid);
+    if (!userdata) {
+      throw new Error('User not found');
+    }
+
+    const notification = userdata.notifications.find((notif) => notif._id.toString() === notifiID);
+    if (!notification) {
+      throw new Error('Notification not found');
+    }
+
+    notification.Read = !notification.Read;
+    await userdata.save();
+    console.log("N status updated ", notification.Read)
+    const message = notification.Read ? 'Notification marked as read' : 'Notification marked as unread';
+    userdata = await User.findById(userid);
+    return {message: message, userdata:userdata};
+  } catch (error) {
+    throw error;
+  }
 }

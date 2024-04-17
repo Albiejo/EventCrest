@@ -10,10 +10,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import VendorRootState from "../../../redux/rootstate/VendorState";
-import { axiosInstanceVendor } from "../../../api/axiosinstance";
-import DefaultLayout from "../../../layout/DefaultLayout";
-import Breadcrumb from "../../../components/vendor/Breadcrumbs/Breadcrumb";
+import VendorRootState from "../../../Redux/rootstate/VendorState";
+import { axiosInstanceVendor } from "../../../Api/axiosinstance";
+import DefaultLayout from "../../../Layout/DefaultLayout";
+import Breadcrumb from "../../../Components/vendor/Breadcrumbs/Breadcrumb";
   
   const CreatePost = () => {
     const vendor = useSelector(

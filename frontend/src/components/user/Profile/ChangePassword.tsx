@@ -5,12 +5,12 @@ import {
     Button,
     Typography,
   } from "@material-tailwind/react";
-  import { axiosInstance } from "../../../api/axiosinstance";
+  import { axiosInstance } from "../../../Api/axiosinstance";
   import { toast } from "react-toastify";
   import { useNavigate } from "react-router-dom";
-  import { validate } from "../../../validations/changePwdValidation";
+  import { validate } from "../../../Validations/changePwdValidation";
   import { useSelector } from "react-redux";
-  import UserRootState from "../../../redux/rootstate/UserState";
+  import UserRootState from "../../../Redux/rootstate/UserState";
   import { useState } from "react";
   
   interface FormValues {
@@ -72,7 +72,7 @@ import {
   
     return (
       <Card
-        className="w-96 mx-auto m-auto mt-10 border border-black "
+        className="w-96  m-auto mt-20  border-4 border-gray-600"
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}

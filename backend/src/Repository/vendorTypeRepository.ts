@@ -1,6 +1,6 @@
-import { VendorDocument } from "../Model/vendor";
-import vendorType from "../Model/vendorType";
-import VendorType , {VendorTypeDocument} from "../Model/vendorType";
+import { VendorDocument } from "../Model/Vendor";
+import vendorType from "../Model/VendorType";
+import VendorType , {VendorTypeDocument} from "../Model/VendorType";
 
 export const createVendorType = async (vendorData : Partial<VendorTypeDocument>): Promise<VendorTypeDocument> => {
     try {

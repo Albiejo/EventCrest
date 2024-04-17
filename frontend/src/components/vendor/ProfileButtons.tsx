@@ -1,34 +1,57 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import {
   Button,
   Dialog,
   DialogHeader,
   DialogBody,
+  DialogFooter,
   IconButton,
   Typography,
 } from '@material-tailwind/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Link} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
+import { axiosInstanceChat } from '../../Api/axiosinstance';
+
 
 interface ProfileButtonsProps {
   vendorId: string | undefined; 
   bookedDates:Array<string> | undefined;
+  userId:string | undefined; 
 }
 
-const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates }) => {
+
+
+
+
+const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates,userId }) => {
+
+  console.log(bookedDates)
   const [open, setOpen] = useState(false);
-
-
   const handleOpen = () => setOpen((cur) => !cur);
+  const navigate = useNavigate();
+
+
+  const handleChat =async()=>{
+    const body ={
+      senderId :userId,
+      receiverId:vendorId
+    }
+    try {
+      await axiosInstanceChat.post('/' , body).then((res)=>{
+        navigate('/chat')
+      })
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   return (
     <>
-      <div className="flex md:flex-row flex-col justify-start py-4 pt-8 lg:pt-4 ">
+      <div className="flex md:flex-row flex-col justify-start py-4 pt-8 lg:pt-4 bg-gray-600 rounded-lg mt-2">
       <div className="mr-1 p-3 text-center">
           <Button
-            className="w-fit"
-          
+            className="w-fit bg-white text-black"
             onClick={handleOpen}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
@@ -57,13 +80,17 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates })
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
+            onClick={handleChat}
           >
             Chat with us
           </Button>
         </div>
       </div>
+
+
+      
       <Dialog
-        size="xs"
+        size="sm"
         open={open}
         handler={handleOpen}
         placeholder={undefined}
@@ -76,7 +103,7 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates })
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
         >
-          <div>
+          <div >
             <Typography
               variant="h5"
               color="blue-gray"
@@ -87,10 +114,11 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates })
               Available Dates
             </Typography>
             
-          </div>
+            </div>
+
           <IconButton
-            color="blue-gray"
-            size="sm"
+            color="black"
+            size="lg"
             variant="text"
             onClick={handleOpen}
             placeholder={undefined}
@@ -113,8 +141,10 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates })
             </svg>
           </IconButton>
         </DialogHeader>
+
+
         <DialogBody
-          className="flex justify-center !px-5"
+          className="flex justify-center mb-10"
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}
@@ -125,11 +155,27 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates })
             inline
             minDate={new Date()}
             excludeDates={bookedDates?.map(date => new Date(date))}
-            dayClassName={(date) => {const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-              return bookedDates?.includes(utcDate.toISOString().split('T')[0]) ? 'bg-red-500' : 'bg-green-500';}}
+            dayClassName={(date) => {
+              const currentDate = new Date();
+              const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
+              const isPastDate = date < currentDate;              
+              if (isPastDate) {
+                return 'text-gray-400'; 
+              } else if (bookedDates?.includes(formattedDate)) {
+                return 'bg-red-500'; 
+              } else {
+                return 'bg-green-500';
+              }
+            }}
           />
+
         </DialogBody>
+     <DialogFooter  placeholder={undefined} className='flex justify-between'>
+      <Button className='rouded-lg bg-red-500 w-auto h-auto text-black font-bold' placeholder={undefined}>Booked</Button>
+      <Button className='rouded-lg bg-green-600 w-auto h-auto text-black font-bold'  placeholder={undefined}>available</Button>
+     </DialogFooter>
       </Dialog>
+     
     </>
   );
 };

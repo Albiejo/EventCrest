@@ -1,16 +1,13 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Types } from 'mongoose';
+import { Notification } from '../util/Interfaces';
+import { Review } from '../util/Interfaces';
 
 
-
-export interface Review {
-    _id: mongoose.Types.ObjectId;
-    username: string;
-    rating: number;
-    content: string;
-    date:Date;
-    reply:Array<string>
-}
-
+interface Lock {
+    date: string;
+    isLocked: boolean;
+    // lockExpiresAt?: Date;
+  }
 
 
 
@@ -31,7 +28,12 @@ export interface Vendor {
     isActive:boolean;
     coverpicUrl:string;
     logoUrl:string;
-    bookedDates:Array<string>
+    bookedDates:Array<string>;
+    refreshToken:string;
+    notifications:Array<Notification>;
+    OverallRating:Number;
+    locks: Lock[];
+
 }
 
 export interface VendorDocument extends Vendor, Document {}
@@ -53,7 +55,25 @@ const VendorSchema: Schema = new Schema({
     isActive:{type:Boolean},
     coverpicUrl:{type:String},
     logoUrl:{type:String},
-    bookedDates:{type:Array<String>}
+    bookedDates:{type:Array<String>},
+    refreshToken:{type:String},
+    notifications:[{
+        _id: { type: Schema.Types.ObjectId, default: Types.ObjectId },
+        message: String,
+        timestamp: { type: Date, default: Date.now },
+        Read:{type:Boolean, default: false}
+    }],
+    OverallRating:{ type: Number, default: 0 },
+    locks: [{
+        date: {
+          type: String,
+          required: true
+        },
+        isLocked: {
+          type: Boolean,
+          default: false
+        }
+      }]
 
 });
 

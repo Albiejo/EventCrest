@@ -1,13 +1,13 @@
-
+ 
 import { Card, CardBody, Typography } from '@material-tailwind/react';
-import VendorFilters from '../components/Home/VendorFilter';
-import VendorSort from '../components/Home/VendorSort';
-import Footer from '../components/Home/Footer';
+import VendorFilters from '../Components/home/VendorFilter';
+import VendorSort from '../Components/home/VendorSort';
+import Footer from '../Components/home/Footer';
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { axiosInstance } from '../api/axiosinstance';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { axiosInstance } from '../Api/axiosinstance';
+import LoadingSpinner from '../Components/common/LoadingSpinner';
 //lazy loading here for vendor listing
-const VendorCard = lazy(() => import('../components/Home/VendorListingCard'));
+const VendorCard = lazy(() => import('../Components/home/VendorListingCard'));
 
 
 interface Vendors {
@@ -23,19 +23,31 @@ interface Vendors {
 
 
 const VendorsListing = () => {
+  
   const [vendors,setVendors]=useState<Vendors[]>([])
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
-  useEffect(()=>{
-      axiosInstance
-    .get('/getvendors',{withCredentials:true})
-    .then((response) => {
-      console.log("vendor data",response.data)
-      setVendors(response.data);
-    })
-    .catch((error) => {
-      console.error("Error fetching users:", error);
-    });
-  },[])
+  useEffect(() => {
+    fetchVendors(currentPage);
+  }, [currentPage]);
+
+
+  const fetchVendors = async (page: number) => {
+    try {
+      const response = await axiosInstance.get(`/getvendors?page=${page}`, { withCredentials: true });
+      setVendors(response.data.vendors);
+      const totalPagesFromResponse =response.data.totalPages
+      setTotalPages(totalPagesFromResponse);
+    } catch (error) {
+      console.error("Error fetching vendors:", error);
+    }
+  }
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   
   return (
 
@@ -43,9 +55,9 @@ const VendorsListing = () => {
 <div className="relative min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('/imgs/church.jpg')" }}>
   <div className="absolute inset-0 " />
   <div className="max-w-md mx-auto">
-    <Card className="mt-6 bg-gray-200" placeholder={undefined}>
+    <Card className="mt-6 bg-gray-300" placeholder={undefined}>
       <CardBody  placeholder={undefined}>
-        <Typography variant="h5" color="blue-gray" className="mb-2"  placeholder={undefined}>
+        <Typography variant="h5" color="black" className="mb-2"  placeholder={undefined}>
           Find Vendors
         </Typography>
         <Typography  placeholder={undefined}>
@@ -81,6 +93,42 @@ const VendorsListing = () => {
           </Suspense>
       </div>
       </div>
+
+
+      {vendors.length > 0 && (
+  <div className="flex justify-center mt-8">
+    <div className="space-x-2">
+      {currentPage > 1 && (
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          className="px-4 py-2 rounded-md bg-blue-900 text-gray-700"
+        >
+          Previous
+        </button>
+      )}
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <button
+          key={page}
+          onClick={() => handlePageChange(page)}
+          className={`px-4 py-2 rounded-md ${page === currentPage ? 'bg-blue-900 text-white' : 'bg-gray-300 text-gray-700'}`}
+        >
+          {page}
+        </button>
+      ))}
+      {currentPage < totalPages && (
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          className="px-4 py-2 rounded-md bg-blue-900 text-gray-700"
+        >
+          Next
+        </button>
+      )}
+    </div>
+  </div>
+)}
+
+
+        
 </section>
 
 

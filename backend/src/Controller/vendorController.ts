@@ -1,6 +1,7 @@
 import { Request , Response } from "express";
 import { signup , login , CheckExistingVendor , getVendors , toggleVendorBlock , getSingleVendor , ResetVendorPasswordService ,
-  PushFavoriteVendor,checkVendorCurrentPassword ,UpdateVendorPasswordService , updateVendorprof , addReviewReplyController} from "../Service/vendorService";
+  PushVendorReview,checkVendorCurrentPassword,changeVerifyStatus ,UpdateVendorPasswordService , updateVendorprof ,verificationRequest , addReviewReplyController ,
+  createRefreshToken } from "../Service/vendorService";
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
 import { ObjectId } from "mongoose";
@@ -37,6 +38,7 @@ export const VendorController = {
 
 
   async vendorSignup(req: Request, res: Response): Promise<void> {
+
     try {
       const { email , password , name , phone , city,vendor_type } = req.body;
 
@@ -74,14 +76,27 @@ export const VendorController = {
   },
 
 
+  async createRefreshToken(req: Request, res: Response):Promise<void>{
+    try {
+     
+      const { refreshToken } = req.body;
 
+      const token = await createRefreshToken(refreshToken);
+      
+      res.status(200).json({ token });
+
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      res.status(401).json({ message: 'Failed to refresh token' });
+    }
+  },
 
       async VendorLogin(req:Request , res: Response): Promise <void> {
         try {
             const {email,password} = req.body;
-            const { token, vendorData, message } = await login(email, password);
+            const {refreshToken, token, vendorData, message } = await login(email, password);
             res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-            res.status(200).json({token, vendorData, message });
+            res.status(200).json({refreshToken , token, vendorData, message });
         } catch (error) {
           if (error instanceof CustomError) {
             res.status(error.statusCode).json({ message: error.message });
@@ -110,8 +125,6 @@ export const VendorController = {
 
           const otp = req.body.otp;
           const vendorData:vendorSession | undefined = req.session.vendor;
-
-          console.log("session stored vendordata from verify is:", vendorData)
 
           if(!vendorData){
             res.status(400).json({ error: "Session data not found. Please sign up again." });
@@ -195,8 +208,14 @@ export const VendorController = {
 
       async getAllVendors(req: Request, res: Response): Promise<void>{
         try{
-          const vendors = await getVendors();
-          res.status(200).json(vendors);
+          const page: number = parseInt(req.query.page as string) || 1; // Default to page 1 if not provided
+          const pageSize: number = parseInt(req.query.pageSize as string) || 8; // Default page size
+
+          const { vendors, totalVendorsCount } = await getVendors(page, pageSize);
+          const totalPages = Math.ceil(totalVendorsCount / pageSize);
+  
+         
+          res.status(200).json({ vendors:vendors, totalPages:totalPages });
         }catch(error){
           console.log(error);
           res.status(500).json({ message: "server error..." });
@@ -221,7 +240,7 @@ export const VendorController = {
 
       async getVendor(req:Request , res: Response):Promise<void>{
         try {
-          const vendorId: string = req.query.Id as string; // or req.query.Id?.toString()
+          const vendorId: string = req.query.Id as string; 
     
           if (!vendorId) {
             res.status(400).json({ error: "Vendor ID is required." });
@@ -273,7 +292,7 @@ export const VendorController = {
           if(username===undefined){
             username="GuestUser"
           }
-          const status = await PushFavoriteVendor(content,rating,username,vendorid);
+          const status = await PushVendorReview(content,rating,username,vendorid);
           if(!status){
             res.status(400).json({error:`couldn't add reviews, some error occured`})
           }
@@ -458,7 +477,39 @@ export const VendorController = {
     }
     
   },
+
+
+  async sendVerifyRequest(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string=req.body.vendorId as string;
+      const result=await verificationRequest(vendorId);
+      res.status(200).json(result)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
+  },
     
+
+  async updateVerifyStatus(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string=req.body.vendorId as string;
+      const status=req.body.status;
+      const result=await changeVerifyStatus(vendorId,status)
+      res.status(200).json({result,message:"Status updated successfully!"})
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+      }
+    }
+  },
   
 }
 

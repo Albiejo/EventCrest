@@ -2,7 +2,7 @@ import {
   Button
 } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import { axiosInstanceAdmin } from "../../../api/axiosinstance";
+import { axiosInstanceAdmin } from "../../../Api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import EditTypeModal from "./EditTypeModal";
 import DeleteTypeModal from "./DeleteTypeModal";

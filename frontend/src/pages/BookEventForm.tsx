@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Input, Typography } from '@material-tailwind/react';
-import Footer from '../components/Home/Footer';
+import Footer from '../Components/home/Footer';
 import 'react-datepicker/dist/react-datepicker.css';
-import { validate} from '../validations/BookingValidation';
-import { axiosInstance } from '../api/axiosinstance';
+import { validate} from '../Validations/bookingValidation';
+import { axiosInstance } from '../Api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import UserRootState from '../redux/rootstate/UserState';
+import UserRootState from '../Redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
 
 
@@ -62,16 +62,28 @@ const BookEventForm: React.FC = () => {
     const errors = validate(formValues);
     setFormErrors(errors)
     if (Object.values(errors).every((error) => error === "")) {
-      console.log(formValues);
       axiosInstance
         .post(`/bookevent?vendorId=${id}&userId=${user?._id}`, formValues, { withCredentials: true })
         .then((response) =>{
-          console.log(response);
-          toast.success(response.data.message);
-          navigate("/profile/booking-details")
+        
+          if (response.status === 201) {
+            toast.success(response.data.message);
+            navigate("/profile/Bookings");
+          } else if (response.status === 400) {
+            toast.error(response.data.message);
+          } else {
+            toast.error("An error occurred while processing your Booking , try again later");
+          }
         })
         .catch((error) => {
-          console.log("here", error);
+          if (error.response.status === 400) {
+            toast.error(error.response.data.message);
+            console.log("error",error.response.data.message)
+          }
+          else{
+            console.error("Error:", error);
+            toast.error("An error occurred while processing your request");
+          }
         });
     }
   };
@@ -81,10 +93,10 @@ const BookEventForm: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="flex justify-center items-center min-h-screen bg-gray-100 ">
         <div className="bg-white shadow-md rounded px-6 pt-8 pb-8 w-full max-w-3xl mt-30 mb-30">
           <div className="grid grid-cols-2 gap-4 w-full">
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center  border-2 border-blue-600">
 
               <Typography
                 variant="h5"

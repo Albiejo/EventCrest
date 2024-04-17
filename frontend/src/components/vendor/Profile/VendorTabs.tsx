@@ -42,10 +42,10 @@ export default function VendorTabs({ reviews }) {
     <Tabs
       value={activeTab}
       onChange={handleTabChange}
-      className="ml-20 mr-20 mb-20"
+      className="ml-20 mr-20 mb-20 z-0"
     >
 
-      <TabsHeader placeholder={undefined}>
+      <TabsHeader placeholder={undefined} style={{background:'gray'}} className="z-0">
         {data.map(({ label, value }) => (
           <Tab key={value} value={value} placeholder={undefined}>
             {label}
@@ -61,13 +61,26 @@ export default function VendorTabs({ reviews }) {
             
             {value === "images" && <VendorPosts />}
             
-            {value === 'reviews' && ( 
-            <div className="grid grid-cols-1 gap-4 ">
-                {reviews?.map((review, index) => (
-                  <ReviewCard key={index} {...review} />
-                ))}
+          
+
+{value === 'reviews' && ( 
+  <div className="grid grid-cols-1 gap-4 ">
+    {reviews?.map((review, index) => (
+      <div key={index} className="border-4 border-gray-600 bg-gray-300  rounded-md p-4">
+        <ReviewCard {...review} />
+        {review.reply && review.reply.length > 0 && (
+          <div className="ml-8">
+            {review.reply.map((reply, replyIndex) => (
+              <div key={replyIndex} className="bg-gray-300 p-2 rounded-md mb-2">
+                <p style={{color:'black'}}> replied : {reply}</p>
               </div>
-            )}
+            ))}
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+)}
 
             <div className="flex justify-center">
               <Button

@@ -1,4 +1,5 @@
-import Vendor , {VendorDocument , Review} from "../Model/vendor";
+import Vendor , {VendorDocument } from "../Model/Vendor";
+import { Review } from "../util/Interfaces";
 import { CustomError } from "../Error/CustomError";
 import mongoose from "mongoose";
 
@@ -21,14 +22,25 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
 
 
 
-export const findAllVendors = async (): Promise<VendorDocument[] | null> => {
+export const findAllVendors = async (page: number, pageSize: number): Promise<VendorDocument[] | null> => {
   try {
-    return await Vendor.find({}).exec();
+    const skip = (page - 1) * pageSize;
+    const sortBy = 'overallRating'; // Define sortBy variable
+    const sortOrder = 'desc'; // Define sortOrder variable
+    return await Vendor.find({}).skip(skip).limit(pageSize).exec();
   } catch (error) {
     throw error;
   }
 };
 
+
+export const getTotalVendorsCount = async (): Promise<number> => {
+  try {
+    return await Vendor.countDocuments({});
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const UpdateVendorPassword = async(password:string , mail:string) =>{
   try {
@@ -46,24 +58,44 @@ export const UpdateVendorPassword = async(password:string , mail:string) =>{
 
 export const AddVendorReview = async(content: string, rating: number, username: string, vendorId: string)=>{
  try {
-    const vendorData = await Vendor.findById(vendorId);
+
+      const vendorData = await Vendor.findById(vendorId);
       if (!vendorData) {
         throw new Error('Vendor not found');
       }
     const reviewId = new mongoose.Types.ObjectId();
+
     vendorData.reviews.push({
       _id: reviewId,
       content,rating,username,
       date: new Date(),
       reply:[]
     });
+    
+    vendorData.notifications.push({
+      _id: new mongoose.Types.ObjectId(),
+      message:`${username} added a review to your profile.`,
+      timestamp: new Date() ,
+      Read:false
+    })
+    const ratings = vendorData.reviews.map((review) => review.rating)
 
+    vendorData.OverallRating = calculateOverallRating(ratings);
+    console.log(vendorData.OverallRating)
     await vendorData.save();
+
     return true;
+
  } catch (error) {
    throw error;
  }
 }
+
+const calculateOverallRating = (ratings: any[]) => {
+  const totalRating = ratings.reduce((acc, rating) => acc + rating, 0);
+  return ratings.length > 0 ? totalRating / ratings.length : 0;
+};
+
 
 export const findVerndorId= async(vendorid:string):Promise<VendorDocument | null>=>{
   try {
@@ -126,5 +158,26 @@ export const addReviewReplyById = async(vendorId: string, content: string, revie
    return newvendordata;
   } catch (error) {
     throw new Error('Failed to add reply');
+  }
+}
+
+
+export async function requestForVerification(vendorId:string){
+  try {
+    const data=await Vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:true}})
+    return data;
+  } catch (error) {
+    
+  }
+}
+
+
+
+export async function updateVerificationStatus(vendorId:string,status:string){
+  try {
+    const data=await Vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:false,isVerified: status === "Accepted"}})
+    return data;
+  } catch (error) {
+    
   }
 }

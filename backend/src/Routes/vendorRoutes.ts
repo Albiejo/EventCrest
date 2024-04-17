@@ -1,10 +1,10 @@
 import express from 'express';
 import { VendorController } from '../Controller/vendorController';
 import { VendorTypeController } from '../Controller/vendorTypeController';  
-import { PostController } from '../Controller/PostController';
+import { PostController } from '../Controller/postController';
 import multer from 'multer';
-import { BookingController } from '../Controller/BookingController';
-
+import { BookingController } from '../Controller/bookingController';
+import authenticate from '../Middleware/vendorAuth';
 
 
 const router = express.Router();
@@ -24,7 +24,7 @@ router.post('/verifyotp' ,VendorController.verifyOtp)
 router.post('/login' , VendorController.VendorLogin)
 router.get('/logout' , VendorController.VendorLogout)
 router.get('/resendOtp' , VendorController.resendOtp)
-
+router.post('/refresh-token' , VendorController.createRefreshToken)
 
 router.get('/vendor-types' , VendorTypeController.getVendorTypes);
 router.post('/vgetotp' , VendorController.VendorForgotPassword);
@@ -33,20 +33,24 @@ router.post('/verifyVendorotp' , VendorController.VerifyOtpForPassword);
 router.post('/resetVendorPassword' , VendorController.ResetVendorPassword);
 
 
-router.get('/getvendors' ,VendorController.getAllVendors );
+router.get('/getvendors',VendorController.getAllVendors );
 router.get('/getVendor', VendorController.getVendor)
-router.patch('/updateProfilePassword' , VendorController.UpdateProfilePassword);
+router.patch('/updateProfilePassword' ,authenticate , VendorController.UpdateProfilePassword);
 
-router.post('/add-post' ,upload.single('image') ,PostController.addNewPost);
+router.post('/add-post' ,upload.single('image'),authenticate ,PostController.addNewPost);
 router.get('/posts',PostController.getPosts);
-router.delete('/posts/:id',PostController.deletePost);
+router.delete('/posts/:id',authenticate,PostController.deletePost);
 
-router.put('/updateProfile',upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]) ,VendorController.updateProfiledetails );                                                                                                                                                                                                                                                  
+router.put('/updateProfile',authenticate ,upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]) ,VendorController.updateProfiledetails );                                                                                                                                                                                                                                                  
 
 
-router.put('/add-review-reply',VendorController.addReviewReply)
+router.put('/add-review-reply',authenticate ,VendorController.addReviewReply)
 
-router.get('/booking-details',BookingController.getAllBookings);
 
+router.get('/booking-details',authenticate ,BookingController.getAllBookings);
+router.get('/single-booking-details',authenticate ,BookingController.getBookingsById);
+router.put('/update-booking-status',authenticate ,BookingController.updateStatus)
+
+router.post('/verification-request',authenticate ,VendorController.sendVerifyRequest)
 
 export default router;

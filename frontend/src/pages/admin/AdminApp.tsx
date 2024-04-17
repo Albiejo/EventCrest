@@ -1,13 +1,14 @@
 // AdminApp.tsx
 
 import { Outlet } from "react-router-dom";
-import AdminNavbar from '../../components/admin/Navbar';
-import Layout from "../../components/Layout";
-import Sidebar from "../../components/admin/Sidebar";
+import AdminNavbar from '../../Components/admin/Navbar';
+import Layout from "../../Components/Layout";
+import Sidebar from "../../Components/admin/Sidebar";
 import { useSelector } from 'react-redux';
-import AdminState  from '../../redux/rootstate/AdminState';
+import AdminState  from '../../Redux/rootstate/AdminState';
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+
 
 const AdminApp: React.FC = () => {
   const role = 'admin';
@@ -15,15 +16,16 @@ const AdminApp: React.FC = () => {
 
   return (
     <>
+    
       <Layout role={role}>
         <ToastContainer/>
-        {/* AdminNavbar and Sidebar will be fixed inside the Layout */}
         <AdminNavbar />
         {isAdminSignedIn && <Sidebar />}
-        <div style={{ marginLeft: isAdminSignedIn ? '250px' : '35%', transition: 'margin 0.3s',marginTop:'10%' }}>
+        <div style={{ marginLeft: isAdminSignedIn ? '7%' : '35%', transition: 'margin 0.3s' }}>
           <Outlet />
         </div>
       </Layout>
+      
     </>
   );
 };
