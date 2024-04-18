@@ -1,12 +1,11 @@
 import express from 'express';
 export const router = express.Router();
-import {createChat , findUserchats} from '../Controller/conversationController';
+import conversationController from '../Controller/conversationController';
 
 
 
-
-router.post('/', createChat);
-router.get('/', findUserchats);
+router.post('/', conversationController.createChat);
+router.get('/', conversationController.findUserchats);
 
 
 export default router;

@@ -99,30 +99,34 @@ export const findBookingsByVendorId = async (
     userId:string
   ) => {
     try {
+
       const result = await Booking.findByIdAndUpdate(bookingId,{$set:{status:status}});
 
 
       const vendordata = await vendor.findById(vid)
-      if (vendordata) {
-        if (!vendordata.totalBooking) {
-            vendordata.totalBooking = 1;
-        } else {
-            vendordata.totalBooking += 1; 
-        }
-     }
-      await vendordata?.save();
+      
+      if(status === 'Accepted'){
+        if (vendordata) {
+          if (!vendordata.totalBooking) {
+              vendordata.totalBooking = 1;
+          } else {
+              vendordata.totalBooking += 1; 
+          }
+       }
+        await vendordata?.save();
+      }
 
 
       const userData = await user.findById(userId);
       userData?.notifications.push({
         _id: new mongoose.Types.ObjectId(),
-        message:"Your Booking Status has been updated!",
+        message:`Your Booking Status with ${vendordata?.name} has been updated.`,
         timestamp: new Date(),
         Read:false
       })
       await userData?.save();
 
-      return result;
+      return {result , userData};
       
     } catch (error) {
       throw error;
@@ -130,7 +134,7 @@ export const findBookingsByVendorId = async (
   };
 
 
-  export const updatebookingCancel = async(bookingId:string):Promise<void>=>{
+  export const updatebookingCancel = async(bookingId:string , vendorId:string , date:string):Promise<void>=>{
     try {
       const bookingData = await Booking.findById(bookingId);
       if (!bookingData) {
@@ -138,8 +142,12 @@ export const findBookingsByVendorId = async (
       }
 
       bookingData.status = 'Cancelled'; 
-      bookingData.payment_status = 'Cancelled'; 
+      bookingData.payment_status = 'Cancelled';
       await bookingData.save();
+
+      await vendor.findByIdAndUpdate(vendorId, {
+        $pull: { bookedDates: date }
+      });
     } catch (error) {
       throw error;
     }

@@ -7,7 +7,8 @@ import {
   updateVendorType
 } from "../Service/vendorTypeService";
 
-export const VendorTypeController = {
+class VendorTypeController  {
+
   async addVendorType(req: Request, res: Response): Promise<void> {
     try {
       let { type, status } = req.body;
@@ -19,7 +20,7 @@ export const VendorTypeController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
   async getVendorTypes(req: Request, res: Response): Promise<void> {
     try {
@@ -29,7 +30,7 @@ export const VendorTypeController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
   async DeleteVendorType(req: Request, res: Response): Promise<void> {
     try {
@@ -49,7 +50,7 @@ export const VendorTypeController = {
       console.log(error);
       res.status(500).json({ message: "server error..." });
     }
-  },
+  }
 
   async getSingleVendor(req: Request, res: Response): Promise<void> {
     try {
@@ -68,7 +69,7 @@ export const VendorTypeController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
   async typeUpdate(req: Request, res: Response): Promise<void> {
     try {
@@ -88,5 +89,9 @@ export const VendorTypeController = {
       console.error(error);
       res.status(500).json({ message: 'Server Error' });
     }
-  },
+  }
+
 };
+
+
+export default new VendorTypeController();

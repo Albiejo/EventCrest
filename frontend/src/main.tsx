@@ -21,8 +21,7 @@ import Dashboard from './Pages/admin/Dahboard.tsx';
 import AdminLogin from './Components/admin/Login.tsx'
 import AdminPrivateRoute from './Components/admin/AdminPrivateRoute.tsx';
 import Wallet from './Pages/admin/Wallet.tsx';
-import AdminNotifications from './Pages/admin/AdminNotifications.tsx';
-
+import NotificationPage from './Pages/NotificationPage.tsx';
 //common routes
 import HomePage from './Pages/HomePage.tsx'
 import ForgotPassword from './Components/common/ForgotPassword.tsx';
@@ -90,7 +89,7 @@ const router = createBrowserRouter(
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/vendor" element={<VendorProfile />} />
             <Route path="/admin/wallet" element={<Wallet />} />
-            <Route path="/admin/notifications" element={<AdminNotifications />} />
+            <Route path="/admin/notifications" element={<NotificationPage />} />
        </Route>
     </Route>
   

@@ -6,7 +6,8 @@ import { CustomError } from "../Error/CustomError";
 
 
 
-export const AdminController = {
+class AdminController {
+  
   async Adminlogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
@@ -23,7 +24,7 @@ export const AdminController = {
         res.status(500).json({ message: 'Server Error' });
       }
     }
-  },
+  }
 
   async Adminlogout(req: Request, res: Response): Promise<void> {
     try {
@@ -33,7 +34,7 @@ export const AdminController = {
       console.log(error);
       res.status(500).json({ message: "server error..." });
     }
-  },
+  }
 
 
   async createRefreshToken(req: Request, res: Response):Promise<void>{
@@ -48,7 +49,7 @@ export const AdminController = {
       console.error('Error refreshing token:', error);
       res.status(401).json({ message: 'Failed to refresh token' });
     }
-  },
+  }
   
 
   async MarkasRead(req: Request, res: Response):Promise<void>{
@@ -66,7 +67,11 @@ export const AdminController = {
       res.status(500).json({ message: "server error..." });
     }
   }
+  
 };
+
+
+export default new AdminController();
 
 
 

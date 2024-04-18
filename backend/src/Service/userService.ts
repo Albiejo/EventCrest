@@ -12,7 +12,7 @@ import {
 
 
 import User, { UserDocument } from "../Model/User";
-import generateOtp from "../util/generateOtp";
+import generateOtp from '../util/generateOtp'
 import { CustomError } from "../Error/CustomError";
 import dotenv from 'dotenv';
 import vendor from "../Model/Vendor";
@@ -76,7 +76,7 @@ export const createRefreshToken = async (refreshToken:string)=>{
         throw new Error('Invalid refresh token');
       }
 
-    const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    const accessToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET!, { expiresIn: '24h' });
     
     return accessToken;
 
@@ -110,7 +110,7 @@ export const login = async (
       throw new CustomError("Incorrect password..", 401);
     }
     
-    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+    const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, { expiresIn: "24h"});
     
     let refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
     existingUser.refreshToken = refreshToken;
@@ -223,11 +223,20 @@ export const gLogin = async (email: string, password: string) => {
     }
 
     const token = jwt.sign({ _id: existingUser._id }, process.env.JWT_SECRET!, {
-      expiresIn: "1h",
+      expiresIn: "24h",
     });
+
+
+    let refreshToken = jwt.sign({ _id: existingUser._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+    existingUser.refreshToken = refreshToken;
+    
+    await existingUser.save();
+
+
     return {
       token: token,
       userData: existingUser,
+      refreshToken:refreshToken,
       message: "logged in successfully!",
     };
   } catch (error) {
@@ -260,24 +269,30 @@ export const FavoriteVendor = async(vendorId:string , userId:string)=>{
   try {
 
     const user = await User.findById(userId);
-  if (!user) {
-  throw new Error("User not found.");
-  }
+    if (!user) {
+    throw new Error("User not found.");
+    }
 
-  const vendorIndex = user.favorite.indexOf(vendorId);
-
+    const vendorIndex = user.favorite.indexOf(vendorId);
+    let vendordata;
+    
   if (vendorIndex === -1) {
-    user.favorite.push(vendorId);
-  //setting notifications for vendor 
-  const vendordata = await vendor.findById(vendorId)
+
+  user.favorite.push(vendorId);
+
+ 
+   vendordata = await vendor.findById(vendorId)
+   
   const data ={
     _id: new mongoose.Types.ObjectId(),
     message:`${user.name} like your profile`,
     timestamp: new Date() ,
     Read:false
   }
+
   vendordata?.notifications.push(data)
-//setting notifications for user
+  await vendordata?.save()
+
   user.notifications.push({
     _id: new mongoose.Types.ObjectId(),
     message:`You have favorited a profile. Congrats!`,
@@ -291,12 +306,11 @@ export const FavoriteVendor = async(vendorId:string , userId:string)=>{
   }
   await user.save();
 
-
-
   const isFavorite = user.favorite.indexOf(vendorId) === -1 ? false : true;
   return {
     userData: user,
-    isFavorite: isFavorite 
+    isFavorite: isFavorite ,
+    vendordata : vendordata
 };
     
 } catch (error) {

@@ -15,11 +15,13 @@ import Posts from "./Posts/Posts";
 import CreatePost from "./Posts/CreatePost";
 import BookingHistory from "./Booking/BookingHistory";
 import { Reviews } from "./Reviews";
-import Notifications from "./Notifications";
+import NotificationPage from "../NotificationPage";
 // import AddDates from "./Booking/Dates";
 import ViewBooking from "./Booking/ViewBooking";
 import Messenger from "./Messenger/Messenger";
 import NotFound from "../../Components/Error/NotFound";
+import VerifyEmail from "../../Components/common/VerifyEmail";
+
 
 const VendorApp = () => {
   const { pathname } = useLocation();
@@ -35,6 +37,7 @@ const VendorApp = () => {
       <Routes>
         <Route path="/vendor/signup" element={<VendorSignupForm />} />
         <Route path="/vendor/login" element={<VendorLoginForm />} />
+        <Route path="/vendor/verify" element={<VerifyEmail/>} />
 
         <Route path="" element={<VendorPrivateRoute />}>
           <Route
@@ -162,7 +165,7 @@ const VendorApp = () => {
             element={
               <>
                 <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <Notifications />
+                <NotificationPage />
               </>
             }
           />

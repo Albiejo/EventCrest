@@ -72,7 +72,7 @@ const VendorTypeList=()=> {
   
     return (
       <>
-        <div className="relative flex flex-col w-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border">
+        <div className="relative flex flex-col w-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border  border-4 border-black">
         <div className="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-white rounded-none bg-clip-border">
           <div className="flex flex-col px-10 justify-between gap-8 mb-4 md:flex-row md:items-center">
             <div>

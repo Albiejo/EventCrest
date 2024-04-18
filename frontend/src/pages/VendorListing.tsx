@@ -8,6 +8,12 @@ import { axiosInstance } from '../Api/axiosinstance';
 import LoadingSpinner from '../Components/common/LoadingSpinner';
 //lazy loading here for vendor listing
 const VendorCard = lazy(() => import('../Components/home/VendorListingCard'));
+import { useLocation } from 'react-router-dom';
+import debounce from 'lodash/debounce';
+
+
+
+
 
 
 interface Vendors {
@@ -19,6 +25,7 @@ interface Vendors {
   isActive: boolean;
   totalBooking:number;
   coverpicUrl:string;
+  OverallRating:number;
 }
 
 
@@ -27,15 +34,29 @@ const VendorsListing = () => {
   const [vendors,setVendors]=useState<Vendors[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-
+  const [sortBy, setSortBy] = useState<string | null>(null);
+  const [noResults, setNoResults] = useState(false);
+  const [search, setSearch] = useState<string>("");
+  const location = useLocation();
+  const [vendorTypeData, setVendorTypeData] = useState([]);
+  const [categoryData, setCategoryData] = useState("");
+  
   useEffect(() => {
-    fetchVendors(currentPage);
-  }, [currentPage]);
+    const queryParams = new URLSearchParams(location.search);
+    const searchParam = queryParams.get("search");
+    fetchVendors(currentPage,searchParam);
+    fetchVendorTypes();
+  }, [currentPage , search , location.search , sortBy ,categoryData]);
 
 
-  const fetchVendors = async (page: number) => {
+  const fetchVendors = async (page: number , searchParam?: string | null) => {
     try {
-      const response = await axiosInstance.get(`/getvendors?page=${page}`, { withCredentials: true });
+      const response = await axiosInstance.get(`/getvendors?page=${page}&search=${searchParam || search}&sortBy=${sortBy}&category=${categoryData}`, { withCredentials: true });
+      if (response.data.vendors.length === 0) {
+        setNoResults(true);
+      } else {
+        setNoResults(false);
+      }
       setVendors(response.data.vendors);
       const totalPagesFromResponse =response.data.totalPages
       setTotalPages(totalPagesFromResponse);
@@ -44,11 +65,47 @@ const VendorsListing = () => {
     }
   }
 
+
+
+ const fetchVendorTypes = async () => {
+  try {
+    const response = await axiosInstance.get('/getVendorTypes', { withCredentials: true });
+    setVendorTypeData(response.data);
+  } catch (error) {
+    console.error('Error fetching vendor types:', error);
+  }
+
+ }
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-  };
+};
 
+
+  const handleSearch=()=>{
+    debouncedFetchVendors(currentPage, search);
+}
   
+
+const handleSortChange = (value: string) => {
+  setSortBy(value);
+};
+
+
+
+// implemented debouncing
+const debouncedFetchVendors = debounce(fetchVendors, 300);
+
+const handleCategorySelection = async (categoryId:string) => {
+  if (categoryData.includes(categoryId)) {
+    setCategoryData(categoryData.filter(_id => _id !== categoryId));
+  } else {
+    setCategoryData([...categoryData, categoryId]);
+  }
+  setCategoryData(category);
+}
+
+
   return (
 
 <>
@@ -74,23 +131,37 @@ const VendorsListing = () => {
             <h3 className="text-lg font-semibold">Found {vendors.length} Vendors</h3>
           </div>
           <div className="flex items-center space-x-4">
-            <VendorSort />
+
+          <input
+          type="text"
+          name="search"
+          placeholder="Search vendors..."    
+          onChange={(e) =>setSearch(e.target.value)}  
+          onKeyUp={handleSearch}    
+          className="px-4 py-2 border border-gray-500 rounded-md focus:outline-none focus:ring focus:ring-blue-200"
+          />  
+            <VendorSort onChange={handleSortChange}/>
           </div>
         </div>
 
       <div className="flex flex-wrap justify-center md:justify-between ">
       <div className="w-full md:w-1/6 mb-6 md:mb-0 flex-shrink-0 ">
           <h3 className="mt-4 mb-2 text-lg font-semibold">Filter By</h3>
-          <VendorFilters />
+
+          <VendorFilters  vendorTypeData={vendorTypeData} onCategorySelect={handleCategorySelection}/>
       </div>
       <div className="flex flex-wrap justify-center md:justify-start w-full md:w-3/4 flex-grow">
-          <Suspense fallback={<LoadingSpinner/>}>
-            {vendors.map((vendor, index) => (
-              <div key={index} className="w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/4 p-4">
-                <VendorCard {...vendor} />
-              </div>
-            ))}
-          </Suspense>
+      {noResults ? (
+        <p className="text-center w-full text-red-500 font-bold">Sorry, no search results found.</p>
+      ) : (
+        <Suspense fallback={<LoadingSpinner/>}>
+          {vendors.map((vendor, index) => (
+            <div key={index} className="w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/4 p-4">
+              <VendorCard {...vendor} />
+            </div>
+          ))}
+        </Suspense>
+      )}
       </div>
       </div>
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useState } from 'react'
 import { Button, Card, Typography } from "@material-tailwind/react";
 import Pagination from './Pagination';
 import { axiosInstance } from '../../Api/axiosinstance';
@@ -6,11 +6,15 @@ import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 
-;
+
+// interface FullNotificationProps {
+//   notifications: any[]; 
+//   id: string | undefined; 
+// }
 
 
 
-  const FullNotification = ({ notifications , id}) => {
+  const FullNotification= ({ notifications , id}) => {
 
 
 
@@ -24,7 +28,6 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
     const sortedNotifications = notifications.slice().sort((a: { timestamp: string | number | Date; }, b: { timestamp: string | number | Date; }) => {
         const dateA = new Date(a.timestamp);
         const dateB = new Date(b.timestamp);
-      
         return dateB - dateA;
       });
 
@@ -66,26 +69,26 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 
 
     return (
-       <Card className="h-full overflow-scroll mr-36 border-4 border-gray-700 " placeholder={undefined}>
+       <Card className="h-full overflow-scroll mr-36  border-4 border-gray-700 " placeholder={undefined}>
          <table className="w-full min-w-max table-auto text-left">
            <thead>
            <tr>
-      <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
-          Message
-        </Typography>
-      </th>
-      <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
-          Time
-        </Typography>
-      </th>
-      <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
-          Action
-        </Typography>
-      </th>
-    </tr>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
+                Message
+              </Typography>
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
+                Time
+              </Typography>
+            </th>
+            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+              <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
+                Action
+              </Typography>
+            </th>
+          </tr>
            </thead>
            <tbody>
              {notifications.length > 0 ? (
@@ -93,13 +96,13 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
                 
                  <tr key={index} className="p-4 border-b border-blue-gray-50">
                    <td className="flex items-center  ">
-                    <Typography variant="large" color="blue-gray" className="font-normal flex-grow" placeholder={undefined}>
+                    <Typography variant="small" color="blue-gray" className="font-normal flex-grow" placeholder={undefined}>
                        {notification.message}
                     </Typography>
                    </td>
 
                    <td className="flex items-center  ">
-                    <Typography variant="large" color="blue-gray" className="font-normal flex-grow" placeholder={undefined}>
+                    <Typography variant="small" color="blue-gray" className="font-normal flex-grow" placeholder={undefined}>
                     {format(new Date(notification.timestamp), 'MMMM dd, yyyy h:mm a')}
                     </Typography>
                    </td>

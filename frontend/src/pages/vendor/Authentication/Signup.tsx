@@ -87,7 +87,6 @@ const VendorSignupForm = () => {
     axiosInstanceVendor
       .get("/vendor-types")
       .then((response) => {
-        console.log(response);
         setvendorTypes(response.data);
       })
       .catch((error) => {

@@ -1,9 +1,9 @@
 import express from 'express';
-import { VendorController } from '../Controller/vendorController';
-import { VendorTypeController } from '../Controller/vendorTypeController';  
-import { PostController } from '../Controller/postController';
+import VendorController  from '../Controller/vendorController';
+import  VendorTypeController  from '../Controller/vendorTypeController';  
+import PostController  from '../Controller/postController';
 import multer from 'multer';
-import { BookingController } from '../Controller/bookingController';
+import BookingController  from '../Controller/bookingController';
 import authenticate from '../Middleware/vendorAuth';
 
 
@@ -42,7 +42,6 @@ router.get('/posts',PostController.getPosts);
 router.delete('/posts/:id',authenticate,PostController.deletePost);
 
 router.put('/updateProfile',authenticate ,upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]) ,VendorController.updateProfiledetails );                                                                                                                                                                                                                                                  
-
 
 router.put('/add-review-reply',authenticate ,VendorController.addReviewReply)
 

@@ -1,9 +1,9 @@
 import express from "express";
-import { AdminController } from "../Controller/adminController";
-import { UserController } from "../Controller/userController";
-import { VendorTypeController } from "../Controller/vendorTypeController";
-import { VendorController } from "../Controller/vendorController";
-import { PaymentController } from "../Controller/paymentController";
+import  AdminController  from "../Controller/adminController";
+import  UserController  from "../Controller/userController";
+import VendorTypeController  from "../Controller/vendorTypeController";
+import  VendorController  from "../Controller/vendorController";
+import  PaymentController  from "../Controller/paymentController";
 import authenticate from "../Middleware/adminAuth";
 
 const router = express.Router();
@@ -34,6 +34,7 @@ router.put('/update-verify-status',VendorController.updateVerifyStatus);
 router.get('/all-payment-details',PaymentController.getAllPayments);
 
 router.patch('/MarkasRead' , AdminController.MarkasRead)
+router.get('/getall-payment-details',PaymentController.getAllPayments)
 export default router;
 
 

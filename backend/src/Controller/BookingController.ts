@@ -4,7 +4,7 @@ import { addABooking , getAllBookingsByUser , getAllBookingsByVendor , getAllBoo
 } from "../Service/bookingService";
 import moment from 'moment';
 
-export const BookingController={
+class BookingController{
 
     async bookAnEvent(req: Request, res: Response): Promise<Response>{
         try {
@@ -23,9 +23,13 @@ export const BookingController={
                return res.status(400).json({ message: "Sorry this date is not available!" });
             }else{
               try {
+                    
                     await acquireLockForDate(vendorId, date);
+
                     const booking = await addABooking(eventName, name, city,date,pin,mobile,vendorId,userId);
+                    
                     await releaseLockForDate(vendorId, date);
+
                     return res.status(201).json({booking:booking,message:"Booking done Successfully"});
               } catch (error) {
                     console.error("Error acquiring lock:", error);
@@ -39,7 +43,7 @@ export const BookingController={
             console.error(error);
             return res.status(500).json({ message: "Server Error" });
           }
-    },
+    }
 
 
     async getBookingsByUser(req: Request, res: Response): Promise<void> {
@@ -62,7 +66,7 @@ export const BookingController={
           console.error(error);
           res.status(500).json({ message: "Server Error" });
         }
-      },
+      }
 
 
 
@@ -76,7 +80,7 @@ export const BookingController={
           console.error(error);
           res.status(500).json({ message: "Server Error" });
         }
-      },
+      }
 
 
 
@@ -89,7 +93,7 @@ export const BookingController={
           console.error(error);
           res.status(500).json({ message: "Server Error" });
         }
-      },
+      }
    
 
       async updateStatus(req: Request, res: Response): Promise<void> {
@@ -98,19 +102,23 @@ export const BookingController={
           const bookingId: string = req.query.bookingId as string;
           const vendorid : string = req.query.vid as string;
           const status=req.body.status
+
           const bookings = await updateStatusById(bookingId,status ,vendorid , userId);
-          res.status(201).json({bookings});
+          console.log("bookings ",bookings)
+          res.status(201).json(bookings);
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: "Server Error" });
         }
-      },
+      }
 
 
       async MarkasCancel(req: Request, res: Response): Promise<void>{
         try {
           const bookingId:string = req.query.bookingId as string;
-          const data = await MarkBookingCancel(bookingId);
+          const vendorId:string = req.query.vendorId as string;
+          const date:string = req.body.date as string; console.log("date and type of date :",date , typeof date)
+          const data = await MarkBookingCancel(bookingId , vendorId , date);
           res.status(200).json({data:data});
         } catch (error) {
           console.error(error);
@@ -118,3 +126,5 @@ export const BookingController={
         }
       }
 }
+
+export default new BookingController();

@@ -53,12 +53,14 @@ export default function Sidebar() {
     <>
 
 
-      <IconButton variant="text" size="lg" onClick={openDrawer} className="mt-20 fixed" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IconButton variant="text" size="lg" onClick={openDrawer} className="mt-14 fixed " placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        
         {isDrawerOpen ? (
           <XMarkIcon className="h-8 w-8 stroke-2" />
         ) : (
           <Bars3Icon className="h-8 w-8 stroke-2" />
         )}
+
       </IconButton>
 
 

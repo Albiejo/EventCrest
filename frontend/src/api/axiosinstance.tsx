@@ -73,7 +73,7 @@ axiosInstanceVendor.interceptors.request.use((config) =>{
             if (error.response.status === 401 && error.response.data.message === 'Invalid token') {
                 try {
                     console.log("token expired and error received at axiosinstance");
-                    const refreshToken = localStorage.getItem('refreshToken');
+                    const refreshToken = localStorage.getItem('userrefreshToken');
                    
                     const response = await axiosInstance.post('/refresh-token', { refreshToken });
                    
@@ -81,17 +81,17 @@ axiosInstanceVendor.interceptors.request.use((config) =>{
                     
                     localStorage.setItem('userToken', newToken);
     
-                    // Retry the original request with the new token
+                   
                     error.config.headers.Authorization = `Bearer ${newToken}`;
                     return axios(error.config);
                 } catch (refreshError) {
-                    // Handle refresh error
+                 
                     console.error('Error refreshing token:', refreshError);
-                    // Redirect to login page or do other error handling
+                 
                     return Promise.reject(refreshError);
                 }
             }
-            // For other errors, just reject the promise
+          
             return Promise.reject(error);
         }
     );
@@ -108,7 +108,7 @@ axiosInstanceVendor.interceptors.request.use((config) =>{
             if (error.response.status === 401 && error.response.data.message === 'Invalid token') {
                 try {
                     // Perform token refresh
-                    const refreshToken = localStorage.getItem('refreshToken');
+                    const refreshToken = localStorage.getItem('adminrefreshToken');
                     const response = await axiosInstanceAdmin.post('/refresh-token', { refreshToken });
                     const newToken = response.data.token;
                     localStorage.setItem('adminToken', newToken);
@@ -142,7 +142,7 @@ axiosInstanceVendor.interceptors.request.use((config) =>{
             if (error.response.status === 401 && error.response.data.message === 'Invalid token') {
                 try {
                     // Perform token refresh
-                    const refreshToken = localStorage.getItem('refreshToken');
+                    const refreshToken = localStorage.getItem('vendorrefreshToken');
                     const response = await axiosInstanceVendor.post('/refresh-token', { refreshToken });
                     const newToken = response.data.token;
                     localStorage.setItem('vendorToken', newToken);

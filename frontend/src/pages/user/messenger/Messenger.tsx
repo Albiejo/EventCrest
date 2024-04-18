@@ -208,7 +208,7 @@ const Messenger = () => {
              
                     {messages.map((m)=>(
                         <div ref={scrollRef}>
-                            <Message message={m} own={m.senderId === user?._id}/>
+                            <Message message={m} own={m.senderId === user?._id} user={user}/>
                         </div>
                     ))}
                      {typing && (

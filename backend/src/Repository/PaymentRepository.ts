@@ -31,6 +31,9 @@ export const createNewPaymnet = async (
     }
   };
 
+
+  
+
   export const findAllPayments=async( skip: number, limit: number):Promise<PaymentWithAdminData>=>{
     try {
 

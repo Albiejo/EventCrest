@@ -1,4 +1,4 @@
-import React from 'react'
+
 import FullNotification from '../../Components/common/FullNotification'
 import { useSelector } from 'react-redux';
 import AdminRootState from '../../Redux/rootstate/AdminState';
@@ -7,7 +7,6 @@ import AdminRootState from '../../Redux/rootstate/AdminState';
 const AdminNotifications = () => {
 
   const admin = useSelector((state: AdminRootState) => state.admin.admindata)
-  console.log(admin)
 
   const notifications = admin?.notifications
   return (

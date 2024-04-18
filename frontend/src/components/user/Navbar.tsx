@@ -6,14 +6,13 @@ import {
   Button,
   IconButton,
   MobileNav,
-  Avatar,
   Menu,
   MenuHandler,
   MenuItem,
   MenuList,
 } from "@material-tailwind/react";
 import { useSelector,useDispatch } from 'react-redux';
-import UserRootState from "../../redux/rootstate/UserState";
+import UserRootState from "../../Redux/rootstate/UserState";
 import { axiosInstance } from "../../Api/axiosinstance";
 import { logout } from "../../Redux/slices/UserSlice";
 
@@ -29,7 +28,6 @@ const MyNavbar=()=> {
   const dispatch= useDispatch();
 
   React.useEffect(() => {
-    console.log("user image link is ",user?.imageUrl)
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false)

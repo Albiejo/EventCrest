@@ -30,6 +30,7 @@ interface Vendor {
   about: string;
   isVerified: boolean;
   verificationRequest: boolean;
+  OverallRating:number;
 }
 
 const Profile = () => {
@@ -73,7 +74,7 @@ const Profile = () => {
         { withCredentials: true }
       )
       .then((response) => {
-        console.log(response.data);
+
         toast.success("Requested for Verification!");
       })
       .catch((error) => {
@@ -170,26 +171,26 @@ const Profile = () => {
            
 
             <p className="font-medium mt-5 mb-5">{vendor?.city}</p>
-            {/* <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
+            <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
-                  259
+                  {vendor?.totalBooking}
                 </span>
-                <span className="text-sm">Posts</span>
+                <span className="text-sm">Total Bookings</span>
               </div>
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
-                  129K
+                  {vendor?.OverallRating}
                 </span>
-                <span className="text-sm">Followers</span>
+                <span className="text-sm">Total Rating</span>
               </div>
               <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
-                <span className="font-semibold text-black dark:text-white">
-                  2K
+                <span className="font-semibold " style={{color:'blue'}}>
+                  {vendor?.isVerified  ? "Profile Verified" : "Profile not Verified"}
                 </span>
-                <span className="text-sm">Following</span>
+                <span className="text-sm"></span>
               </div>
-            </div> */}
+            </div>
 
             <div className="mx-auto max-w-180">
               <h4 className="font-semibold text-black dark:text-white">
