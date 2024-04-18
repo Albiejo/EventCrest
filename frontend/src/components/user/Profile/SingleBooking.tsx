@@ -82,7 +82,10 @@ const SingleBooking = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const id = queryParams.get('id');
+    const vendorId = booking?.vendorId?._id;
+
   
+    const { date } = booking;
 
     const handleCancelBooking = () => {
       Swal.fire({
@@ -95,8 +98,7 @@ const SingleBooking = () => {
         confirmButtonText: 'Yes, cancel it!',
       }).then((result) => {
         if (result.isConfirmed) {
-          axiosInstance.patch(`/markCancel?bookingId=${id}`).then(() => {
-          console.log("booking marked as cancelled")
+          axiosInstance.patch(`/markCancel?bookingId=${id}&&vendorId=${vendorId}` ,{date:date} ).then(() => {
           });
           Swal.fire('Cancelled!', 'Your booking has been cancelled.', 'success');
         }
@@ -111,17 +113,19 @@ const SingleBooking = () => {
         .get(`/single-booking?bookingId=${id}`, { withCredentials: true })
         .then((response) => {
           setBooking(response.data.bookings[0]);
+          console.log(booking.vendorId._id)
         })
         .catch((error) => {
           console.log('here', error);
         });
+     
     }, [id]);
   
 
 
     const handleClick = async () => {
     
-      axiosInstance.post(`/create-checkout-session`,{ userId: user?._id, ...booking?.vendorId,bookingId:booking._id},
+      axiosInstance.post(`/create-checkout-session`,{ userId: user?._id, ...booking?.vendorId,bookingId:booking?._id},
       { withCredentials: true },)
         .then((response) => {
           if (response.data.url) {

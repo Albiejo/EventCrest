@@ -22,16 +22,36 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
 
 
 
-export const findAllVendors = async (page: number, pageSize: number): Promise<VendorDocument[] | null> => {
+export const findAllVendors = async (page: number, pageSize: number , search:string ,sortBy: string | null , category:string | null): Promise<VendorDocument[] | null> => {
   try {
+    let query: any = {};
+    if (category) {
+      console.log("category is",category)
+      query.vendor_type = category;
+    }
+    if (search) {
+      query = {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { email: { $regex: search, $options: "i" } },
+          { city: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+
     const skip = (page - 1) * pageSize;
-    const sortBy = 'overallRating'; // Define sortBy variable
-    const sortOrder = 'desc'; // Define sortOrder variable
-    return await Vendor.find({}).skip(skip).limit(pageSize).exec();
+    let cursor = Vendor.find(query).skip(skip).limit(pageSize);
+
+    if (sortBy) {
+      cursor = cursor.sort(sortBy); 
+    }
+
+    return await cursor.exec();
   } catch (error) {
     throw error;
   }
 };
+
 
 
 export const getTotalVendorsCount = async (): Promise<number> => {
@@ -81,7 +101,6 @@ export const AddVendorReview = async(content: string, rating: number, username: 
     const ratings = vendorData.reviews.map((review) => review.rating)
 
     vendorData.OverallRating = calculateOverallRating(ratings);
-    console.log(vendorData.OverallRating)
     await vendorData.save();
 
     return true;

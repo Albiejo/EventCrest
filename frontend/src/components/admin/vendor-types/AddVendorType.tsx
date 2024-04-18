@@ -59,7 +59,7 @@ export default function AddVendorType() {
   };
 
   return (
-    <Card className="w-full mx-auto" placeholder={undefined} shadow={true}>
+    <Card className="w-full mx-auto border-4 border-black" placeholder={undefined} shadow={true}>
       <CardHeader
         color="gray"
         floated={false}

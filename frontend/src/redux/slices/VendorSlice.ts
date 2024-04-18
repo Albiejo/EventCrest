@@ -22,7 +22,9 @@ export interface VendorData{
     coverpicUrl:string;
     logoUrl:string;
     reviews:Array<Review>;
+    notifications:Array<object>;
 }
+
 export interface VendorState{
     isVendorSignedIn: boolean;
     vendordata : VendorData | null;

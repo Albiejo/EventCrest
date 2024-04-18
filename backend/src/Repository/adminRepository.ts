@@ -12,7 +12,7 @@ export const findAdminByEmail = async (email: string): Promise<AdminDocument | n
 
 export const updateNotificationstatus=async(adminId:string , notifiID:string)=>{
   try {
-   console.log("Nid from repo",notifiID)
+  
     let adminData = await Admin.findById(adminId);
     if (!adminData) {
       throw new Error('User not found');

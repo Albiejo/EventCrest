@@ -29,9 +29,10 @@ const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 
 
-export const PostController = {
+class PostController {
   
   async addNewPost(req: Request, res: Response): Promise<void> {
+    
     try {
       const caption = req.body.caption;
       const vendor_id: string = req.query.vendorid as string;
@@ -58,7 +59,7 @@ export const PostController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
   
@@ -87,7 +88,7 @@ export const PostController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -117,10 +118,12 @@ export const PostController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 };
 
 
+
+export default new PostController();
 
 export class CustomError extends Error {
   statusCode: number;

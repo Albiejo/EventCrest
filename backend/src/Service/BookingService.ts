@@ -80,9 +80,9 @@ export const countTotalBookingsByUser =async(userId: string)=>{
   }
 }
 
-export const MarkBookingCancel = async(bookingId:string)=>{
+export const MarkBookingCancel = async(bookingId:string , vendorId:string , date:string)=>{
 try {
-  const result = await updatebookingCancel(bookingId);
+  const result = await updatebookingCancel(bookingId , vendorId , date);
   return result
 } catch (error) {
   throw error;

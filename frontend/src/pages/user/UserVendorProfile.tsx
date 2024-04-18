@@ -1,4 +1,4 @@
-import {
+ import {
     Avatar,
     Typography,
     Button,
@@ -19,6 +19,8 @@ import {
   import ProfileButtons from '../../Components/vendor/ProfileButtons';
   import { useDispatch } from 'react-redux';
   import { setUserInfo } from '../../Redux/slices/UserSlice';
+import { setVendorInfo } from '../../Redux/slices/VendorSlice';
+import { truncate } from 'fs';
 
 
   interface Review {
@@ -58,15 +60,15 @@ import {
 
     const [vendor, setVendor] = useState<Vendor>();
     const [favourite,setFavourite]=useState(false);
-    const [isFavorite  , setisFavorite ] = useState(false)
+   
     const dispatch = useDispatch();
   
     useEffect(() => {
      
       if (user?.favorite.includes(id)) { 
-        setFavourite(false);
+        setFavourite(true);
         }else{
-          setFavourite(true);
+          setFavourite(false);
         }
     
       axiosInstance
@@ -80,7 +82,6 @@ import {
     }, [user]);
   
   const bookedDates = vendor?.bookedDates;
-  console.log(bookedDates);
 
 
     const handleFavourite=async()=>{
@@ -93,8 +94,8 @@ import {
         .post(`/add-Favorite-Vendor?vendorId=${id}&userId=${user?._id}`, { withCredentials: true })
         .then((response) => {
           dispatch(setUserInfo(response.data.data.userData))
-          setisFavorite(response.data.data.isFavorite)
-          console.log(response.data.data.isFavorite);
+          dispatch(setVendorInfo(response.data.data.vendordata))
+         
           
           if (response.data.data.isFavorite) {
             toast.success("Vendor added to favorites.");
@@ -199,7 +200,7 @@ import {
              
               <IconButton
               
-               style={isFavorite ?{  backgroundColor: 'red'} :{  backgroundColor: 'black'}}
+               style={favourite ?{  backgroundColor: 'red'} :{  backgroundColor: 'black'}}
               
                     placeholder={undefined}
                     onPointerEnterCapture={undefined}

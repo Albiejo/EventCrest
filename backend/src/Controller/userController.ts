@@ -53,7 +53,7 @@ const s3 = new S3Client({
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 
-export const UserController = {
+class UserController{
 
   async UserSignup(req: Request, res: Response): Promise<void> {
     try {
@@ -83,7 +83,7 @@ export const UserController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -136,7 +136,7 @@ export const UserController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  },
+  }
 
 
 
@@ -154,7 +154,7 @@ export const UserController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  },
+  }
 
 
   async getUser(req: Request, res: Response): Promise<void>{
@@ -169,7 +169,7 @@ export const UserController = {
       console.log(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
   async UserLogout(req: Request, res: Response): Promise<void> {
@@ -180,7 +180,7 @@ export const UserController = {
       console.log(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -197,7 +197,7 @@ export const UserController = {
       console.error('Error refreshing token:', error);
       res.status(401).json({ message: 'Failed to refresh token' });
     }
-  },
+  }
 
 
 
@@ -214,7 +214,7 @@ export const UserController = {
       console.log(error);
       res.status(500).json({ message: "server error..." });
     }
-  },
+  }
 
 
 
@@ -234,7 +234,7 @@ export const UserController = {
       console.log(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -257,7 +257,7 @@ export const UserController = {
       console.log(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -285,7 +285,7 @@ export const UserController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  },
+  }
 
 
 
@@ -304,7 +304,7 @@ export const UserController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -340,7 +340,7 @@ export const UserController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -367,7 +367,7 @@ export const UserController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  },
+  }
 
 
 
@@ -384,7 +384,7 @@ export const UserController = {
     } catch (error) {
       res.status(400).json({ error: "User already exists" });
     }
-  },
+  }
 
 
 
@@ -412,7 +412,7 @@ export const UserController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
 
@@ -439,7 +439,7 @@ export const UserController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
   async getFavoriteVendors(req: Request, res: Response): Promise<void>{
     try {
@@ -463,7 +463,7 @@ export const UserController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
   async UpdatePasswordController(req: Request, res: Response): Promise<void> {
     
@@ -492,7 +492,7 @@ export const UserController = {
       console.error(error);
       res.status(500).json({ message: "Server Error" });
     }
-  },
+  }
 
 
   async UpdateProfileDetails(req: Request, res: Response): Promise<void> {
@@ -529,7 +529,10 @@ export const UserController = {
       }
 
       const command = new GetObjectCommand(getObjectParams);
-      imageUrl = await getSignedUrl(s3, command);
+
+      imageUrl = await getSignedUrl(s3, command , {
+          expiresIn: 86400 * 3,
+        });
       
     }
 
@@ -549,7 +552,7 @@ export const UserController = {
       res.status(500).json({ message: "Server Error" });
     }
   }
-  },
+  }
 
   async MarkRead(req: Request, res: Response): Promise<void> {
     try {
@@ -564,6 +567,8 @@ export const UserController = {
       res.status(500).json({message: "server error"});
     }
 
-  },
-}
+  }
+};
+
+export default new UserController();
 

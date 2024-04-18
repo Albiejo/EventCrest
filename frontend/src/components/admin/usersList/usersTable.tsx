@@ -41,10 +41,10 @@ const UsersTable=()=> {
   
     setPage(pageParam ? parseInt(pageParam, 10) : 1);
     setSearch(searchParam? searchParam: "");
-  
+
     fetchData(pageParam, searchParam);
 
-  }, [ location.search , value , users]);
+  }, [location.search , value]);
 
   
 
@@ -62,7 +62,6 @@ const UsersTable=()=> {
 
   const handleBlock=(userId:string)=>{
     setValue(prevValue => !prevValue);
-    console.log("valeu is",value)
     axiosInstanceAdmin.patch(`/block-unblock?userId=${userId}`)
       .then((response) => {
         console.log(response)

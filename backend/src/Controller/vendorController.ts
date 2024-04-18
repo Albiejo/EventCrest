@@ -9,6 +9,7 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from "dotenv";
 import { vendorSession } from "../util/Interfaces";
+const sharp = require('sharp');
 
 
 interface OTP {
@@ -33,9 +34,9 @@ const s3 = new S3Client({
   region:process.env.BUCKET_REGION!,
 });
 
-export const VendorController = {
 
 
+class VendorController{
 
   async vendorSignup(req: Request, res: Response): Promise<void> {
 
@@ -73,7 +74,7 @@ export const VendorController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  },
+  }
 
 
   async createRefreshToken(req: Request, res: Response):Promise<void>{
@@ -89,7 +90,7 @@ export const VendorController = {
       console.error('Error refreshing token:', error);
       res.status(401).json({ message: 'Failed to refresh token' });
     }
-  },
+  }
 
       async VendorLogin(req:Request , res: Response): Promise <void> {
         try {
@@ -106,7 +107,7 @@ export const VendorController = {
           }
             
         }
-      } ,
+      } 
     
 
       async VendorLogout(req:Request , res: Response): Promise <void> {
@@ -118,7 +119,7 @@ export const VendorController = {
             res.status(500).json({message:"Server Error"})
             
         }
-      },
+      }
 
       async verifyOtp(req:Request , res: Response):Promise<void>{
         try {
@@ -157,7 +158,7 @@ export const VendorController = {
             res.status(500).json({ message: "Server Error" });
           }
         }
-      },
+      }
 
       
       async VendorForgotPassword(req:Request , res: Response):Promise<void>{
@@ -178,7 +179,7 @@ export const VendorController = {
           console.log(error);
           res.status(500).json({ message: "Server Error" });
         }
-      },
+      }
 
 
       async VerifyOtpForPassword(req:Request , res: Response):Promise<void>{
@@ -204,23 +205,37 @@ export const VendorController = {
             res.status(500).json({ message: "Server Error" });
           }
         }
-      },
+      }
 
       async getAllVendors(req: Request, res: Response): Promise<void>{
         try{
-          const page: number = parseInt(req.query.page as string) || 1; // Default to page 1 if not provided
-          const pageSize: number = parseInt(req.query.pageSize as string) || 8; // Default page size
-
-          const { vendors, totalVendorsCount } = await getVendors(page, pageSize);
+          
+          const page: number = parseInt(req.query.page as string) || 1; 
+          const search = req.query.search || ""; 
+          const sortBy: string | null = req.query.sortBy as string | null;
+          const pageSize: number = parseInt(req.query.pageSize as string) || 8; 
+          let sortCriteria: string | null = null; 
+          const category: string | null = req.query.category as string | null
+          
+          
+          switch (sortBy) {
+            case 'rating':
+              sortCriteria = 'OverallRating'; 
+              break;
+            case '-rating':
+              sortCriteria = '-OverallRating'; 
+              break;
+            default:
+              break;
+          }
+          const { vendors, totalVendorsCount } = await getVendors(page, pageSize , search.toString(),sortCriteria ,category);
           const totalPages = Math.ceil(totalVendorsCount / pageSize);
-  
-         
           res.status(200).json({ vendors:vendors, totalPages:totalPages });
         }catch(error){
           console.log(error);
           res.status(500).json({ message: "server error..." });
         }
-      } ,
+      } 
 
       async Toggleblock(req:Request , res: Response):Promise<void>{
         try {
@@ -235,7 +250,7 @@ export const VendorController = {
           console.log(error);
           res.status(500).json({ message: "Server Error" });
       }
-      },
+      }
 
 
       async getVendor(req:Request , res: Response):Promise<void>{
@@ -257,7 +272,7 @@ export const VendorController = {
           console.log(error);
           res.status(500).json({ message: "Server Error" });
         }
-      },
+      }
 
       async ResetVendorPassword(req:Request , res: Response):Promise<void>{
         
@@ -277,7 +292,7 @@ export const VendorController = {
          console.error(error);
          res.status(500).json({ message: "Server Error" });
         }
-       },
+       }
 
 
 
@@ -301,7 +316,7 @@ export const VendorController = {
           console.error(error);
           res.status(500).json({ message: "Server Error" });
         }
-       },
+       }
 
 
 
@@ -312,6 +327,7 @@ export const VendorController = {
           const vendorId: string = req.query.vendorid as string;
 
           let status = await checkVendorCurrentPassword(currentPassword, vendorId);
+
           if (!status) {
             throw new CustomError(`Current password doesn't match!` ,400);
           }      
@@ -331,7 +347,7 @@ export const VendorController = {
             res.status(500).json({ message: 'Server Error' });
           }
         }
-       },
+       }
       
 
        async resendOtp(req: Request, res: Response): Promise<void>{
@@ -366,7 +382,7 @@ export const VendorController = {
                 console.error(error);
                 res.status(500).json({ message: "Server Error" });
                }                                                                                                                                                                  
-       },
+       }
 
 
        async updateProfiledetails(req: Request, res: Response): Promise<void>{
@@ -374,12 +390,10 @@ export const VendorController = {
           
           const vendorId: string = req.query.vendorid as string;
           const formData = req.body;
-
           
           let coverpicFile,coverpicUrl;
           let logoFile,logoUrl;
 
-      console.log("before re.files");
         
       if (req.files) {
         if (
@@ -398,10 +412,15 @@ export const VendorController = {
           logoFile = req.files["logo"][0];
         }
 
+        const resizedCoverpicBuffer = await sharp(coverpicFile?.buffer)
+        .resize({ width: 1920, height: 1080, fit: 'cover' })
+        .toBuffer();
+
+
         const coverpicUploadParams = {
           Bucket: process.env.BUCKET_NAME,
           Key: coverpicFile?.originalname,
-          Body: coverpicFile?.buffer,
+          Body: resizedCoverpicBuffer,
           ContentType: coverpicFile?.mimetype,
         };
 
@@ -415,6 +434,8 @@ export const VendorController = {
         coverpicUrl = await getSignedUrl(s3, covercommand2, {
           expiresIn: 86400 * 3,
         });
+
+
 
         // Upload logo to S3
         const logoUploadParams = {
@@ -436,7 +457,7 @@ export const VendorController = {
         });
       }
       
-       console.log("after re.files");
+       
 
        const updatedVendor = await updateVendorprof(
         vendorId,
@@ -446,7 +467,7 @@ export const VendorController = {
         logoFile?.originalname,
         coverpicFile?.originalname
       );
-    console.log("after service updated" , updatedVendor);
+   
 
     res.status(200).json(updatedVendor)
 
@@ -455,7 +476,7 @@ export const VendorController = {
         console.error(error);
         res.status(500).json({ message: "Server Error" });
        }
-      },
+      }
 
 
 
@@ -476,7 +497,7 @@ export const VendorController = {
         }
     }
     
-  },
+  }
 
 
   async sendVerifyRequest(req: Request, res: Response): Promise<void> {
@@ -492,7 +513,7 @@ export const VendorController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  },
+  }
     
 
   async updateVerifyStatus(req: Request, res: Response): Promise<void> {
@@ -509,7 +530,8 @@ export const VendorController = {
         res.status(500).json({ message: "Server Error" });
       }
     }
-  },
+  }
   
 }
 
+export default new VendorController();

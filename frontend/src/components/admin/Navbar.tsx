@@ -33,7 +33,7 @@ const AdminNavbar=()=> {
     e.preventDefault();
     axiosInstanceAdmin.get("/logout")
       .then(() => {
-        dispatch(logout()); // Assuming you want to clear admin info on logout
+        dispatch(logout()); 
         navigate("/admin/login");
       })
       .catch((error) => {

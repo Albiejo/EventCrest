@@ -35,7 +35,9 @@ function Icon({ id, open }: IconProps) {
   );
 }
 
-const VendorFilters = () => {
+const VendorFilters = ({vendorTypeData , onCategorySelect }) => {
+
+
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value: React.SetStateAction<number>) =>
@@ -62,91 +64,42 @@ const VendorFilters = () => {
         </AccordionHeader>
         <AccordionBody>
         <Card  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className='border-4 border-gray-300'>
-      <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-        <ListItem className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <label
-            htmlFor="vertical-list-react"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <Checkbox
-                      id="vertical-list-react"
-                      ripple={false}
-                      className="hover:before:opacity-0"
-                      containerProps={{
-                        className: "p-0",
+      <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
+    
+    
+    
+      {vendorTypeData.map((vendorType, index) => (
+                <ListItem key={index} className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onClick={() => onCategorySelect(vendorType._id)}>
+                  <label
+                    htmlFor={`vertical-list-react-${index}`}
+                    className="flex w-full cursor-pointer items-center px-3 py-2"
+                  >
+                    <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                      <Checkbox
+                        id={`vertical-list-react-${index}`}
+                        ripple={false}
+                        className="hover:before:opacity-0"
+                        containerProps={{
+                          className: "p-0",
+                        }}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                        crossOrigin={undefined}              
+                      />
+                    </ListItemPrefix>
+                    <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                      {vendorType.type}
+                    </Typography>
+                  </label>
+                </ListItem>
+              ))}
 
-                      }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              React.js
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <label
-            htmlFor="vertical-list-vue"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <Checkbox
-                      id="vertical-list-vue"
-                      ripple={false}
-                      className="hover:before:opacity-0"
-                      containerProps={{
-                        className: "p-0",
-                      }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              Vue.js
-            </Typography>
-          </label>
-        </ListItem>
-        <ListItem className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          <label
-            htmlFor="vertical-list-svelte"
-            className="flex w-full cursor-pointer items-center px-3 py-2"
-          >
-            <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              <Checkbox
-                      id="vertical-list-svelte"
-                      ripple={false}
-                      className="hover:before:opacity-0"
-                      containerProps={{
-                        className: "p-0",
-                      }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}              />
-            </ListItemPrefix>
-            <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-              Svelte.js
-            </Typography>
-          </label>
-        </ListItem>
+      
       </List>
     </Card>
         </AccordionBody>
       </Accordion>
-      <Accordion
-        open={open === 2}
-        icon={<Icon id={2} open={open} />}
-        placeholder={undefined}
-        onPointerEnterCapture={undefined}
-        onPointerLeaveCapture={undefined}
-        className='w-50'
-      >
-        <AccordionHeader
-          onClick={() => handleOpen(2)}
-          placeholder={undefined}
-          onPointerEnterCapture={undefined}
-          onPointerLeaveCapture={undefined}
-          className="text-md md:text-md" 
-        >Location</AccordionHeader>
-        <AccordionBody>
-          We&apos;re not always in the position that we want to be at.
-          We&apos;re constantly growing. We&apos;re constantly making mistakes.
-          We&apos;re constantly trying to express ourselves and actualize our
-          dreams.
-        </AccordionBody>
-      </Accordion>
+    
      
     </>
   );

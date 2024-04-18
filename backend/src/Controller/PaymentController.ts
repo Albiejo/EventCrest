@@ -16,7 +16,7 @@ import { PaymentSession } from "../util/Interfaces";
 
 
 
-export const PaymentController = {
+class PaymentController{
    
    
 async makePayment(req: Request, res: Response) {
@@ -59,7 +59,7 @@ async makePayment(req: Request, res: Response) {
     };
 
     res.send({ url: session.url });
-  },
+  }
 
 
   async addPayment(req: Request, res: Response){
@@ -76,7 +76,7 @@ async makePayment(req: Request, res: Response) {
     } catch (error) {
       console.log(error)
     }
-  },
+  }
 
 
 
@@ -96,6 +96,9 @@ async makePayment(req: Request, res: Response) {
     } catch (error) {
       console.log(error)
     }
-  },
+  }
 
-}
+};
+
+
+export default new PaymentController();

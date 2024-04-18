@@ -9,7 +9,7 @@ import VendorRootState from '../../../Redux/rootstate/VendorState';
 import { useEffect, useRef, useState } from 'react';
 import { axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
 import {io} from 'socket.io-client'
-
+import DefaultLayout from '../../../Layout/DefaultLayout';
 
 
 
@@ -176,11 +176,7 @@ const Messenger = () => {
 
   return (
    <>
-
-   <div className='navbar'>
-    
-   </div>
-   
+   <DefaultLayout>
    <div className="messenger">
     <div className="chatmenu">
         <div className="chatmenuWrapper" >
@@ -206,7 +202,7 @@ const Messenger = () => {
                 <div className="chatboxTop">
                     {messages.map((m)=>(
                         <div ref={scrollRef}>
-                            <Message message={m} own={m.senderId === vendorData?._id}/>
+                            <Message message={m} own={m.senderId === vendorData?._id} vendor={vendorData}/>
                         </div>
                     ))}
 
@@ -225,7 +221,7 @@ const Messenger = () => {
         </div>
     </div>
    </div>
-
+   </DefaultLayout>
    </>
   )
 }

@@ -55,7 +55,7 @@ const UserLoginForm=()=> {
         .then((response) => {
           localStorage.setItem("userToken", response.data.token)
           console.log("first token", response.data.token)
-          localStorage.setItem("refreshToken", response.data.refreshToken)
+          localStorage.setItem("userrefreshToken", response.data.refreshToken)
           dispatch(setUserInfo(response.data.userData));
           navigate("/");
         })

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -14,8 +14,10 @@ import {
 } from '@material-tailwind/react';
 import { axiosInstanceVendor } from '../../../Api/axiosinstance';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import UserRootState from '../../../Redux/rootstate/UserState';
+import { setUserInfo } from '../../../Redux/slices/UserSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -35,6 +37,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,ve
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>('');
   const [errorStatus, setErrorStatus] = useState<string>('');
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
 
   const handleOpen = () => {
@@ -56,15 +59,18 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,ve
         { withCredentials: true },
       )
       .then((response) => {
-        console.log(response.data);
+        dispatch(setUserInfo(response.data.userData))
         setOpen(false); 
         toast.success("Status Changed Successfully!")
         onStatusChange(selectedStatus || '');
+
       })
       .catch((error) => {
         console.log('Error:', error);
       });
   };
+
+
 
   return (
     <>
@@ -138,7 +144,7 @@ const UpdateStatus: React.FC<UpdateStatusProps> = ({ bookingId,onStatusChange,ve
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            Add Reply
+           Change Status
           </DialogHeader>
           <DialogBody
             placeholder={undefined}

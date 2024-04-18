@@ -1,9 +1,11 @@
 import express from 'express';
-import { UserController } from '../Controller/userController';
-import { VendorController } from '../Controller/vendorController';
+import  UserController  from '../Controller/userController';
+import  VendorController  from '../Controller/vendorController';
 import multer from 'multer';
-import { BookingController } from '../Controller/bookingController';
-import { PaymentController } from '../Controller/paymentController';
+import BookingController  from '../Controller/bookingController';
+import PaymentController  from '../Controller/paymentController';
+import vendorTypeController from '../Controller/vendorTypeController';
+
 
 //middleware
 import authenticate from '../Middleware/userAuth';
@@ -54,8 +56,11 @@ router.post('/create-checkout-session',authenticate ,PaymentController.makePayme
 router.post('/add-payment', authenticate , PaymentController.addPayment);
 router.get('/single-booking', authenticate ,BookingController.getBookingsById);
 
-router.patch('/MarkAsRead' , UserController.MarkRead)
-router.patch('/markCancel' , BookingController.MarkasCancel)
+router.patch('/MarkAsRead' ,authenticate, UserController.MarkRead)
+router.patch('/markCancel' , authenticate,BookingController.MarkasCancel)
+
+router.get('/getVendorTypes'  ,vendorTypeController.getVendorTypes);
+
 
 
 export default router;
