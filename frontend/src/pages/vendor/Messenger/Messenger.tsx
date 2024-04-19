@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import { axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
 import {io} from 'socket.io-client'
 import DefaultLayout from '../../../Layout/DefaultLayout';
-
+import Picker from '@emoji-mart/react'
 
 
 
@@ -26,6 +26,9 @@ const Messenger = () => {
     const [arrivalMessage , setArrivalMessage] = useState(null)
     const [newMessage, setnewMessage] = useState("");
     const [typing , setTyping] = useState(false);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+
 
     const scrollRef = useRef()
     const socket = useRef(io("ws://localhost:8900")); 
@@ -214,6 +217,16 @@ const Messenger = () => {
             <div className="chatboxBottom">
                 <textarea className='chatMessageInput' placeholder='write something..'onChange={handleInputChange} value={newMessage}  onBlur={handleStopTyping}></textarea>
                 <button className='chatSubmitButton' onClick={handleSubmit}>send</button>
+
+                {showEmojiPicker && (
+                        <Picker
+                            set='apple'
+                            onSelect={handleEmojiSelect} 
+                            style={{ position: 'absolute', bottom: '70px', right: '10px' }}
+                        />
+                    )}
+                 <button onClick={() => setShowEmojiPicker(prev => !prev)}>😀</button>
+                 
             </div>
                 </> ):( <span className='noConversationtext'>open a conversation to start a chat</span>)
             }

@@ -19,7 +19,7 @@ const Message = ({message,own,user,vendor}) => {
         <div className="messageTop">
         <img
         className="messageImg"
-        src={isuser ? user?.imageUrl : vendor.logoUrl}
+        // src={isuser ? user?.imageUrl : vendor.logoUrl}
         alt="image"
         />
         <p className="messageText">{message.text}</p>

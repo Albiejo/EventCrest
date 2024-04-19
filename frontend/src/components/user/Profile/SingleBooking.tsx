@@ -455,7 +455,7 @@ const SingleBooking = () => {
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            Dialog
+            Event Crest
           </DialogHeader>
           <DialogBody
             placeholder={undefined}

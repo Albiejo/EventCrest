@@ -62,7 +62,7 @@ const router = createBrowserRouter(
               <Route path="/verify" element={<VerifyEmail />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path='/about' element={<AboutPage/>} />
+              <Route path='/about'        element={<AboutPage/>} />
               <Route path="/viewVendor" element={<UserVendorProfile/>}/>
               <Route path="/vendors" element={<VendorListing/>}/>
               <Route path="/chat" element={<Messenger/>}/>

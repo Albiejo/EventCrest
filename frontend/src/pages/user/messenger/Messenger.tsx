@@ -7,8 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
 import {io} from 'socket.io-client'
 import Message from '../../../Components/user/messages/Message';
-
-
+import Picker from '@emoji-mart/react'
 
 
 
@@ -24,7 +23,7 @@ const Messenger = () => {
     const [arrivalMessage , setArrivalMessage] = useState(null)
     const [newMessage, setnewMessage] = useState("");
     const [activeUsers, setActiveUsers] = useState([]);
-
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
 
     const scrollRef = useRef()
@@ -60,8 +59,6 @@ const Messenger = () => {
             setTyping(false);
             console.log("vendor stopped typing")
         })
-
-
 
     },[])
 
@@ -148,7 +145,7 @@ const Messenger = () => {
      };
 
 
-     //scrolling to bottom when new msg arrives
+
      useEffect(()=>{
         scrollRef.current?.scrollIntoView({ behavior:"smooth"})
      },[messages])
@@ -176,7 +173,10 @@ const Messenger = () => {
         }, []);
 
         
-
+        const handleEmojiSelect = emoji => {
+            setnewMessage(prev => prev + emoji.native);
+        };
+    
 
   return (
    <>
@@ -217,8 +217,16 @@ const Messenger = () => {
                 </div>
             <div className="chatboxBottom">
                 <textarea className='chatMessageInput' placeholder='write something..' onChange={handleInputChange} value={newMessage}  onBlur={handleStopTyping} ></textarea>
-               
+                {showEmojiPicker && (
+                        <Picker
+                            set='apple'
+                            onSelect={handleEmojiSelect} 
+                            style={{ position: 'absolute', bottom: '70px', right: '10px' }}
+                        />
+                    )}
+                 <button onClick={() => setShowEmojiPicker(prev => !prev)}>😀</button>
                 <button className='chatSubmitButton' onClick={handleSubmit}>send</button>
+              
             </div>
                 </> ):( <>
                 <span className='noConversationtext'>open a conversation to start a chat</span>

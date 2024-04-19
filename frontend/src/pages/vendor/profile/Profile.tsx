@@ -109,7 +109,7 @@ const Profile = () => {
           </div>
 
           <div className="relative z-30 mx-auto -mt-16  w-full mr-2 max-w-30 rounded-full  p-1 ">
-            <div className="relative mt-4">
+            <div className="relative mt-4 pt-10">
               {!vendor?.isVerified && !vendor?.verificationRequest ? (
                 <Button
                   onClick={handleVerification}

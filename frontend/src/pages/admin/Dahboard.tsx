@@ -25,7 +25,6 @@ function Dashboard() {
       SetvendorCount(res.data.vendors.length)
     })
     await axiosInstanceAdmin.get('/users').then((res)=>{
-      console.log(res.data.users.length)
       SetuserCount(res.data.users.length);
     })
   }

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Booking , { bookingDocument } from "../Model/Booking";
 import { createNewBooking  , findBookingsByVendorId , findBookingsByUserId , findBookingsByBookingId , updateBookingStatusById , 
-  updatebookingCancel,checkDate
+  updatebookingCancel,checkDate,getfullbookingdetails
 } from "../Repository/bookingRepository";
 import vendor from "../Model/Vendor"
 
@@ -136,3 +136,12 @@ export const releaseLockForDate=async (vendorId: string, date: string): Promise<
   }
 }
 
+
+export const getAllBookings=async()=>{
+  try {
+    const data = await getfullbookingdetails();
+    return data;
+  } catch (error) {
+    throw error
+  }
+}

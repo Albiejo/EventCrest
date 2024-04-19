@@ -152,3 +152,16 @@ export const findBookingsByVendorId = async (
       throw error;
     }
   }
+
+
+  export const getfullbookingdetails = async()=>{
+    try {
+      const data  = await Booking.find();
+      if(!data){
+        throw new Error("Booking details not found");
+      }
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }

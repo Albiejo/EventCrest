@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { addABooking , getAllBookingsByUser , getAllBookingsByVendor , getAllBookingsById , updateStatusById , countTotalBookingsByUser,
-  MarkBookingCancel,checkIfDatePresent,acquireLockForDate,releaseLockForDate
+  MarkBookingCancel,checkIfDatePresent,acquireLockForDate,releaseLockForDate,getAllBookings
 } from "../Service/bookingService";
 import moment from 'moment';
 
@@ -120,6 +120,17 @@ class BookingController{
           const date:string = req.body.date as string; console.log("date and type of date :",date , typeof date)
           const data = await MarkBookingCancel(bookingId , vendorId , date);
           res.status(200).json({data:data});
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ message: "Server Error" });
+        }
+      }
+
+
+      async getallBookings(req: Request, res: Response): Promise<void>{
+        try {
+          const bookings = await getAllBookings();
+          res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
           res.status(500).json({ message: "Server Error" });

@@ -29,6 +29,7 @@ import { UserSession } from "../util/Interfaces";
 import { OTP } from "../util/Interfaces";
 import { DecodedData } from "../util/Interfaces";
 import { Data } from "emoji-mart";
+import mailchimp from '@mailchimp/mailchimp_marketing';
 dotenv.config();
 
 
@@ -41,6 +42,7 @@ declare module "express-session" {
   }
 }
 
+//amazon s3 settings
 const s3 = new S3Client({
   credentials: {
     accessKeyId:process.env.ACCESS_KEY!,
@@ -51,6 +53,16 @@ const s3 = new S3Client({
 
 
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
+
+
+//newsletter settings from mailchimp 
+mailchimp.setConfig({
+  apiKey: "b0a219b6e00fc58ff5462687fae8fdce-us22",
+  server: "us22",
+});
+
+
+
 
 
 class UserController{
@@ -567,6 +579,25 @@ class UserController{
       res.status(500).json({message: "server error"});
     }
 
+  }
+
+
+  async subscribe(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      const audienceId = 'be2599e6c3';
+      const url = `/3.0/lists/${audienceId}/members`; 
+
+      const response = await mailchimp.lists.addListMember(url, {
+        email_address: email,
+        status: 'subscribed',
+      });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({message: "server error"});
+    }
   }
 };
 
