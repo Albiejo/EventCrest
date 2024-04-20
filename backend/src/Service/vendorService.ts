@@ -63,7 +63,7 @@ export const signup = async (email:string ,password:string, name:string , phone:
         const vendorData = await findvendorByEmail(email);
 
         // If the password matches, generate and return a JWT token
-        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+        const token = jwt.sign({ _id: existingVendor._id }, process.env.JWT_SECRET!, { expiresIn: "24h"});
 
         let refreshToken = existingVendor.refreshToken;
 

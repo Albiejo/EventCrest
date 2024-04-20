@@ -97,15 +97,11 @@ padding-left:30%;
 
 .userTyping {
     display: flex;
-    align-items: center;
-    height: 20px; /* Adjust height as needed */
-    padding: 5px 10px; /* Add pabackground-color: #f0f0f0; /* Background color */
+    align-items: center; /* Background color */
     color: #000000; /* Text color */
-    border-radius: 5px; /* Rounded corners */
-    margin-top: 10px; /* Adjust margin-top as needed */
+    border-radius: 5px; /* Rounded corners */ /* Adjust margin-top as needed */
     margin-left: 10px;
     font-weight: bold; /* Specify font-weight value */
-    margin-top: 50%;
 }
 
 .userTyping::after {

@@ -51,14 +51,16 @@ const Messenger = () => {
         })
 
         socket.current.on("typingsent" , (senderId)=>{
+            console.log(typing);
             setTyping(true);
-            console.log("vendor typing");
+            console.log(typing);
             
         })
 
-        socket.current.on("stopTypingsent" , (senderId)=>{                 
+        socket.current.on("stopTypingsent" , (senderId)=>{   
+            console.log(typing);              
             setTyping(false);
-            console.log("vendor stopped typing")
+             console.log(typing);
         })
     
 
@@ -163,6 +165,7 @@ const Messenger = () => {
 
 
         const handleTyping = () => {
+           
             socket.current.emit('typing', { receiverId: receiverId });
         };
   
@@ -222,11 +225,11 @@ const Messenger = () => {
                        
                         <div ref={scrollRef}>
                            
-                            <Message message={m} own={m.senderId === user?._id} user={user} receiverdata={receiverdata}/>
+                            <Message message={m} own={m.senderId === user?._id} />
                         </div>
                     ))}
                      {typing && (
-                     <div className='userTyping'>Typing...</div>
+                     <span className='userTyping'>Typing...</span>
                     )}
                 </div>
             <div className="chatboxBottom">

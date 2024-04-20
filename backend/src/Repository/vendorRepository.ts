@@ -98,6 +98,7 @@ export const AddVendorReview = async(content: string, rating: number, username: 
       timestamp: new Date() ,
       Read:false
     })
+    
     const ratings = vendorData.reviews.map((review) => review.rating)
 
     vendorData.OverallRating = calculateOverallRating(ratings);

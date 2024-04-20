@@ -144,9 +144,19 @@ const MyNavbar=()=> {
             </MenuItem>
 
 
+            <MenuItem className="flex items-center gap-2"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <i className="fa-solid fa-video"></i>
+                <Link to="/live">
+              <Typography variant="small" className="font-medium font-bold"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                Go live
+              </Typography>
+              </Link>
+            </MenuItem>
+
+
             <hr className="my-2 border-blue-gray-50" />
             <MenuItem className="flex items-center gap-2 "  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-            <i class="fa-solid fa-right-from-bracket"></i>          
+            <i className="fa-solid fa-right-from-bracket"></i>          
               <Button variant="text" size="sm" className="hidden lg:inline-block" placeholder={undefined}
               onClick={handleLogout}  onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               Logout

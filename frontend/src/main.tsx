@@ -34,6 +34,7 @@ import VerifyEmail from './Components/common/VerifyEmail.tsx';
 import UsersList from './Pages/admin/UsersList.tsx';
 import UserPrivateRoute from './Components/user/UserPrivateRoute.tsx';
 import UserVendorProfile from './Pages/user/UserVendorProfile.tsx';
+import LiveStreaming from './Pages/user/LiveStream.tsx';
 //vendor
 import VendorApp from './Pages/vendor/VendorApp.tsx';
 import VendorsList from './Pages/admin/VendorsList.tsx';
@@ -46,7 +47,7 @@ import PaymentSuccess from './Pages/PaymentSuccess.tsx';
 import Messenger from './Pages/user/messenger/Messenger.tsx';
 
 import NotFound from './Components/Error/NotFound.tsx';
-
+import Room from './Components/Live/Room.tsx';
 
 
 
@@ -72,6 +73,8 @@ const router = createBrowserRouter(
               <Route path="/profile/*" element={<Profile/>}/>
               <Route path="/bookevent" element={<BookEventForm/>}/>
               <Route path="/payment-success" element={<PaymentSuccess/>}/> 
+              <Route path="/live" element={<LiveStreaming/>}/>
+              <Route path="/room/:roomId/:role_str" element={<Room/>}/>
           </Route>
     </Route>
 

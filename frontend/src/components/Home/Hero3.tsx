@@ -1,5 +1,5 @@
 import { Typography, Button, Card, CardBody } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
+
 
 const Hero3 = () => {
  
@@ -11,12 +11,14 @@ const Hero3 = () => {
               <Typography
                               variant="h1"
                               color="black"
+                              style={{ fontFamily: 'playfair display'}} 
                               className="mx-5 w-full leading-snug !text-3xl lg:max-w-xl lg:!text-3xl"  placeholder={undefined}              >
                 Why Event Crest?
               </Typography>
               <Typography
                               variant="paragraph"
                               color="black"
+                              style={{ fontFamily: 'playfair display'}} 
                               className="mx-5  w-full leading-snug !text-lg lg:max-w-xl lg:!text-lg"  placeholder={undefined}              >
                 Because Event Crest is the best choice for your memorable events.
               </Typography>

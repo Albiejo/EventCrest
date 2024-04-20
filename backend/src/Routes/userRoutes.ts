@@ -5,7 +5,7 @@ import multer from 'multer';
 import BookingController  from '../Controller/bookingController';
 import PaymentController  from '../Controller/paymentController';
 import vendorTypeController from '../Controller/vendorTypeController';
-
+import LiveController from '../Controller/livecontroller';
 
 //middleware
 import authenticate from '../Middleware/userAuth';
@@ -63,4 +63,7 @@ router.get('/getVendorTypes'  ,vendorTypeController.getVendorTypes);
 
 router.post('/subscribe',UserController.subscribe)
 
+router.get('/get-live',LiveController.getLive)
+router.post('/add-live',LiveController.addLive)
+router.patch('/change-live-status',LiveController.changeLiveStatus)
 export default router;
