@@ -109,11 +109,11 @@ const Profile = () => {
           </div>
 
           <div className="relative z-30 mx-auto -mt-16  w-full mr-2 max-w-30 rounded-full  p-1 ">
-            <div className="relative mt-4">
+            <div className="relative mt-4 pt-20">
               {!vendor?.isVerified && !vendor?.verificationRequest ? (
                 <Button
                   onClick={handleVerification}
-                  style={{ backgroundColor: "orange" }}
+                  style={{ backgroundColor: "#FF2500" }}
                   placeholder={undefined}
                   onPointerEnterCapture={undefined}
                   onPointerLeaveCapture={undefined}

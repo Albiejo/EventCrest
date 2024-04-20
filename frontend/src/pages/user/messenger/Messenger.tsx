@@ -4,11 +4,10 @@ import Conversation from '../../../Components/user/conversations/Conversation';
 import { useSelector } from 'react-redux';
 import UserRootState from '../../../Redux/rootstate/UserState';
 import { useEffect, useRef, useState } from 'react';
-import { axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
+import { axiosInstanceAdmin, axiosInstanceChat, axiosInstanceMsg, axiosInstanceVendor } from '../../../Api/axiosinstance';
 import {io} from 'socket.io-client'
 import Message from '../../../Components/user/messages/Message';
-
-
+import Picker from '@emoji-mart/react'
 
 
 
@@ -24,14 +23,14 @@ const Messenger = () => {
     const [arrivalMessage , setArrivalMessage] = useState(null)
     const [newMessage, setnewMessage] = useState("");
     const [activeUsers, setActiveUsers] = useState([]);
-
-
-
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [receiverdata , setReceiverdata] = useState(null)
     const scrollRef = useRef()
     const socket = useRef(io("ws://localhost:8900")); 
     const [typing , setTyping] = useState(false);
 
 
+    //for checking lastseen
     const sendHeartbeat = () => {
         socket.current.emit("heartbeat");
     };
@@ -41,6 +40,7 @@ const Messenger = () => {
 
 
     useEffect(()=>{
+
         socket.current = io("ws://localhost:8900")
         socket.current.on("getMessage" , (data)=>{
             setArrivalMessage({
@@ -60,8 +60,7 @@ const Messenger = () => {
             setTyping(false);
             console.log("vendor stopped typing")
         })
-
-
+    
 
     },[])
 
@@ -75,6 +74,7 @@ const Messenger = () => {
     },[user])
 
 
+    
     useEffect(()=>{
         arrivalMessage && currentchat?.members.includes(arrivalMessage.sender) &&
         setmessages((prev)=>[...prev , arrivalMessage])  
@@ -148,11 +148,18 @@ const Messenger = () => {
      };
 
 
-     //scrolling to bottom when new msg arrives
+
      useEffect(()=>{
         scrollRef.current?.scrollIntoView({ behavior:"smooth"})
+        fetchreceiverdata();
      },[messages])
 
+     const fetchreceiverdata = async()=>{
+        await axiosInstanceAdmin.get(`/getVendor?Id=${receiverId}`,{withCredentials:true})
+        .then((res)=>{
+            setReceiverdata(res.data.data)
+        })
+     }
 
 
         const handleTyping = () => {
@@ -176,6 +183,11 @@ const Messenger = () => {
         }, []);
 
         
+        const handleEmojiSelect = emoji => {
+            setnewMessage(prev => prev + emoji.native);
+        };
+    
+
 
 
   return (
@@ -207,8 +219,10 @@ const Messenger = () => {
                 <div className="chatboxTop">
              
                     {messages.map((m)=>(
+                       
                         <div ref={scrollRef}>
-                            <Message message={m} own={m.senderId === user?._id} user={user}/>
+                           
+                            <Message message={m} own={m.senderId === user?._id} user={user} receiverdata={receiverdata}/>
                         </div>
                     ))}
                      {typing && (
@@ -217,8 +231,16 @@ const Messenger = () => {
                 </div>
             <div className="chatboxBottom">
                 <textarea className='chatMessageInput' placeholder='write something..' onChange={handleInputChange} value={newMessage}  onBlur={handleStopTyping} ></textarea>
-               
+                {showEmojiPicker && (
+                        <Picker
+                            set='apple'
+                            onSelect={handleEmojiSelect} 
+                            style={{ position: 'absolute', bottom: '70px', right: '10px' }}
+                        />
+                    )}
+                 <button onClick={() => setShowEmojiPicker(prev => !prev)}>😀</button>
                 <button className='chatSubmitButton' onClick={handleSubmit}>send</button>
+              
             </div>
                 </> ):( <>
                 <span className='noConversationtext'>open a conversation to start a chat</span>
@@ -230,6 +252,8 @@ const Messenger = () => {
             
         </div>
     </div>
+
+
 </div>
 
 

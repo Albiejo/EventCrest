@@ -1,51 +1,55 @@
-
 import { useSelector } from 'react-redux';
-import AdminRootState from '../../Redux/rootstate/AdminState';
-import { axiosInstanceAdmin } from '../../Api/axiosinstance';
+import UserRootState from '../../Redux/rootstate/UserState';
 import { useEffect, useState } from 'react';
 import { Button, Card } from '@material-tailwind/react';
-import { format } from 'date-fns';
 import Pagination from '../../Components/common/Pagination';
+import { axiosInstanceAdmin } from '../../Api/axiosinstance';
+import { format } from 'date-fns';
+import { axiosInstance } from '../../Api/axiosinstance';
 import { toast } from 'react-toastify';
 
 
 
 
+const NotificationPage = () => {
 
-const AdminNotifications = () => {
-
-
-
-  const admin = useSelector((state: AdminRootState) => state.admin.admindata)
+  const user = useSelector((state:UserRootState)=>state.user.userdata)
   const [Notifications, setnotifications] = useState([]);
 
   const sortedNotifications = Notifications.slice().sort((a: { timestamp: string | number | Date; }, b: { timestamp: string | number | Date; }) => {
-   const dateA = new Date(a.timestamp);
-   const dateB = new Date(b.timestamp);
-   return dateB - dateA;
- });
- 
-
-const [currentPage, setCurrentPage] = useState(1);
-const notificationsPerPage = 5;
-const totalPages = Math.ceil(Notifications.length / notificationsPerPage);
-const startIndex = (currentPage - 1) * notificationsPerPage;
-const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificationsPerPage);
+    const dateA = new Date(a.timestamp);
+    const dateB = new Date(b.timestamp);
+    return dateB - dateA;
+  });
 
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const notificationsPerPage = 5;
+  const totalPages = Math.ceil(Notifications.length / notificationsPerPage);
+  const startIndex = (currentPage - 1) * notificationsPerPage;
+  const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificationsPerPage);
 
   const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
-  setCurrentPage(pageNumber);
-  };
-
+    setCurrentPage(pageNumber);
+    };
 
 
   const fetchdata=async()=>{
-    await axiosInstanceAdmin.get(`/getadmin`).then((res)=>{
-      const admin = res.data.data[0];
-      setnotifications(admin.notifications);
-     
+    await axiosInstanceAdmin.get(`/getUser?userId=${user?._id}`).then((res)=>{
+      setnotifications(res.data.notifications)
     })
+  }
+
+  const handleClick = async(id: any ,notifiID: any ) => {
+   
+    try {
+      await axiosInstance.patch( `/MarkAsRead?userId=${id}&notifiId=${notifiID}`,{ withCredentials: true } )
+      .then((res) => {
+        setnotifications(res.data.data.userdata.notifications);
+      })
+    } catch (error) {
+      toast.success(error.message);
+    }
   }
 
 
@@ -54,26 +58,12 @@ const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificat
     fetchdata();
      
   },[])
-  
-
-  const handleClick = async(id: any ,notifiID: any ) => {
+    
    
-    try {
-      await axiosInstanceAdmin.patch( `/MarkAsRead?id=${id}&notifid=${notifiID}`,{ withCredentials: true } )
-      .then((res) => {
-        setnotifications(res.data.data.adminData.notifications);
-      })
-    } catch (error) {
-      toast.warning(error.message);
-    }
-  }
 
-
-
-  return (
-    <>
-    <span className='font-bold'>Notifications</span>
-    <Card className="h-full overflow-scroll border-4 border-gray-700 mr-20 mt-16" placeholder={undefined}>
+    return (
+      <>
+      <Card className="h-full overflow-scroll border-4 border-gray-700 mr-48 " placeholder={undefined}>
        
        <div className="overflow-x-auto">
          <table  className="min-w-full divide-y divide-gray-200" >
@@ -106,10 +96,10 @@ const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificat
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     {
-                              notification.Read ?  <Button color="blue-gray" className="font-bold " placeholder={undefined} onClick={() => handleClick(admin?._id, notification._id)} style={{background:'green'}}>
+                              notification.Read ?  <Button color="blue-gray" className="font-bold " placeholder={undefined} onClick={() => handleClick(user?._id, notification._id)} style={{background:'green'}}>
                                           Mark Unread
                                       </Button> :
-                                      <Button color="blue-gray" className="font-bold" placeholder={undefined} onClick={() => handleClick(admin?._id, notification._id)}style={{background:'blue'}}>
+                                      <Button color="blue-gray" className="font-bold" placeholder={undefined} onClick={() => handleClick(user?._id, notification._id)}style={{background:'blue'}}>
                                           Mark Read
                                     </Button>
                           }
@@ -139,8 +129,9 @@ const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificat
            onPageChange={handlePageChange}
          />
        </Card>
-    </>
-  )
+      </>
+    );
+    
 }
 
-export default AdminNotifications
+export default NotificationPage

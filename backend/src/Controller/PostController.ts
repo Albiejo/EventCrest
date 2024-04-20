@@ -10,8 +10,9 @@ import sharp from "sharp";
 import { createPost, deletePost, getAllPosts, getPostById } from "../Service/postService";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
+import { ErrorMessages } from "../Util/enums";
 dotenv.config();
-
+import { CustomError } from "../Error/CustomError";
 
 
 //configuring s3
@@ -57,7 +58,7 @@ class PostController {
       res.status(201).json(post);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -86,7 +87,7 @@ class PostController {
       res.status(201).json(posts);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -116,7 +117,7 @@ class PostController {
 
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 };
@@ -125,11 +126,3 @@ class PostController {
 
 export default new PostController();
 
-export class CustomError extends Error {
-  statusCode: number;
-
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}

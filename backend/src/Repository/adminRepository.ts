@@ -1,6 +1,12 @@
 import Admin , { AdminDocument } from "../Model/Admin";
 
 
+
+
+
+
+
+
 export const findAdminByEmail = async (email: string): Promise<AdminDocument | null> => {
   try {
     return await Admin.findOne({ email });
@@ -25,10 +31,19 @@ export const updateNotificationstatus=async(adminId:string , notifiID:string)=>{
 
     notification.Read = !notification.Read;
     await adminData.save();
-    console.log("N status updated ", notification.Read)
     adminData = await Admin.findById(adminId);
     const message = notification.Read ? 'Notification marked as read' : 'Notification marked as unread';
     return {message:message , adminData:adminData}
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+export const getdata = ()=>{
+  try {
+    const admindata = Admin.find();
+    return admindata;
   } catch (error) {
     throw error;
   }

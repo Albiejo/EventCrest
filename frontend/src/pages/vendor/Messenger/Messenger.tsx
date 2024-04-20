@@ -7,10 +7,10 @@ import { useSelector } from 'react-redux';
 import UserRootState from '../../../Redux/rootstate/UserState';
 import VendorRootState from '../../../Redux/rootstate/VendorState';
 import { useEffect, useRef, useState } from 'react';
-import { axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
+import { axiosInstanceAdmin, axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
 import {io} from 'socket.io-client'
 import DefaultLayout from '../../../Layout/DefaultLayout';
-
+import Picker from '@emoji-mart/react'
 
 
 
@@ -20,12 +20,17 @@ const Messenger = () => {
     const vendorData = useSelector(
         (state: VendorRootState) => state.vendor.vendordata,
       );
+      console.log(vendorData);
+
     const [conversation , setconversation] = useState([]);
     const [currentchat , setcurrentchat]  = useState(null);
     const [messages , setmessages] = useState([]);
     const [arrivalMessage , setArrivalMessage] = useState(null)
     const [newMessage, setnewMessage] = useState("");
     const [typing , setTyping] = useState(false);
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [receiverdata , setReceiverdata] = useState(null)
+
 
     const scrollRef = useRef()
     const socket = useRef(io("ws://localhost:8900")); 
@@ -53,6 +58,8 @@ const Messenger = () => {
             setTyping(false);
         })
 
+
+     
     },[])
 
 
@@ -71,7 +78,7 @@ const Messenger = () => {
 
 
     useEffect(()=>{
-        console.log(vendorData)
+     
         socket.current.emit("adduser" , vendorData?._id);
         socket.current.on("getUsers" , (users)=>{
             console.log(users)
@@ -127,9 +134,6 @@ const Messenger = () => {
             text:newMessage,
             conversationId: currentchat?._id
         };
-
-   
-        console.log(receiverId);
         
         socket.current.emit("sendMessage" , {
             senderId : vendorData?._id,
@@ -154,9 +158,16 @@ const Messenger = () => {
      //scrolling to bottom when new msg arrives
      useEffect(()=>{
         scrollRef.current?.scrollIntoView({ behavior:"smooth"})
+        fetchreceiverdata();
      },[messages])
 
      
+        const fetchreceiverdata=async()=>{
+            await axiosInstanceAdmin.get(`/getUser?userId=${receiverId}`,{withCredentials:true})
+            .then((res)=>{
+                setReceiverdata(res.data)
+            })
+        }
         
         const handleTyping = () => {
             socket.current.emit('typing', { receiverId: receiverId });
@@ -172,6 +183,9 @@ const Messenger = () => {
         setnewMessage(e.target.value);
         handleTyping();
        };
+
+
+
 
 
   return (
@@ -202,7 +216,7 @@ const Messenger = () => {
                 <div className="chatboxTop">
                     {messages.map((m)=>(
                         <div ref={scrollRef}>
-                            <Message message={m} own={m.senderId === vendorData?._id} vendor={vendorData}/>
+                            <Message message={m} own={m.senderId === vendorData?._id} user={vendorData} receiverdata={receiverdata}/>
                         </div>
                     ))}
 
@@ -214,6 +228,16 @@ const Messenger = () => {
             <div className="chatboxBottom">
                 <textarea className='chatMessageInput' placeholder='write something..'onChange={handleInputChange} value={newMessage}  onBlur={handleStopTyping}></textarea>
                 <button className='chatSubmitButton' onClick={handleSubmit}>send</button>
+
+                {showEmojiPicker && (
+                        <Picker
+                            set='apple'
+                            onSelect={handleEmojiSelect} 
+                            style={{ position: 'absolute', bottom: '70px', right: '10px' }}
+                        />
+                    )}
+                 <button onClick={() => setShowEmojiPicker(prev => !prev)}>😀</button>
+                 
             </div>
                 </> ):( <span className='noConversationtext'>open a conversation to start a chat</span>)
             }

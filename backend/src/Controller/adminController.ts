@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { login , createRefreshTokenAdmin ,updateNotification} from "../Service/adminService";
+import { login , createRefreshTokenAdmin ,updateNotification , findadmindetails} from "../Service/adminService";
 import { CustomError } from "../Error/CustomError";
-
+import { ErrorMessages } from "../Util/enums";
 
 
 
@@ -21,7 +21,7 @@ class AdminController {
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: ErrorMessages.ServerError });
       }
     }
   }
@@ -32,7 +32,7 @@ class AdminController {
       res.status(200).json({ message: "admin logged out successfully.." });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "server error..." });
+      res.status(500).json({ message:  ErrorMessages.ServerError });
     }
   }
 
@@ -47,7 +47,7 @@ class AdminController {
       res.status(200).json({ token });
     } catch (error) {
       console.error('Error refreshing token:', error);
-      res.status(401).json({ message: 'Failed to refresh token' });
+      res.status(401).json({ message:  ErrorMessages.TokenRefreshError  });
     }
   }
   
@@ -64,7 +64,19 @@ class AdminController {
       }
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "server error..." });
+      res.status(500).json({ message:  ErrorMessages.ServerError  });
+    }
+  }
+
+
+  async getFulldetails (req: Request, res: Response):Promise<void>{
+    try {
+      
+      const data = await findadmindetails();
+      res.status(200).json({data:data});
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message:  ErrorMessages.ServerError  });
     }
   }
   

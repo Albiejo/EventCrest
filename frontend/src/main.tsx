@@ -21,7 +21,7 @@ import Dashboard from './Pages/admin/Dahboard.tsx';
 import AdminLogin from './Components/admin/Login.tsx'
 import AdminPrivateRoute from './Components/admin/AdminPrivateRoute.tsx';
 import Wallet from './Pages/admin/Wallet.tsx';
-import NotificationPage from './Pages/NotificationPage.tsx';
+import AdminNotifications from './Pages/admin/AdminNotifications.tsx';
 //common routes
 import HomePage from './Pages/HomePage.tsx'
 import ForgotPassword from './Components/common/ForgotPassword.tsx';
@@ -62,7 +62,7 @@ const router = createBrowserRouter(
               <Route path="/verify" element={<VerifyEmail />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path='/about' element={<AboutPage/>} />
+              <Route path='/about'        element={<AboutPage/>} />
               <Route path="/viewVendor" element={<UserVendorProfile/>}/>
               <Route path="/vendors" element={<VendorListing/>}/>
               <Route path="/chat" element={<Messenger/>}/>
@@ -89,7 +89,7 @@ const router = createBrowserRouter(
             <Route path="/admin/users" element={<UsersList />} />
             <Route path="/admin/vendor" element={<VendorProfile />} />
             <Route path="/admin/wallet" element={<Wallet />} />
-            <Route path="/admin/notifications" element={<NotificationPage />} />
+            <Route path="/admin/notifications" element={<AdminNotifications />} />
        </Route>
     </Route>
   

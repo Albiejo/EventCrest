@@ -5,7 +5,7 @@ import UserSidebar from "../../Components/user/Profile/Sidebar";
 import  ProfileCard  from "../../Components/user/Profile/ProfileCard";
 import BookingDetails from "../../Components/user/Profile/BookingDetails";
 import SingleBooking from "../../Components/user/Profile/SingleBooking";
-import NotificationPage from "../NotificationPage";
+import NotificationPage from "./NotificationPage";
 import NotFound from "../../Components/Error/NotFound";
 const Profile = () => {
   return (

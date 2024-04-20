@@ -36,6 +36,7 @@ const BookingDetails = () => {
     axiosInstance
     .get(`/get-bookings?userId=${user?._id}&page=${currentPage}&pageSize=10`, { withCredentials: true })
     .then((response) => {
+      console.log(response.data.bookings)
       setBookings(response.data.bookings);
       setTotalPages(response.data.totalPages); 
     })
@@ -87,7 +88,7 @@ const BookingDetails = () => {
                     <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                       <h5 className="font-bold bg-red-300">
                         <Link to={`/viewVendor?vid=${item.vendorId}`}>
-                         {item.vendorId.name}
+                        {item.vendorId?.name}
                         </Link>
                       
                       </h5>

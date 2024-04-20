@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { findAdminByEmail , updateNotificationstatus} from "../Repository/adminRepository";
+import { findAdminByEmail , updateNotificationstatus ,getdata} from "../Repository/adminRepository";
 import admin from "../Model/Admin";
 
 interface LoginResponse {
@@ -76,9 +76,18 @@ export const createRefreshTokenAdmin = async (refreshToken:string)=>{
 
 export const updateNotification = async(adminId:string ,notifiID:string ):Promise<object>=>{
   try {
-    console.log("Nid from service",notifiID)
+ 
     const data = await updateNotificationstatus(adminId ,notifiID)
     return data
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const findadmindetails = async ()=>{
+  try {
+    const data  = await getdata();
+    return data;
   } catch (error) {
     throw error;
   }

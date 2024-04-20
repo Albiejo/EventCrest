@@ -49,7 +49,10 @@ router.put('/add-review-reply',authenticate ,VendorController.addReviewReply)
 router.get('/booking-details',authenticate ,BookingController.getAllBookings);
 router.get('/single-booking-details',authenticate ,BookingController.getBookingsById);
 router.put('/update-booking-status',authenticate ,BookingController.updateStatus)
-
+router.get('/getallBookings',authenticate ,BookingController.getallBookings)
 router.post('/verification-request',authenticate ,VendorController.sendVerifyRequest)
+
+router.patch('/MarkAsRead' , authenticate , VendorController.MarkasRead)
+
 
 export default router;

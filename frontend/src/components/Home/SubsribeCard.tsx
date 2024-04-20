@@ -1,7 +1,43 @@
 import { Button, Input, Typography } from '@material-tailwind/react'
-import React from 'react'
+import React, { useState } from 'react'
+import { axiosInstance } from '../../Api/axiosinstance';
+import { toast } from 'react-toastify';
+import { error } from '@material-tailwind/react/types/components/input';
 
-const SubsribeCard = () => {
+
+
+
+
+
+
+const SubsribeCard: React.FC = () => {
+
+
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState('');
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await axiosInstance.post('/subscribe', { email } , {withCredentials:true})
+      .then((res) => {
+         console.log(res.data);
+         toast.success("successfully subscribed to eventcrest.")
+         setSubscribed(true);
+      }).catch((err) => {
+        setError("Please try again later.");
+        console.log(err.message);
+      });    
+  }catch (error) {
+    console.error('Subscription error:', error);
+    toast.warning('Failed to subscribe. Please try again later.');
+  }
+}
+
+
+
   return (
     <div className="pb-5 p-10">
       <div className="container items-center justify-center">
@@ -14,14 +50,23 @@ const SubsribeCard = () => {
             <Typography className="md:w-9/12 text-base" color="white"  placeholder={undefined}>
               Get news in your inbox every week! We hate spam too, so no worries about this.
             </Typography>
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 md:flex-row">
+            <form onSubmit={handleSubmit} className="mt-8 flex flex-col items-center justify-center gap-4 md:flex-row">
               <div className="w-full md:w-auto">
-                <Input label="Email" color="white" crossOrigin={undefined} />
+                <Input
+                  label="Email"
+                  color="white"
+                  crossOrigin={undefined}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
-              <Button size="md" className="w-full md:w-auto lg:w-32" fullWidth color="white"  placeholder={undefined}>
+              <Button size="md" className="w-full md:w-auto lg:w-32" fullWidth color="white" type="submit"  placeholder={undefined}>
                 Subscribe
               </Button>
-            </div>
+            </form>
+            {error && <Typography className="text-red-500"  placeholder={undefined}>{error}</Typography>}
+            {subscribed && <Typography className="text-green-500"  placeholder={undefined}>Subscribed successfully!</Typography>}
           </div>
         </div>
       </div>

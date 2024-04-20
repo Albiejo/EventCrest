@@ -186,7 +186,7 @@ export async function requestForVerification(vendorId:string){
     const data=await Vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:true}})
     return data;
   } catch (error) {
-    
+    throw error;
   }
 }
 
@@ -197,6 +197,29 @@ export async function updateVerificationStatus(vendorId:string,status:string){
     const data=await Vendor.findByIdAndUpdate(vendorId,{$set:{verificationRequest:false,isVerified: status === "Accepted"}})
     return data;
   } catch (error) {
-    
+    throw error;
+  }
+}
+
+
+export const updateNotificationstatus =async(vendorid:string , notifid:string)=>{
+  try {
+    let vendordata = await Vendor.findById(vendorid);
+    if (!vendordata) {
+      throw new Error('User not found');
+    }
+
+    const notification = vendordata.notifications.find((notif) => notif._id.toString() === notifid);
+    if (!notification) {
+      throw new Error('Notification not found');
+    }
+
+    notification.Read = !notification.Read;
+    await vendordata.save();
+    const message = notification.Read ? 'Notification marked as read' : 'Notification marked as unread';
+    vendordata = await Vendor.findById(vendorid);
+    return {message: message, vendordata:vendordata};
+  } catch (error) {
+    throw error;
   }
 }

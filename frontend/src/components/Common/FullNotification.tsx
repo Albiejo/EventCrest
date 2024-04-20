@@ -1,16 +1,10 @@
 import React, {  useState } from 'react'
-import { Button, Card, Typography } from "@material-tailwind/react";
+import { Button, Card } from "@material-tailwind/react";
 import Pagination from './Pagination';
 import { axiosInstance } from '../../Api/axiosinstance';
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 import { axiosInstanceAdmin } from '../../Api/axiosinstance';
-
-
-// interface FullNotificationProps {
-//   notifications: any[]; 
-//   id: string | undefined; 
-// }
 
 
 
@@ -31,14 +25,17 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
         return dateB - dateA;
       });
 
+
       
     const [currentPage, setCurrentPage] = useState(1);
     const notificationsPerPage = 5;
     const totalPages = Math.ceil(notifications.length / notificationsPerPage);
     const startIndex = (currentPage - 1) * notificationsPerPage;
     const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificationsPerPage);
-    const [read , setRead] = useState(false)
-        const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
+    const [userdata , setuserdata] = useState([])
+const read = true
+
+    const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
         setCurrentPage(pageNumber);
         };
     
@@ -50,15 +47,7 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
         try {
           await axiosInstanceToUse.patch( isUser ? `/MarkAsRead?userId=${id}&notifiId=${notifiID}` : `/MarkasRead?id=${id}&notifid=${notifiID}` ,{ withCredentials: true } )
           .then((res) => {
-            
-              if(res.data.data.message ==="Notification marked as read"){
-                 setRead(true)
-               
-
-              }else if(res.data.data.message ==="Notification marked as unread"){
-                  setRead(false)
-                 
-              }
+            setuserdata(res.data.data.data)
           })
         } catch (error) {
           toast.success(error.message);
@@ -70,46 +59,38 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 
     return (
        <Card className="h-full overflow-scroll mr-36  border-4 border-gray-700 " placeholder={undefined}>
-         <table className="w-full min-w-max table-auto text-left">
-           <thead>
-           <tr>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
-                Message
-              </Typography>
+       
+       <div className="overflow-x-auto">
+         <table  className="min-w-full divide-y divide-gray-200" >
+          
+         <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Notification
             </th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
-                Time
-              </Typography>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Times
             </th>
-            <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-              <Typography variant="small" color="blue-gray" className="font-normal leading-none opacity-70" placeholder={undefined}>
-                Action
-              </Typography>
-            </th>
+            <th className="px-6 py-3"></th>
           </tr>
-           </thead>
-           <tbody>
-             {notifications.length > 0 ? (
-               rowsForPage.map((notification: { message: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; timestamp: string | number | Date; _id: any; }, index: React.Key | null | undefined) => (
-                
-                 <tr key={index} className="p-4 border-b border-blue-gray-50">
-                   <td className="flex items-center  ">
-                    <Typography variant="small" color="blue-gray" className="font-normal flex-grow" placeholder={undefined}>
-                       {notification.message}
-                    </Typography>
-                   </td>
+        </thead>
 
-                   <td className="flex items-center  ">
-                    <Typography variant="small" color="blue-gray" className="font-normal flex-grow" placeholder={undefined}>
-                    {format(new Date(notification.timestamp), 'MMMM dd, yyyy h:mm a')}
-                    </Typography>
-                   </td>
 
-                   <td className="flex items-center justify-end">
-
-                    {
+        <tbody className="bg-white divide-y divide-gray-200">
+      {notifications.length > 0 ? 
+      <>
+      
+      {rowsForPage.map((notification: { message: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; timestamp: string | number | Date; _id: any; }, index: React.Key | null | undefined)  => (
+           
+           <tr key={index}>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">{notification.message}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">{format(new Date(notification.timestamp), 'MMMM dd, yyyy h:mm a')}</div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              {
                         read ?  <Button color="blue-gray" className="font-bold " placeholder={undefined} onClick={() => handleClick(id, notification._id)} style={{background:'green'}}>
                                     Mark Unread
                                 </Button> :
@@ -117,20 +98,26 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
                                     Mark Read
                                </Button>
                     }
-                  
-                   </td>
-                 </tr>
-               ))
-             ) : (
-               <tr>
+              </td>
+            </tr>
+
+          ))}
+      </> :
+      <>
+        <tr>
                  <td colSpan="2" className="p-4">
                    No new notifications.
                  </td>
                </tr>
-             )}
-           </tbody>
+
+      </>}
+
+      
+          
+    </tbody>
          </table>
-         {/* Assuming Pagination is a custom component that you've implemented */}
+        </div>
+        
          <Pagination
            currentPage={currentPage}
            totalPages={totalPages}

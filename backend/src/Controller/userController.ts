@@ -29,6 +29,8 @@ import { UserSession } from "../util/Interfaces";
 import { OTP } from "../util/Interfaces";
 import { DecodedData } from "../util/Interfaces";
 import { Data } from "emoji-mart";
+import mailchimp from '@mailchimp/mailchimp_marketing';
+import { ErrorMessages } from "../Util/enums";
 dotenv.config();
 
 
@@ -41,6 +43,7 @@ declare module "express-session" {
   }
 }
 
+//amazon s3 settings
 const s3 = new S3Client({
   credentials: {
     accessKeyId:process.env.ACCESS_KEY!,
@@ -51,6 +54,16 @@ const s3 = new S3Client({
 
 
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
+
+
+//newsletter settings from mailchimp 
+mailchimp.setConfig({
+  apiKey: "b0a219b6e00fc58ff5462687fae8fdce-us22",
+  server: "us22",
+});
+
+
+
 
 
 class UserController{
@@ -81,7 +94,7 @@ class UserController{
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -133,7 +146,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -151,7 +164,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -167,7 +180,7 @@ class UserController{
       
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -178,7 +191,7 @@ class UserController{
       res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -212,7 +225,7 @@ class UserController{
       res.status(200).json({ users, pageNumber });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "server error..." });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -232,7 +245,7 @@ class UserController{
       res.status(200).json({ message: "User block status updated." });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -255,7 +268,7 @@ class UserController{
       }
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -282,7 +295,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -302,7 +315,7 @@ class UserController{
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -338,7 +351,7 @@ class UserController{
       res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -364,7 +377,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -410,7 +423,7 @@ class UserController{
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -437,9 +450,12 @@ class UserController{
       
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
+
+
+
 
   async getFavoriteVendors(req: Request, res: Response): Promise<void>{
     try {
@@ -461,9 +477,12 @@ class UserController{
 
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
+
+
+
 
   async UpdatePasswordController(req: Request, res: Response): Promise<void> {
     
@@ -490,7 +509,7 @@ class UserController{
 
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -549,7 +568,7 @@ class UserController{
       res.status(error.statusCode).json({ message: error.message });
     } else {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
   }
@@ -564,9 +583,28 @@ class UserController{
         res.status(200).json({data:data});
       }
     } catch (error) {
-      res.status(500).json({message: "server error"});
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
 
+  }
+
+
+  async subscribe(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      const audienceId = 'be2599e6c3';
+      const url = `/3.0/lists/${audienceId}/members`; 
+
+      const response = await mailchimp.lists.addListMember(url, {
+        email_address: email,
+        status: 'subscribed',
+      });
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.log(error)
+      res.status(500).json({ message: ErrorMessages.ServerError});
+    }
   }
 };
 

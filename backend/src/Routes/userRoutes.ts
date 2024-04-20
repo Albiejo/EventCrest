@@ -61,6 +61,6 @@ router.patch('/markCancel' , authenticate,BookingController.MarkasCancel)
 
 router.get('/getVendorTypes'  ,vendorTypeController.getVendorTypes);
 
-
+router.post('/subscribe',UserController.subscribe)
 
 export default router;

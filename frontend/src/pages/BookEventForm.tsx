@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import UserRootState from '../Redux/rootstate/UserState';
 import { useSelector } from 'react-redux';
-
+import DatePicker from 'react-datepicker';
 
 
 interface FormValues {
@@ -123,6 +123,7 @@ const BookEventForm: React.FC = () => {
                     onPointerLeaveCapture={undefined}
                     crossOrigin={undefined}
                   />
+                   
                  
                 </div>
                 <div className="mb-4">
