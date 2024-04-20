@@ -19,7 +19,8 @@ const navigate = useNavigate()
                     variant="h1"
                     color="white"
                     className="mx-5 w-full leading-snug text-2xl md:text-3xl lg:max-w-xl" // Adjust text size for different screens
-                    placeholder={undefined}          
+                    placeholder={undefined}  
+                    style={{ fontFamily: 'playfair display'}}        
                   >
                     Make Your Events Memorable
                   </Typography>
@@ -33,6 +34,7 @@ const navigate = useNavigate()
                 <Button
                           color="gray"
                           className="w-full px-4 md:w-[15rem]"
+                          style={{ fontFamily: 'playfair display'}} 
                           onClick={() => { navigate('/vendors'); } }  placeholder={undefined}        >
                   I'm looking for a vendor
                 </Button>

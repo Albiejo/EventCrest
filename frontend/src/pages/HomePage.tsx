@@ -6,9 +6,8 @@ const VendorList = lazy(() => import('../Components/home/VendorList'));
 const Hero2 = lazy(() => import('../Components/home/Hero2'));
 const Hero3 = lazy(() => import('../Components/home/Hero3'));
 const Hero4 = lazy(() => import('../Components/home/Hero4'));
-const Vtypecarousel = lazy(() => import('../Components/home/Vtypecarousel'));
-import LoadingSpinner from '../Components/common/LoadingSpinner';
 
+import LoadingSpinner from '../Components/common/LoadingSpinner';
 
 function Home() {
 
@@ -23,7 +22,6 @@ function Home() {
         <Hero2 />
         <Hero3 />
         <Hero4 />
-        <Vtypecarousel/>
         <Footer />
       </Suspense>
     </>

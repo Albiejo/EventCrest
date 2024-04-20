@@ -525,6 +525,7 @@ class UserController{
     let imageUrl="";
 
     if (req.file) {
+      
       const buffer = await sharp(req.file?.buffer)
         .resize({ height: 1200, width: 1200, fit: "contain" })
         .toBuffer();

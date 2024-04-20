@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
 
 
     socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-        console.log(text)
+        
         const user = getUser(receiverId);
         if (user) {
             io.to(user.socketId).emit("getMessage", {
@@ -74,17 +74,17 @@ io.on("connection", (socket) => {
             console.error('User not found:', receiverId);
         }
     });
-    
+
 
 
     socket.on("typing", ({ receiverId }) => {
        
         const user = getUser(receiverId); 
         if (user) {
-            console.log(user);
             io.to(user.socketId).emit("typingsent", {
                 senderId: socket.id,
             });
+      
         } else {
             console.error('User not found:', receiverId);
             console.log(users)

@@ -305,6 +305,7 @@ class VendorController{
           const rating :number = req.body.rate as number;
           let username :string | undefined = req.query.username as string | undefined;
           const vendorid :string=req.query.vendorid as string;
+         
           if(username===undefined){
             username="GuestUser"
           }

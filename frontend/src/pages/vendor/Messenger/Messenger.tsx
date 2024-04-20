@@ -20,7 +20,7 @@ const Messenger = () => {
     const vendorData = useSelector(
         (state: VendorRootState) => state.vendor.vendordata,
       );
-      console.log(vendorData);
+
 
     const [conversation , setconversation] = useState([]);
     const [currentchat , setcurrentchat]  = useState(null);
@@ -35,9 +35,6 @@ const Messenger = () => {
     const scrollRef = useRef()
     const socket = useRef(io("ws://localhost:8900")); 
 
-
-
-
     useEffect(()=>{
         socket.current = io("ws://localhost:8900")
         socket.current.on("getMessage" , (data)=>{
@@ -49,18 +46,20 @@ const Messenger = () => {
         })
 
         socket.current.on("typingsent" , (senderId)=>{
-            console.log("user typing ")
+            console.log(typing)
             setTyping(true);
+            console.log(typing)
         })
 
         socket.current.on("stopTypingsent" , (senderId)=>{
-            console.log("user stopped typing")
+            console.log(typing)
             setTyping(false);
+            console.log(typing)
         })
 
 
      
-    },[])
+    },[typing])
 
 
 
@@ -184,7 +183,10 @@ const Messenger = () => {
         handleTyping();
        };
 
-
+       const handleEmojiSelect = emoji => {
+        console.log("emoji is",emoji , emoji.native)
+        setnewMessage(prev => prev + emoji.native);
+    };
 
 
 
@@ -216,7 +218,7 @@ const Messenger = () => {
                 <div className="chatboxTop">
                     {messages.map((m)=>(
                         <div ref={scrollRef}>
-                            <Message message={m} own={m.senderId === vendorData?._id} user={vendorData} receiverdata={receiverdata}/>
+                            <Message message={m} own={m.senderId === vendorData?._id} />
                         </div>
                     ))}
 

@@ -6,6 +6,9 @@ import {
   } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import VendorCard from "./VendorListingCard";
+import LiveEvents from "./LiveEvents";
+
+
 
 interface Vendors {
     _id: string;
@@ -41,15 +44,24 @@ const VendorList=()=> {
 
     return (
         <>
-        <div style={{ padding:"40px"}} className="bg-white sm-flex">
-        <Typography
-        variant="h5"
-        color="black"
-        className="mx-5 w-full leading-snug !text-3xl lg:max-w-xl lg:!text-3xl mb-5 font-bold"
-        placeholder={undefined}>
-            TOP RATED VENDORS
-      </Typography>
-      
+        <div style={{ padding:"40px"}} className="bg-white sm-flex ">
+            <section className="mt-10 mb-32 mx-20 items-center">
+                <h1 style={{ fontFamily: 'playfair display', fontSize: '30px' }} className="text-center mb-10">
+                EXPLORE &nbsp;LIVE &nbsp;EVENTS
+                </h1>
+              <LiveEvents />
+            </section>  
+       
+            <Typography
+                variant="h5"
+                color="black"
+                className="mx-auto w-full leading-snug text-center lg:max-w-xl lg:text-3xl mb-5 font-bold"
+                placeholder={undefined}
+                style={{ fontFamily: 'playfair display'}} 
+              >
+                 TOP RATED VENDORS
+            </Typography>
+
         <div style={{ display: 'flex',flexWrap:"wrap"}}> 
         {vendors.map((vendor, index) => (
           <>    
