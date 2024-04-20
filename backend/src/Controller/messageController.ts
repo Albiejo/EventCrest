@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import messageModel from '../Model/MessageModel';
+import { ErrorMessages } from "../Util/enums";
 
 
 
@@ -21,7 +22,7 @@ class messageController{
             res.status(200).json(response);
         } catch (error) {
             console.log(error)
-            res.status(500).json({ message: "Server Error" });
+            res.status(500).json({ message:ErrorMessages.ServerError });
         }
     }
 
@@ -34,7 +35,7 @@ class messageController{
             res.status(200).json(messages);
         } catch (error) {
             console.log(error);
-            res.status(500).json({ message: "Server Error" });
+            res.status(500).json({ message: ErrorMessages.ServerError});
             
         }
     }

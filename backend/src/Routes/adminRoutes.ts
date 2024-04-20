@@ -5,6 +5,7 @@ import VendorTypeController  from "../Controller/vendorTypeController";
 import  VendorController  from "../Controller/vendorController";
 import  PaymentController  from "../Controller/paymentController";
 import authenticate from "../Middleware/adminAuth";
+import adminController from "../Controller/adminController";
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.get('/logout' , AdminController.Adminlogout);
 router.get('/users' , UserController.allUsers);
 router.patch('/block-unblock' , UserController.Toggleblock)
 router.post('/refresh-token' , AdminController.createRefreshToken)
+router.get('/getadmin',adminController.getFulldetails)
 
 router.get('/getvendors' ,VendorController.getAllVendors )
 router.get('/getVendor', VendorController.getVendor)
@@ -35,6 +37,9 @@ router.get('/all-payment-details',PaymentController.getAllPayments);
 
 router.patch('/MarkasRead' , AdminController.MarkasRead)
 router.get('/getall-payment-details',PaymentController.getAllPayments)
+
+
+
 export default router;
 
 

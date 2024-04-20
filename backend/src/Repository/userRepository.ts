@@ -222,7 +222,7 @@ export const updateNotificationstatus=async(userid:string , notifiID:string)=>{
 
     notification.Read = !notification.Read;
     await userdata.save();
-    console.log("N status updated ", notification.Read)
+    console.log("notification toggled")
     const message = notification.Read ? 'Notification marked as read' : 'Notification marked as unread';
     userdata = await User.findById(userid);
     return {message: message, userdata:userdata};

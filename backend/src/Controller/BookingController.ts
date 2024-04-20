@@ -2,7 +2,14 @@ import { Request, Response } from "express";
 import { addABooking , getAllBookingsByUser , getAllBookingsByVendor , getAllBookingsById , updateStatusById , countTotalBookingsByUser,
   MarkBookingCancel,checkIfDatePresent,acquireLockForDate,releaseLockForDate,getAllBookings
 } from "../Service/bookingService";
+
 import moment from 'moment';
+import { ErrorMessages } from "../Util/enums";
+
+
+
+
+
 
 class BookingController{
 
@@ -41,7 +48,7 @@ class BookingController{
 
           } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: "Server Error" });
+            return res.status(500).json({ message:ErrorMessages.ServerError});
           }
     }
 
@@ -64,7 +71,7 @@ class BookingController{
           res.status(201).json({bookings , totalPages });
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
@@ -78,7 +85,7 @@ class BookingController{
           res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
@@ -91,7 +98,7 @@ class BookingController{
           res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
    
@@ -108,7 +115,7 @@ class BookingController{
           res.status(201).json(bookings);
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
@@ -122,7 +129,7 @@ class BookingController{
           res.status(200).json({data:data});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
@@ -133,7 +140,7 @@ class BookingController{
           res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 }

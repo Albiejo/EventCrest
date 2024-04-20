@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import DefaultLayout from '../../Layout/DefaultLayout';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../Redux/rootstate/VendorState';
@@ -7,37 +7,21 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Button,
 } from "@material-tailwind/react";
-import { Bar } from 'react-chartjs-2';
 import { axiosInstanceVendor } from '../../Api/axiosinstance';
+
+
+
+
+
+
+
+
 
 const Dashboard: React.FC = () => {
 
   const vendor = useSelector((state:VendorRootState)=>state.vendor.vendordata)
-  const [bookingData, setBookingData] = useState(null);
 
-    useEffect(()=>{
-      fetchData(); 
-    },[])
-
-    const fetchData =async()=>{
-      await axiosInstanceVendor.get('/getallBookings').then((response)=>{
-        const formattedData = {
-          labels: response.data.bookings.map(item => item.createdAt),
-          datasets: [
-            {
-              label: 'Number of Bookings',
-              data: response.data.bookings.map(item => item.count),
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              borderColor: 'rgba(255, 99, 132, 1)',
-              borderWidth: 1,
-            },
-          ],
-        };
-        setBookingData(formattedData)
-      })
-    }
 
    
 
@@ -55,8 +39,8 @@ const Dashboard: React.FC = () => {
              {vendor?.totalBooking}
             </Typography>
           </CardBody>
-          <CardFooter className="pt-0 " placeholder={undefined}>
-            <Button placeholder={undefined}>Read More</Button>
+          <CardFooter className="pt-0 " placeholder={undefined} children={undefined}>
+            
           </CardFooter>
         </Card>
       </div>
@@ -87,8 +71,8 @@ const Dashboard: React.FC = () => {
           
             </Typography>
           </CardBody>
-          <CardFooter className="pt-0" placeholder={undefined}>
-            <Button placeholder={undefined}>Read More</Button>
+          <CardFooter className="pt-0" placeholder={undefined} children={undefined}>
+            
           </CardFooter>
         </Card>
       </div>
@@ -98,37 +82,19 @@ const Dashboard: React.FC = () => {
         <Card className="mt-6 w-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 " placeholder={undefined}>
           <CardBody placeholder={undefined}>
             <Typography variant="h5" color="blue-gray" className="mb-2" placeholder={undefined}>
-             TOTAL POST
+             TOTAL REVIEWS
             </Typography>
             <Typography placeholder={undefined}>
-            {vendor?.OverallRating}
+            {vendor?.reviews.length}
             </Typography>
           </CardBody>
-          <CardFooter className="pt-0" placeholder={undefined}>
-            <Button placeholder={undefined}>Read More</Button>
+          <CardFooter className="pt-0" placeholder={undefined} children={undefined}>
+            
           </CardFooter>
         </Card>
       </div>
   
     </div>
-
-{/* 
-    <div  className='mt-10 ml-4'>
-      <h2>Bookings Chart</h2>
-      <div style={{ height: '400px', width: '800px' }}>
-        <Bar
-          data={bookingData}
-          options={{
-            maintainAspectRatio: false,
-            scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
-          }}
-        />
-      </div>
-    </div> */}
 
 
   </DefaultLayout>

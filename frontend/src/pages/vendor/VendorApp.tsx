@@ -15,7 +15,7 @@ import Posts from "./Posts/Posts";
 import CreatePost from "./Posts/CreatePost";
 import BookingHistory from "./Booking/BookingHistory";
 import { Reviews } from "./Reviews";
-import NotificationPage from "../NotificationPage";
+import VendorNotifications from "./VendorNotifications";
 // import AddDates from "./Booking/Dates";
 import ViewBooking from "./Booking/ViewBooking";
 import Messenger from "./Messenger/Messenger";
@@ -165,7 +165,7 @@ const VendorApp = () => {
             element={
               <>
                 <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <NotificationPage />
+                <VendorNotifications />
               </>
             }
           />

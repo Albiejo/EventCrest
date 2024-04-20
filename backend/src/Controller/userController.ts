@@ -30,6 +30,7 @@ import { OTP } from "../util/Interfaces";
 import { DecodedData } from "../util/Interfaces";
 import { Data } from "emoji-mart";
 import mailchimp from '@mailchimp/mailchimp_marketing';
+import { ErrorMessages } from "../Util/enums";
 dotenv.config();
 
 
@@ -93,7 +94,7 @@ class UserController{
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -145,7 +146,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -163,7 +164,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -179,7 +180,7 @@ class UserController{
       
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -190,7 +191,7 @@ class UserController{
       res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -224,7 +225,7 @@ class UserController{
       res.status(200).json({ users, pageNumber });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "server error..." });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -244,7 +245,7 @@ class UserController{
       res.status(200).json({ message: "User block status updated." });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -267,7 +268,7 @@ class UserController{
       }
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -294,7 +295,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -314,7 +315,7 @@ class UserController{
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -350,7 +351,7 @@ class UserController{
       res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -376,7 +377,7 @@ class UserController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -422,7 +423,7 @@ class UserController{
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -449,9 +450,12 @@ class UserController{
       
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
+
+
+
 
   async getFavoriteVendors(req: Request, res: Response): Promise<void>{
     try {
@@ -473,9 +477,12 @@ class UserController{
 
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
+
+
+
 
   async UpdatePasswordController(req: Request, res: Response): Promise<void> {
     
@@ -502,7 +509,7 @@ class UserController{
 
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -561,7 +568,7 @@ class UserController{
       res.status(error.statusCode).json({ message: error.message });
     } else {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
   }
@@ -576,7 +583,7 @@ class UserController{
         res.status(200).json({data:data});
       }
     } catch (error) {
-      res.status(500).json({message: "server error"});
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
 
   }
@@ -596,7 +603,7 @@ class UserController{
       res.status(200).json({ success: true });
     } catch (error) {
       console.log(error)
-      res.status(500).json({message: "server error"});
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 };

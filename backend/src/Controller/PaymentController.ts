@@ -3,6 +3,7 @@ import { addNewPayment , getPayments , updateAdminWallet , CountTotalPayments} f
 const Stripe = require("stripe");
 require("dotenv").config();
 import { PaymentSession } from "../util/Interfaces";
+import { ErrorMessages } from "../Util/enums";
 
 
   
@@ -75,6 +76,7 @@ async makePayment(req: Request, res: Response) {
       res.status(201).json({payment})
     } catch (error) {
       console.log(error)
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -95,6 +97,7 @@ async makePayment(req: Request, res: Response) {
       res.status(200).json({payment , totalPages})
     } catch (error) {
       console.log(error)
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 

@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { createVendor , findvendorByEmail ,updateVerificationStatus, getTotalVendorsCount,findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId , updateVendorprofData  , addReviewReplyById , requestForVerification} from '../Repository/vendorRepository';
+import { createVendor , findvendorByEmail ,updateVerificationStatus, getTotalVendorsCount,findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId , updateVendorprofData  , addReviewReplyById , requestForVerification ,
+  updateNotificationstatus
+} from '../Repository/vendorRepository';
 import mongoose, { ObjectId } from 'mongoose';
 import vendor , { VendorDocument } from '../Model/Vendor';
 import { findVerndorIdByType } from '../Repository/vendorTypeRepository';
@@ -272,7 +274,7 @@ export const  verificationRequest=async(vendorId:string)=>{
     const data=await requestForVerification(vendorId)
     return data
   } catch (error) {
-    
+    throw error
   }
 }
 
@@ -282,6 +284,15 @@ export async function changeVerifyStatus(vendorId:string,status:string){
     const data=await updateVerificationStatus(vendorId,status)
     return data
   } catch (error) {
-    
+    throw error
   }
+}
+
+export const updateNotification =async(vendorid :string , notifiId:string)=>{
+try {
+  const data = await updateNotificationstatus(vendorid ,notifiId)
+  return data;
+} catch (error) {
+  throw error
+}
 }

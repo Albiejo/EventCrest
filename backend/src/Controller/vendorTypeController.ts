@@ -6,6 +6,7 @@ import {
   getSingleVendordata,
   updateVendorType
 } from "../Service/vendorTypeService";
+import { ErrorMessages } from "../Util/enums";
 
 class VendorTypeController  {
 
@@ -18,7 +19,7 @@ class VendorTypeController  {
       res.status(201).json(vendor);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -28,7 +29,7 @@ class VendorTypeController  {
       res.status(200).json(vendorTypes);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -48,7 +49,7 @@ class VendorTypeController  {
       res.status(200).json({ message: "vendor deleted" });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message: "server error..." });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -67,7 +68,7 @@ class VendorTypeController  {
       res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "Server Error" });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -87,7 +88,7 @@ class VendorTypeController  {
       res.status(200).json(result);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Server Error' });
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 

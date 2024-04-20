@@ -1,7 +1,7 @@
 import { Request , Response } from "express";
 import { signup , login , CheckExistingVendor , getVendors , toggleVendorBlock , getSingleVendor , ResetVendorPasswordService ,
   PushVendorReview,checkVendorCurrentPassword,changeVerifyStatus ,UpdateVendorPasswordService , updateVendorprof ,verificationRequest , addReviewReplyController ,
-  createRefreshToken } from "../Service/vendorService";
+  createRefreshToken , updateNotification} from "../Service/vendorService";
 import generateOtp from "../util/generateOtp";
 import { CustomError } from "../Error/CustomError";
 import { ObjectId } from "mongoose";
@@ -9,6 +9,7 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from "dotenv";
 import { vendorSession } from "../util/Interfaces";
+import { ErrorMessages } from "../Util/enums";
 const sharp = require('sharp');
 
 
@@ -58,7 +59,7 @@ class VendorController{
         }
       
     
-      console.log("vendor signup data stored in session :" ,req.session.vendor)
+    
       res.status(200).json({ "message":"OTP send to vendor's email for verification.." , "email":email });   
 
       }else{
@@ -71,7 +72,7 @@ class VendorController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -103,7 +104,7 @@ class VendorController{
             res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: 'Server Error' });
+            res.status(500).json({ message: ErrorMessages.ServerError});
           }
             
         }
@@ -116,7 +117,7 @@ class VendorController{
           res.status(200).json({ message: 'vendor logged out successfully' });
         } catch (error) {
             console.log(error);
-            res.status(500).json({message:"Server Error"})
+            res.status(500).json({ message: ErrorMessages.ServerError});
             
         }
       }
@@ -155,7 +156,7 @@ class VendorController{
             res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: "Server Error" });
+            res.status(500).json({ message: ErrorMessages.ServerError});
           }
         }
       }
@@ -177,7 +178,7 @@ class VendorController{
           
         } catch (error) {
           console.log(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message: ErrorMessages.ServerError});
         }
       }
 
@@ -202,7 +203,7 @@ class VendorController{
             res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: "Server Error" });
+            res.status(500).json({ message: ErrorMessages.ServerError});
           }
         }
       }
@@ -233,7 +234,7 @@ class VendorController{
           res.status(200).json({ vendors:vendors, totalPages:totalPages });
         }catch(error){
           console.log(error);
-          res.status(500).json({ message: "server error..." });
+          res.status(500).json({ message: ErrorMessages.ServerError});
         }
       } 
 
@@ -248,7 +249,7 @@ class VendorController{
           res.status(200).json({ message: "vendor block status toggled successfully." });
       } catch (error) {
           console.log(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message: ErrorMessages.ServerError});
       }
       }
 
@@ -270,7 +271,7 @@ class VendorController{
           }
         } catch (error) {
           console.log(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message: ErrorMessages.ServerError});
         }
       }
 
@@ -290,7 +291,7 @@ class VendorController{
              }
         } catch (error) {
          console.error(error);
-         res.status(500).json({ message: "Server Error" });
+         res.status(500).json({ message: ErrorMessages.ServerError});
         }
        }
 
@@ -314,7 +315,7 @@ class VendorController{
           res.status(200).json({message:"review added for vendor.."})
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message: ErrorMessages.ServerError});
         }
        }
 
@@ -322,6 +323,7 @@ class VendorController{
 
        async UpdateProfilePassword(req:Request , res: Response):Promise<void>{
         try {
+          
           const currentPassword = req.body.current_password;
           const newPassword = req.body.new_password;
           const vendorId: string = req.query.vendorid as string;
@@ -344,7 +346,7 @@ class VendorController{
             res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: 'Server Error' });
+            res.status(500).json({ message: ErrorMessages.ServerError});
           }
         }
        }
@@ -380,7 +382,7 @@ class VendorController{
                 res.status(200).json({ message: "New OTP sent to email" });
                } catch (error) {
                 console.error(error);
-                res.status(500).json({ message: "Server Error" });
+                res.status(500).json({ message: ErrorMessages.ServerError});
                }                                                                                                                                                                  
        }
 
@@ -474,7 +476,7 @@ class VendorController{
       } 
        catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
        }
       }
 
@@ -493,7 +495,7 @@ class VendorController{
           res.status(error.statusCode).json({ message: error.message });
         } else {
           console.error(error);
-          res.status(500).json({ message: "Server Error" });
+          res.status(500).json({ message: ErrorMessages.ServerError});
         }
     }
     
@@ -510,7 +512,7 @@ class VendorController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -527,8 +529,23 @@ class VendorController{
         res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: ErrorMessages.ServerError});
       }
+    }
+  }
+
+
+  async MarkasRead(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId:string  = req.query.Id as string;
+      const notifiID:string = req.query.notifiId as string;
+      const data  = await updateNotification(vendorId ,notifiID );
+      if(data){
+        res.status(200).json({data:data});
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
   
