@@ -7,7 +7,7 @@ import { Button, Card } from '@material-tailwind/react';
 import { format } from 'date-fns';
 import Pagination from '../../Components/common/Pagination';
 import { toast } from 'react-toastify';
-
+import ClearButton from '../../Components/common/ClearButton';
 
 
 
@@ -72,6 +72,7 @@ const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificat
 
   return (
     <>
+    <ClearButton/>
     <span className='font-bold'>Notifications</span>
     <Card className="h-full overflow-scroll border-4 border-gray-700 mr-20 mt-16" placeholder={undefined}>
        

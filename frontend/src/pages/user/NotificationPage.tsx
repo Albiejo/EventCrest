@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import UserRootState from '../../Redux/rootstate/UserState';
 import { useEffect, useState } from 'react';
 import { Button, Card } from '@material-tailwind/react';
@@ -7,7 +7,8 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 import { format } from 'date-fns';
 import { axiosInstance } from '../../Api/axiosinstance';
 import { toast } from 'react-toastify';
-
+import { setUserInfo } from '../../Redux/slices/UserSlice';
+import ClearButton from '../../Components/common/ClearButton';
 
 
 
@@ -15,7 +16,7 @@ const NotificationPage = () => {
 
   const user = useSelector((state:UserRootState)=>state.user.userdata)
   const [Notifications, setnotifications] = useState([]);
-
+  const dispatch = useDispatch();
   const sortedNotifications = Notifications.slice().sort((a: { timestamp: string | number | Date; }, b: { timestamp: string | number | Date; }) => {
     const dateA = new Date(a.timestamp);
     const dateB = new Date(b.timestamp);
@@ -46,6 +47,7 @@ const NotificationPage = () => {
       await axiosInstance.patch( `/MarkAsRead?userId=${id}&notifiId=${notifiID}`,{ withCredentials: true } )
       .then((res) => {
         setnotifications(res.data.data.userdata.notifications);
+        dispatch(setUserInfo(res.data.data.userdata));
       })
     } catch (error) {
       toast.success(error.message);
@@ -63,6 +65,7 @@ const NotificationPage = () => {
 
     return (
       <>
+      <ClearButton />
       <Card className="h-full overflow-scroll border-4 border-gray-700 mr-48 " placeholder={undefined}>
        
        <div className="overflow-x-auto">

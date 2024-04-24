@@ -22,11 +22,17 @@ import AdminLogin from './Components/admin/Login.tsx'
 import AdminPrivateRoute from './Components/admin/AdminPrivateRoute.tsx';
 import Wallet from './Pages/admin/Wallet.tsx';
 import AdminNotifications from './Pages/admin/AdminNotifications.tsx';
+
+
 //common routes
 import HomePage from './Pages/HomePage.tsx'
 import ForgotPassword from './Components/common/ForgotPassword.tsx';
 import ResetPassword from './Components/common/ResetPassword.tsx'
 import AboutPage from './Pages/AboutPage.tsx';
+import NotFound from './Components/Error/NotFound.tsx';
+import Room from './Components/Live/Room.tsx';
+
+
 //user
 import UserLoginForm from './Components/user/Login.tsx';
 import UserSignupForm from './Components/user/Signup.tsx'
@@ -46,8 +52,10 @@ import BookEventForm from './Pages/BookEventForm.tsx';
 import PaymentSuccess from './Pages/PaymentSuccess.tsx';
 import Messenger from './Pages/user/messenger/Messenger.tsx';
 
-import NotFound from './Components/Error/NotFound.tsx';
-import Room from './Components/Live/Room.tsx';
+
+//IMPORTING ROUTES FROM CONSTANTS
+import { USERROUTES } from './Constants/constants.ts';
+import { ADMINROUTES } from './Constants/constants.ts';
 
 
 
@@ -58,41 +66,41 @@ const router = createBrowserRouter(
    
     <Route path="/" element={<App/>}>
               <Route index={true}  path="/" element={<HomePage/>} />
-              <Route path="/login" element={<UserLoginForm />} />
-              <Route path="/signup" element={<UserSignupForm />} />
-              <Route path="/verify" element={<VerifyEmail />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path='/about'        element={<AboutPage/>} />
-              <Route path="/viewVendor" element={<UserVendorProfile/>}/>
-              <Route path="/vendors" element={<VendorListing/>}/>
-              <Route path="/chat" element={<Messenger/>}/>
+              <Route path={USERROUTES.USER_LOGIN} element={<UserLoginForm />} />
+              <Route path={USERROUTES.USER_SIGNUP} element={<UserSignupForm />} />
+              <Route path={USERROUTES.VERIFY} element={<VerifyEmail />} />
+              <Route path={USERROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
+              <Route path={USERROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+              <Route path={USERROUTES.ABOUT}       element={<AboutPage/>} />
+              <Route path={USERROUTES.VIEW_VENDOR} element={<UserVendorProfile/>}/>
+              <Route path={USERROUTES.VENDORS} element={<VendorListing/>}/>
+              <Route path={USERROUTES.CHAT} element={<Messenger/>}/>
               <Route path="*" element={<NotFound role={"user"}/>}/>
            {/* User Private Routes */}
           <Route path="" element={<UserPrivateRoute/>}>
               <Route path="/profile/*" element={<Profile/>}/>
-              <Route path="/bookevent" element={<BookEventForm/>}/>
-              <Route path="/payment-success" element={<PaymentSuccess/>}/> 
-              <Route path="/live" element={<LiveStreaming/>}/>
-              <Route path="/room/:roomId/:role_str" element={<Room/>}/>
+              <Route path={USERROUTES.BOOKEVENT} element={<BookEventForm/>}/>
+              <Route path={USERROUTES.PAYMENT_SUCCESS} element={<PaymentSuccess/>}/> 
+              <Route path={USERROUTES.LIVE} element={<LiveStreaming/>}/>
+              <Route path={USERROUTES.ROOM} element={<Room/>}/>
           </Route>
     </Route>
 
 
 
     
-    <Route path="/admin" element={<AdminApp/>}>
-            <Route index={true} path="/admin" element={<AdminLogin />} />
+    <Route path={ADMINROUTES.ADMIN_LOGIN}  element={<AdminApp/>}>
+            <Route index={true} path={ADMINROUTES.ADMIN_LOGIN} element={<AdminLogin />} />
             <Route path="*" element={<NotFound role={"admin"}/>}/>
       {/* Admin Private Routes */}
        <Route path="" element={<AdminPrivateRoute/>}>
-            <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/vendors" element={<VendorsList />} />
-            <Route path="/admin/vendor-types" element={<VendorTypes />} />
-            <Route path="/admin/users" element={<UsersList />} />
-            <Route path="/admin/vendor" element={<VendorProfile />} />
-            <Route path="/admin/wallet" element={<Wallet />} />
-            <Route path="/admin/notifications" element={<AdminNotifications />} />
+            <Route path={ADMINROUTES.ADMIN_DASHBOARD} element={<Dashboard />} />
+            <Route path={ADMINROUTES.ADMIN_VENDORS} element={<VendorsList />} />
+            <Route path={ADMINROUTES.ADMIN_VENDORTYPES} element={<VendorTypes />} />
+            <Route path={ADMINROUTES.ADMIN_USERS} element={<UsersList />} />
+            <Route path={ADMINROUTES.ADMIN_VENDOR} element={<VendorProfile />} />
+            <Route path={ADMINROUTES.ADMIN_WALLET} element={<Wallet />} />
+            <Route path={ADMINROUTES.ADMIN_NOTIFICATIONS} element={<AdminNotifications />} />
        </Route>
     </Route>
   

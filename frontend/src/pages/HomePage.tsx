@@ -9,8 +9,10 @@ const Hero4 = lazy(() => import('../Components/home/Hero4'));
 
 import LoadingSpinner from '../Components/common/LoadingSpinner';
 
-function Home() {
 
+
+
+function Home() {
 
 
   

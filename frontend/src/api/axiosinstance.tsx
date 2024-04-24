@@ -1,21 +1,21 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-    baseURL:'http://localhost:3000/api/user'
+    baseURL:'http://localhost:3001/api/user'
 })
 export const axiosInstanceAdmin = axios.create({
-    baseURL:'http://localhost:3000/api/admin'
+    baseURL:'http://localhost:3001/api/admin'
 })
 export const axiosInstanceVendor = axios.create({
-    baseURL:'http://localhost:3000/api/vendor'
+    baseURL:'http://localhost:3001/api/vendor'
 })
 
 export const axiosInstanceChat = axios.create({
-    baseURL:'http://localhost:3000/api/conversation'
+    baseURL:'http://localhost:3001/api/conversation'
 })
 
 export const axiosInstanceMsg = axios.create({
-    baseURL:'http://localhost:3000/api/messages'
+    baseURL:'http://localhost:3001/api/messages'
 })
 
 
@@ -100,7 +100,7 @@ axiosInstanceVendor.interceptors.request.use((config) =>{
 
     axiosInstanceAdmin.interceptors.response.use(
         (response) => {
-            // Do something with the response data
+            
             return response;
         },
         async (error) => {

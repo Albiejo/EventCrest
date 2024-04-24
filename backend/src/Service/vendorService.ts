@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createVendor , findvendorByEmail ,updateVerificationStatus, getTotalVendorsCount,findAllVendors ,UpdateVendorPassword ,AddVendorReview,findVerndorId , updateVendorprofData  , addReviewReplyById , requestForVerification ,
-  updateNotificationstatus
+  updateNotificationstatus ,clearNotification
 } from '../Repository/vendorRepository';
 import mongoose, { ObjectId } from 'mongoose';
 import vendor , { VendorDocument } from '../Model/Vendor';
@@ -295,4 +295,13 @@ try {
 } catch (error) {
   throw error
 }
+}
+
+export const clearalldata = async(vendorid:string):Promise<boolean>=>{
+  try {
+   const data  = await clearNotification(vendorid);
+   return data;
+  } catch (error) {
+    throw error ;
+  }
 }

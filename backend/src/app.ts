@@ -1,7 +1,7 @@
 import express, { RequestHandler } from 'express';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import connectDB from './config/db.config';
+import connectDB from './Config/db.config';
 import adminRoutes from "./Routes/adminRoutes"
 import { router as chatRoute } from './Routes/conversation';
 import { router as messageRoute } from './Routes/messageRoute';
@@ -56,6 +56,6 @@ app.use('/api/messages', messageRoute)
 
 const PORT = process.env.PORT;
 app.listen(PORT , ()=>{
-    console.log(`Server running on ${PORT}...`);
+    console.log(`BACKEND SERVER RUNNING ON ${PORT}...`);
     
 });

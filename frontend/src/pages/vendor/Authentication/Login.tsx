@@ -16,6 +16,10 @@ import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { useFormik } from "formik";
 import { validate } from "../../../Validations/loginVal";
 import { toast } from "react-toastify";
+import { VENDORROUTES } from "../../../Constants/constants";
+
+
+
 
 interface FormValues {
   email: string;
@@ -191,7 +195,7 @@ const VendorLoginForm = () => {
               onPointerLeaveCapture={undefined}
             >
               Don&apos;t have an account?
-              <Link to="/vendor/signup">
+              <Link to={VENDORROUTES.VENDOR_SIGNUP}>
                 <Typography
                   as="a"
                   href="#signup"

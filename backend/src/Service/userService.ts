@@ -7,12 +7,12 @@ import {
   UpdatePassword,
   addVendorToFavorites
   ,findUserById,
-  UpdateUserProfileDetails,getfavVendors,findbyIdandUpdate,updateNotificationstatus
+  UpdateUserProfileDetails,getfavVendors,findbyIdandUpdate,updateNotificationstatus,clearNotification
 } from "../Repository/userRepository";
 
 
 import User, { UserDocument } from "../Model/User";
-import generateOtp from '../util/generateOtp'
+import generateOtp from '../Util/generateOtp'
 import { CustomError } from "../Error/CustomError";
 import dotenv from 'dotenv';
 import vendor from "../Model/Vendor";
@@ -158,6 +158,7 @@ export const toggleUserBlock = async (userId: string): Promise<void> => {
   
     await Admin.save();
     console.log("notifi pushed",Admin);
+    
   } catch (error) {
     throw error;
   }
@@ -404,5 +405,15 @@ export const updateNotification = async(userid:string ,notifiID:string ):Promise
     return data
   } catch (error) {
     throw error;
+  }
+}
+
+
+export const clearalldata = async(userid:string):Promise<boolean>=>{
+  try {
+   const data  = await clearNotification(userid);
+   return data;
+  } catch (error) {
+    throw error ;
   }
 }

@@ -8,7 +8,8 @@
     "start": "node backend/src/app.ts",
     "server": "nodemon backend/src/app.ts",
     "client": "npm run dev --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "socket": "nodemon frontend/socket/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run socket\""
   },
   "keywords": [],
   "author": "",

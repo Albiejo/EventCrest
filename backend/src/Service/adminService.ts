@@ -35,7 +35,7 @@ export const login = async (email: string, password: string): Promise<LoginRespo
     existingAdmin.refreshToken = refreshToken;
     await existingAdmin.save();
 
-    const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!, { expiresIn: "1h"});
+    const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!, { expiresIn: '24h'});
 
     return {refreshToken , token, adminData: existingAdmin, message: "Successfully logged in.." };
   } catch (error) {

@@ -29,9 +29,11 @@ const VendorList=()=> {
     const [vendors,setVendors]=useState<Vendors[]>([])
 
     useEffect(()=>{
+      console.log("searching for vendor...");
         axiosInstance
       .get('/getvendors',{withCredentials:true})
       .then((response) => {
+        console.log(response.data)
         const sortedVendors = response.data.vendors.sort((a, b) => b.OverallRating - a.OverallRating);
         setVendors(sortedVendors);
       })
