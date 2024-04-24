@@ -38,7 +38,7 @@ router.get('/getVendor', VendorController.getVendor)
 router.patch('/updateProfilePassword' ,authenticate , VendorController.UpdateProfilePassword);
 
 router.post('/add-post' ,upload.single('image'),authenticate ,PostController.addNewPost);
-router.get('/posts',PostController.getPosts);
+router.get('/posts', PostController.getPosts);
 router.delete('/posts/:id',authenticate,PostController.deletePost);
 
 router.put('/updateProfile',authenticate ,upload.fields([{ name: 'coverpic', maxCount: 1 }, { name: 'logo', maxCount: 1 }]) ,VendorController.updateProfiledetails );                                                                                                                                                                                                                                                  
@@ -53,6 +53,6 @@ router.get('/getallBookings',authenticate ,BookingController.getallBookings)
 router.post('/verification-request',authenticate ,VendorController.sendVerifyRequest)
 
 router.patch('/MarkAsRead' , authenticate , VendorController.MarkasRead)
-
+router.patch('/ClearAll' ,authenticate ,VendorController.clearAllNotifications)
 
 export default router;

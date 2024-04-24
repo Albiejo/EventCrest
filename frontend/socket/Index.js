@@ -1,17 +1,21 @@
-const io = require('socket.io')(8900 , {
-    cors:{
-        origin:"http://localhost:5000"
+import { Server } from 'socket.io';
+
+const io = new Server(8900, {
+    cors: {
+        origin: "http://localhost:5000"
     }
 });
-
-
+    
 let users = [];
 
+
+//methods
 
 const addUser = (userId, socketId)=>{
     !users.some((user)=> user.userId === userId) && 
     users.push({userId, socketId , lastSeen: Date.now() })
 }
+
 
 const removeUser = (socketId)=>{
     users = users.filter((user)=>{
@@ -19,9 +23,11 @@ const removeUser = (socketId)=>{
     })
 }
 
+
 const getUser = (userId)=>{
     return users.find((user)=>user.userId === userId)
 }
+
 
 const updateUserLastSeen = (socketId) => {
     const user = users.find(user => user.socketId === socketId);
@@ -48,10 +54,12 @@ const emitActiveStatus = () => {
 
 
 
+
+
+
 io.on("connection", (socket) => {
   
-
-    console.log("user connected to socket");
+console.log("server started");
 
     
     socket.on("adduser" , (userId)=>{
@@ -106,7 +114,7 @@ io.on("connection", (socket) => {
     }
 });
 
-    //when disconnect 
+ 
     socket.on("disconnect" , ()=>{
         removeUser(socket.id);
         io.emit("getUsers", users);

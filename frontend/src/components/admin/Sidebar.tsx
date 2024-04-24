@@ -23,6 +23,12 @@ import { useNavigate } from 'react-router-dom';
 import { axiosInstanceAdmin } from "../../Api/axiosinstance"; 
 import { logout } from "../../Redux/slices/AdminSlice";
 import {  useDispatch } from "react-redux";
+import { ADMINROUTES } from "../../Constants/constants";
+
+
+
+
+
 
 export default function Sidebar() {
   
@@ -31,10 +37,10 @@ export default function Sidebar() {
 
   const handleLogout=(e: React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
-    axiosInstanceAdmin.get("/logout")
+    axiosInstanceAdmin.get(ADMINROUTES.ADMIN_LOGOUT)
       .then(() => {
         dispatch(logout());
-        navigate("/admin/login");
+        navigate(ADMINROUTES.ADMIN_LOGOUT);
       })
       .catch((error) => {
         console.log('here', error);
@@ -81,7 +87,7 @@ export default function Sidebar() {
          
             <hr className="my-2 border-blue-gray-50" />
             
-            <Link to="/admin/dashboard">
+            <Link to={ADMINROUTES.ADMIN_DASHBOARD}>
             <ListItem style={{ color: 'white' }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <UserCircleIcon className="h-5 w-5" />
@@ -90,7 +96,7 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <Link to="/admin/users">
+            <Link to={ADMINROUTES.ADMIN_USERS}>
             <ListItem  placeholder={undefined} style={{ color: 'white' }}>
               <ListItemPrefix  placeholder={undefined}>
               <i className="fa-solid fa-users"></i>
@@ -99,7 +105,7 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <Link to="/admin/vendors">
+            <Link to={ADMINROUTES.ADMIN_VENDORS}>
             <ListItem  placeholder={undefined} style={{ color: 'white' }}>
               <ListItemPrefix  placeholder={undefined}>
               <i className="fa-solid fa-user-tie"></i>
@@ -108,7 +114,7 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <Link to="/admin/notifications">
+            <Link to={ADMINROUTES.ADMIN_NOTIFICATIONS}>
             <ListItem  placeholder={undefined} style={{ color: 'white' }}>
               <ListItemPrefix  placeholder={undefined}>
               <i className="fa-solid fa-bell"></i>
@@ -118,7 +124,7 @@ export default function Sidebar() {
             </Link>
 
 
-            <Link to="/admin/wallet">
+            <Link to={ADMINROUTES.ADMIN_WALLET}>
               <ListItem  placeholder={undefined} style={{ color: 'white' }}>
               <ListItemPrefix  placeholder={undefined}>
               <i className="fa-solid fa-wallet"></i>

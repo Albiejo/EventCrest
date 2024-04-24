@@ -1,8 +1,12 @@
 import { Request , Response } from "express";
+
+
 import { signup , login , CheckExistingVendor , getVendors , toggleVendorBlock , getSingleVendor , ResetVendorPasswordService ,
   PushVendorReview,checkVendorCurrentPassword,changeVerifyStatus ,UpdateVendorPasswordService , updateVendorprof ,verificationRequest , addReviewReplyController ,
-  createRefreshToken , updateNotification} from "../Service/vendorService";
-import generateOtp from "../util/generateOtp";
+  createRefreshToken , updateNotification ,clearalldata} from "../Service/vendorService";
+
+
+import generateOtp from "../Util/generateOtp";
 import { CustomError } from "../Error/CustomError";
 import { ObjectId } from "mongoose";
 import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
@@ -39,7 +43,7 @@ const s3 = new S3Client({
 
 class VendorController{
 
-  async vendorSignup(req: Request, res: Response): Promise<void> {
+  async vendorSignup(req: Request, res: Response): Promise<Response> {
 
     try {
       const { email , password , name , phone , city,vendor_type } = req.body;
@@ -60,51 +64,51 @@ class VendorController{
       
     
     
-      res.status(200).json({ "message":"OTP send to vendor's email for verification.." , "email":email });   
+      return res.status(200).json({ "message":"OTP send to vendor's email for verification.." , "email":email });   
 
       }else{
 
         console.log("couldn't generate otp, error occcured ,please fix !!");
-        res.status(500).json({ message: `Server Error couldn't generate otp, error occcured ,please fix !!` });
+        return res.status(500).json({ message: `Server Error couldn't generate otp, error occcured ,please fix !!` });
       }
     } catch (error) {
       if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
+        return  res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: ErrorMessages.ServerError});
+        return res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
 
 
-  async createRefreshToken(req: Request, res: Response):Promise<void>{
+  async createRefreshToken(req: Request, res: Response):Promise<Response>{
     try {
      
       const { refreshToken } = req.body;
 
       const token = await createRefreshToken(refreshToken);
       
-      res.status(200).json({ token });
+      return res.status(200).json({ token });
 
     } catch (error) {
       console.error('Error refreshing token:', error);
-      res.status(401).json({ message: 'Failed to refresh token' });
+      return res.status(401).json({ message: 'Failed to refresh token' });
     }
   }
 
-      async VendorLogin(req:Request , res: Response): Promise <void> {
+      async VendorLogin(req:Request , res: Response): Promise <Response> {
         try {
             const {email,password} = req.body;
             const {refreshToken, token, vendorData, message } = await login(email, password);
             res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-            res.status(200).json({refreshToken , token, vendorData, message });
+            return  res.status(200).json({refreshToken , token, vendorData, message });
         } catch (error) {
           if (error instanceof CustomError) {
-            res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: ErrorMessages.ServerError});
+            return res.status(500).json({ message: ErrorMessages.ServerError});
           }
             
         }
@@ -122,15 +126,15 @@ class VendorController{
         }
       }
 
-      async verifyOtp(req:Request , res: Response):Promise<void>{
+      async verifyOtp(req:Request , res: Response):Promise<Response>{
         try {
 
           const otp = req.body.otp;
           const vendorData:vendorSession | undefined = req.session.vendor;
 
           if(!vendorData){
-            res.status(400).json({ error: "Session data not found. Please sign up again." });
-          return;
+            return  res.status(400).json({ error: "Session data not found. Please sign up again." });
+          
           }
 
           const email = vendorData.email;
@@ -146,17 +150,17 @@ class VendorController{
           const vendor_type=vendorData.vendor_type
           if(otp === otpCode){
            const vendor = await signup(email , password , name , phone , city,vendor_type);
-          res.status(201).json({ "message" : "vendor created" });
+           return  res.status(201).json({ "message" : "vendor created" });
           }else{
-            res.status(400).json({ error:"Invalid otp !!"});
+           return  res.status(400).json({ error:"Invalid otp !!"});
           }
 
         } catch (error) {
           if (error instanceof CustomError) {
-            res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: ErrorMessages.ServerError});
+            return res.status(500).json({ message: ErrorMessages.ServerError});
           }
         }
       }
@@ -170,7 +174,6 @@ class VendorController{
           if(vendor){
             const otp = await generateOtp(email);
             req.session.votp = {otp:otp ,email:email};
-            console.log("session data for password reset:",req.session.votp);
             res.status(200).json({ "message":"otp sent to vendor email for password updation request " , "email":email });
           }else{
             res.status(400).json({error:'Email not Registered with us !!'})            
@@ -183,7 +186,7 @@ class VendorController{
       }
 
 
-      async VerifyOtpForPassword(req:Request , res: Response):Promise<void>{
+      async VerifyOtpForPassword(req:Request , res: Response):Promise<Response>{
         try {
           const ReceivedOtp = req.body.otp;
           const generatedOtp = req.session.votp?.otp;
@@ -194,21 +197,21 @@ class VendorController{
 
           if(ReceivedOtp === generatedOtp){
             console.log("otp is correct , navigating vendor to update password.");
-            res.status(200).json({data:"otp is correct, please update password now"})
+            return res.status(200).json({data:"otp is correct, please update password now"})
           }else{
            throw new CustomError("Invalid OTP !!", 400);
           }
         } catch (error) {
           if (error instanceof CustomError) {
-            res.status(error.statusCode).json({ message: error.message });
+            return res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: ErrorMessages.ServerError});
+            return res.status(500).json({ message: ErrorMessages.ServerError});
           }
         }
       }
 
-      async getAllVendors(req: Request, res: Response): Promise<void>{
+      async getAllVendors(req: Request, res: Response): Promise<Response>{
         try{
           
           const page: number = parseInt(req.query.page as string) || 1; 
@@ -231,14 +234,14 @@ class VendorController{
           }
           const { vendors, totalVendorsCount } = await getVendors(page, pageSize , search.toString(),sortCriteria ,category);
           const totalPages = Math.ceil(totalVendorsCount / pageSize);
-          res.status(200).json({ vendors:vendors, totalPages:totalPages });
+          return res.status(200).json({ vendors:vendors, totalPages:totalPages });
         }catch(error){
           console.log(error);
-          res.status(500).json({ message: ErrorMessages.ServerError});
+          return res.status(500).json({ message: ErrorMessages.ServerError});
         }
       } 
 
-      async Toggleblock(req:Request , res: Response):Promise<void>{
+      async Toggleblock(req:Request , res: Response):Promise<Response>{
         try {
           const VendorId: string | undefined = req.query.VendorId as string | undefined;
           if (!VendorId) {
@@ -246,83 +249,75 @@ class VendorController{
           } 
           
           await toggleVendorBlock(VendorId);
-          res.status(200).json({ message: "vendor block status toggled successfully." });
+          return res.status(200).json({ message: "vendor block status toggled successfully." });
       } catch (error) {
           console.log(error);
-          res.status(500).json({ message: ErrorMessages.ServerError});
+          return  res.status(500).json({ message: ErrorMessages.ServerError});
       }
       }
 
 
-      async getVendor(req:Request , res: Response):Promise<void>{
+      async getVendor(req:Request , res: Response):Promise<Response>{
         try {
           const vendorId: string = req.query.Id as string; 
     
           if (!vendorId) {
-            res.status(400).json({ error: "Vendor ID is required." });
-            return;
+            return res.status(400).json({ error: "Vendor ID is required." });
           }
 
           const data = await getSingleVendor(vendorId);
           if(!data){
-            res.status(400).json({error:'Vendor not found , error occured'})
+            return res.status(400).json({error:'Vendor not found , error occured'})
           }else{
-            res.status(200).json({data:data})
+            return res.status(200).json({data:data})
           }
         } catch (error) {
           console.log(error);
-          res.status(500).json({ message: ErrorMessages.ServerError});
+         return res.status(500).json({ message: ErrorMessages.ServerError});
         }
       }
 
-      async ResetVendorPassword(req:Request , res: Response):Promise<void>{
-        
+      async ResetVendorPassword(req:Request , res: Response):Promise<Response>{
         try {
          const password = req.body.password;
          const confirmPassword = req.body.confirmPassword;
              if(password === confirmPassword){
-              console.log("session data for password reset:",req.session.votp);
-              
-               const email=req.session.votp.email;;
+               const email=req.session.votp.email;
                const status = await ResetVendorPasswordService(password , email); 
-               res.status(200).json({ message: "Password reset successfully." });
+               return res.status(200).json({ message: "Password reset successfully." });
              }else{
-               res.status(400).json({ error: "Passwords do not match." });
+               return res.status(400).json({ error: "Passwords do not match." });
              }
         } catch (error) {
          console.error(error);
-         res.status(500).json({ message: ErrorMessages.ServerError});
+         return res.status(500).json({ message: ErrorMessages.ServerError});
         }
        }
 
 
 
 
-       async addVendorReview(req:Request , res: Response):Promise<void>{
+       async addVendorReview(req:Request , res: Response):Promise<Response>{
         try {
           
           const content = req.body.content;
           const rating :number = req.body.rate as number;
-          let username :string | undefined = req.query.username as string | undefined;
-          const vendorid :string=req.query.vendorid as string;
-         
-          if(username===undefined){
-            username="GuestUser"
-          }
-          const status = await PushVendorReview(content,rating,username,vendorid);
+         const {vendorid , username } = req.query;
+
+          const status = await PushVendorReview(content,rating,username as string ,vendorid as string);
           if(!status){
-            res.status(400).json({error:`couldn't add reviews, some error occured`})
+            return res.status(400).json({error:`couldn't add reviews, some error occured`})
           }
-          res.status(200).json({message:"review added for vendor.."})
+           return res.status(200).json({message:"review added for vendor.."})
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message: ErrorMessages.ServerError});
+          return res.status(500).json({ message: ErrorMessages.ServerError});
         }
        }
 
 
 
-       async UpdateProfilePassword(req:Request , res: Response):Promise<void>{
+       async UpdateProfilePassword(req:Request , res: Response):Promise<Response>{
         try {
           
           const currentPassword = req.body.current_password;
@@ -338,52 +333,49 @@ class VendorController{
       
           const data = await UpdateVendorPasswordService(newPassword , vendorId); 
           if(!data){ 
-            res.status(400).json({error:"couldn't update password..internal error."})
+           return res.status(400).json({error:"couldn't update password..internal error."})
           }
 
-          res.status(200).json({message:"password updated successfully.."})
+          return res.status(200).json({message:"password updated successfully.."})
         } catch (error) {
           if (error instanceof CustomError) {
-            res.status(error.statusCode).json({ message: error.message });
+            return  res.status(error.statusCode).json({ message: error.message });
           } else {
             console.error(error);
-            res.status(500).json({ message: ErrorMessages.ServerError});
+            return  res.status(500).json({ message: ErrorMessages.ServerError});
           }
         }
        }
       
 
-       async resendOtp(req: Request, res: Response): Promise<void>{
+       async resendOtp(req: Request, res: Response): Promise<Response>{
                try {
                 const vendorData: vendorSession | undefined = req.session.vendor;
-                console.log("vendordata", vendorData);
 
                 if (!vendorData) {
-                  res.status(400).json({ error: "Session data not found. Please sign up again." });
-                  console.log("no session data found");
-                  return;
+                  return res.status(400).json({ error: "Session data not found. Please sign up again." });
+                  
                 } 
 
                 const email = vendorData.email;
                 const newOtp = await generateOtp(email);
 
                 if (!email) {
-                  res.status(400).json({ error: "Email not found in session data." });
-                  return;
+                  return res.status(400).json({ error: "Email not found in session data." });
                 }
 
                 if (req.session.vendor) {
                   req.session.vendor.otpCode = newOtp;
                 } else {
                   console.error("Session vendor data is unexpectedly undefined.");
-                  res.status(500).json({ message:"Server Error: Session vendor data is unexpectedly undefined." });
-                  return;
+                  return res.status(500).json({ message:"Server Error: Session vendor data is unexpectedly undefined." });
+
                 }
-                console.log("vendor session after resend" , req.session.vendor);
-                res.status(200).json({ message: "New OTP sent to email" });
+                
+                return res.status(200).json({ message: "New OTP sent to email" });
                } catch (error) {
                 console.error(error);
-                res.status(500).json({ message: ErrorMessages.ServerError});
+                return res.status(500).json({ message: ErrorMessages.ServerError});
                }                                                                                                                                                                  
        }
 
@@ -470,10 +462,7 @@ class VendorController{
         logoFile?.originalname,
         coverpicFile?.originalname
       );
-   
-
     res.status(200).json(updatedVendor)
-
       } 
        catch (error) {
         console.error(error);
@@ -483,20 +472,18 @@ class VendorController{
 
 
 
-    async addReviewReply(req: Request, res: Response): Promise<void>{
+    async addReviewReply(req: Request, res: Response): Promise<Response>{
       try {
-        const vendorId:string=req.query.vendorId as string;
-        const reviewId:string=req.query.reviewId as string;
         const content=req.body.content
-        
-        const vendorData=await addReviewReplyController(vendorId,content,reviewId)
-        res.status(200).json({vendorData:vendorData});
+        const {vendorId , reviewId} = req.query;
+        const vendorData=await addReviewReplyController(vendorId as string,content,reviewId as string)
+        return res.status(200).json({vendorData:vendorData});
       } catch (error) {
         if (error instanceof CustomError) {
-          res.status(error.statusCode).json({ message: error.message });
+        return res.status(error.statusCode).json({ message: error.message });
         } else {
           console.error(error);
-          res.status(500).json({ message: ErrorMessages.ServerError});
+        return  res.status(500).json({ message: ErrorMessages.ServerError});
         }
     }
     
@@ -519,18 +506,18 @@ class VendorController{
   }
     
 
-  async updateVerifyStatus(req: Request, res: Response): Promise<void> {
+  async updateVerifyStatus(req: Request, res: Response): Promise<Response> {
     try {
       const vendorId:string=req.body.vendorId as string;
       const status=req.body.status;
       const result=await changeVerifyStatus(vendorId,status)
-      res.status(200).json({result,message:"Status updated successfully!"})
+      return  res.status(200).json({result,message:"Status updated successfully!"})
     } catch (error) {
       if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
+        return res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: ErrorMessages.ServerError});
+        return res.status(500).json({ message: ErrorMessages.ServerError});
       }
     }
   }
@@ -538,15 +525,32 @@ class VendorController{
 
   async MarkasRead(req: Request, res: Response): Promise<void> {
     try {
-      const vendorId:string  = req.query.Id as string;
-      const notifiID:string = req.query.notifiId as string;
-      const data  = await updateNotification(vendorId ,notifiID );
+      const {Id ,notifiId } = req.query;
+      const data  = await updateNotification(Id as string,notifiId as string);
       if(data){
         res.status(200).json({data:data});
       }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: ErrorMessages.ServerError});
+    }
+  }
+
+
+
+  
+  async clearAllNotifications(req: Request, res: Response): Promise<void>{
+    try {
+      const vendorid:string  = req.query.userId as string; 
+      const data  = await clearalldata(vendorid)
+      res.status(200).json(data)
+    } catch (error) {
+      if (error instanceof CustomError) {
+        res.status(error.statusCode).json({ message: error.message });
+      } else {
+        console.error(error);
+        res.status(500).json({ message: ErrorMessages.ServerError});
+      }
     }
   }
   

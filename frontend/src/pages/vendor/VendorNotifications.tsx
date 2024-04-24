@@ -8,7 +8,7 @@ import { Button, Card } from '@material-tailwind/react'
 import Pagination from '../../Components/common/Pagination'
 import { format } from 'date-fns';
 import { toast } from 'react-toastify'
-
+import ClearButton from '../../Components/common/ClearButton'
 
 
 
@@ -74,6 +74,7 @@ const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
     <DefaultLayout>
     <Breadcrumb pageName="Notifications" folderName="" />
     <>
+    <ClearButton/>
       <Card className="h-full overflow-scroll border-4 border-gray-700 " placeholder={undefined}>
        
        <div className="overflow-x-auto">

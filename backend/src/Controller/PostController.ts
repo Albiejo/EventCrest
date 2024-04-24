@@ -32,7 +32,7 @@ const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 class PostController {
   
-  async addNewPost(req: Request, res: Response): Promise<void> {
+  async addNewPost(req: Request, res: Response): Promise<Response> {
     
     try {
       const caption = req.body.caption;
@@ -55,16 +55,16 @@ class PostController {
       await s3.send(command);
 
       const post = await createPost(caption, imageName, vendor_id);
-      res.status(201).json(post);
+      return res.status(201).json(post);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: ErrorMessages.ServerError});
+      return res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
 
   
-  async getPosts(req: Request, res: Response): Promise<void> {
+  async getPosts(req: Request, res: Response): Promise<Response> {
     try {
 
       const vendor_id:string=req.query.vendorid as string;
@@ -84,10 +84,10 @@ class PostController {
       console.log(posts)
 
       
-      res.status(201).json(posts);
+      return  res.status(201).json(posts);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: ErrorMessages.ServerError});
+      return  res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 
@@ -95,7 +95,7 @@ class PostController {
 
 
 
-  async deletePost(req: Request, res: Response): Promise<void> {
+  async deletePost(req: Request, res: Response): Promise<Response> {
     try {
       const id=req.params.id;
       const post=await getPostById(id);
@@ -112,12 +112,12 @@ class PostController {
       await s3.send(command);
       
       await deletePost(id);
-      res.status(200).json({message:"Post deleted successfully"});
+      return res.status(200).json({message:"Post deleted successfully"});
 
 
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: ErrorMessages.ServerError});
+      return  res.status(500).json({ message: ErrorMessages.ServerError});
     }
   }
 };

@@ -54,16 +54,6 @@ export const findbyIdandUpdate = async( userId: string , refreshToken:string):Pr
 
 
 
-const UpdateUserPassword=async(password:string , userid:string)=>{
-try {
-  
-} catch (error) {
-  throw error;
-}
-}
-
-
-
 
 export const findAllUsers = async (
   page: number,
@@ -89,6 +79,9 @@ export const findAllUsers = async (
     throw error;
   }
 };
+
+
+
 
 export const UpdatePassword = async (password: string, mail: string) => {
   try {
@@ -183,8 +176,8 @@ export const UpdateUserProfileDetails = async(userId:string , name:string , phon
 
 
 export const getfavVendors=async( userid:string , page: number, pageSize: number)=>{
-try {
 
+try {
   const skip = (page - 1) * pageSize;
   const userData = await User.findById(userid);
   if (!userData) {
@@ -229,4 +222,18 @@ export const updateNotificationstatus=async(userid:string , notifiID:string)=>{
   } catch (error) {
     throw error;
   }
+}
+
+export const clearNotification = async(userid :string) => {
+try {
+  const userdata = await User.findById(userid);
+  if (!userdata) {
+    throw new Error('User not found');
+  }
+  userdata.notifications = [];
+  await userdata.save();
+  return true;
+} catch (error) {
+  throw error;
+}
 }

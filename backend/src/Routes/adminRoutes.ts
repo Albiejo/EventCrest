@@ -14,7 +14,7 @@ router.post('/login' , AdminController.Adminlogin);
 router.get('/logout' , AdminController.Adminlogout);
 
 router.get('/users' , UserController.allUsers);
-router.patch('/block-unblock' , UserController.Toggleblock)
+router.patch('/block-unblock' ,authenticate, UserController.Toggleblock)
 router.post('/refresh-token' , AdminController.createRefreshToken)
 router.get('/getadmin',adminController.getFulldetails)
 
@@ -24,19 +24,19 @@ router.get('/getUser', UserController.getUser)
 router.patch('/vendorblock-unblock' ,authenticate, VendorController.Toggleblock)
 
 
-router.post('/add-type' , VendorTypeController.addVendorType);
-router.get('/vendor-types' ,VendorTypeController.getVendorTypes);
-router.delete('/deleteType' ,VendorTypeController.DeleteVendorType)
-router.get('/singleVendor' , VendorTypeController.getSingleVendor)
-router.put('/updateType' , VendorTypeController.typeUpdate)
+router.post('/add-type' , authenticate ,VendorTypeController.addVendorType);
+router.get('/vendor-types' ,authenticate,VendorTypeController.getVendorTypes);
+router.delete('/deleteType' ,authenticate,VendorTypeController.DeleteVendorType)
+router.get('/singleVendor' ,authenticate, VendorTypeController.getSingleVendor)
+router.put('/updateType' ,authenticate, VendorTypeController.typeUpdate)
 
 
-router.put('/update-verify-status',VendorController.updateVerifyStatus);
+router.put('/update-verify-status',authenticate,VendorController.updateVerifyStatus);
 
-router.get('/all-payment-details',PaymentController.getAllPayments);
+router.get('/all-payment-details',authenticate,PaymentController.getAllPayments);
 
-router.patch('/MarkasRead' , AdminController.MarkasRead)
-router.get('/getall-payment-details',PaymentController.getAllPayments)
+router.patch('/MarkasRead' ,authenticate, AdminController.MarkasRead)
+router.get('/getall-payment-details',authenticate,PaymentController.getAllPayments)
 
 
 

@@ -8,75 +8,70 @@ import { ErrorMessages } from "../Util/enums";
 
 class AdminController {
   
-  async Adminlogin(req: Request, res: Response): Promise<void> {
+  async Adminlogin(req: Request, res: Response): Promise<Response> {
     try {
       const { email, password } = req.body;
       const {refreshToken ,  token, adminData, message } = await login(email, password);
       
       res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-      res.status(200).json({token, refreshToken , adminData, message });
+      return res.status(200).json({token, refreshToken , adminData, message });
       
     } catch (error) {
       if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
+        return  res.status(error.statusCode).json({ message: error.message });
       } else {
         console.error(error);
-        res.status(500).json({ message: ErrorMessages.ServerError });
+        return  res.status(500).json({ message: ErrorMessages.ServerError });
       }
     }
   }
 
-  async Adminlogout(req: Request, res: Response): Promise<void> {
+  async Adminlogout(req: Request, res: Response): Promise<Response> {
     try {
       res.clearCookie('jwtToken');
-      res.status(200).json({ message: "admin logged out successfully.." });
+      return  res.status(200).json({ message: "admin logged out successfully.." });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message:  ErrorMessages.ServerError });
+      return   res.status(500).json({ message:  ErrorMessages.ServerError });
     }
   }
 
 
-  async createRefreshToken(req: Request, res: Response):Promise<void>{
+  async createRefreshToken(req: Request, res: Response):Promise<Response>{
     try {
      
       const { refreshToken } = req.body;
 
       const token = await createRefreshTokenAdmin(refreshToken);
       
-      res.status(200).json({ token });
+      return  res.status(200).json({ token });
     } catch (error) {
       console.error('Error refreshing token:', error);
-      res.status(401).json({ message:  ErrorMessages.TokenRefreshError  });
+      return res.status(401).json({ message:  ErrorMessages.TokenRefreshError  });
     }
   }
   
 
-  async MarkasRead(req: Request, res: Response):Promise<void>{
-
+  async MarkasRead(req: Request, res: Response):Promise<Response>{
     try {
-      const adminId:string  = req.query.id as string;
-      const notifiID:string = req.query.notifid as string;
-      
-      const data  = await updateNotification(adminId ,notifiID );
-      if(data){
-        res.status(200).json({data:data});
-      }
+      const {id ,notifid} = req.query;
+      const data  = await updateNotification(id as string,notifid as string);
+      return res.status(200).json({data:data});
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message:  ErrorMessages.ServerError  });
+      return res.status(500).json({ message:  ErrorMessages.ServerError  });
     }
   }
 
 
-  async getFulldetails (req: Request, res: Response):Promise<void>{
+  async getFulldetails (req: Request, res: Response):Promise<Response>{
     try {
       
       const data = await findadmindetails();
-      res.status(200).json({data:data});
+      return res.status(200).json({data:data});
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message:  ErrorMessages.ServerError  });
+      return res.status(500).json({ message:  ErrorMessages.ServerError  });
     }
   }
   

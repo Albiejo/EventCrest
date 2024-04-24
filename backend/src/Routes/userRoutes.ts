@@ -59,11 +59,16 @@ router.get('/single-booking', authenticate ,BookingController.getBookingsById);
 router.patch('/MarkAsRead' ,authenticate, UserController.MarkRead)
 router.patch('/markCancel' , authenticate,BookingController.MarkasCancel)
 
-router.get('/getVendorTypes'  ,vendorTypeController.getVendorTypes);
+router.get('/getVendorTypes'  ,authenticate ,vendorTypeController.getVendorTypes);
 
 router.post('/subscribe',UserController.subscribe)
 
-router.get('/get-live',LiveController.getLive)
-router.post('/add-live',LiveController.addLive)
-router.patch('/change-live-status',LiveController.changeLiveStatus)
+router.get('/get-live',authenticate ,LiveController.getLive)
+router.post('/add-live',authenticate ,LiveController.addLive)
+router.patch('/change-live-status',authenticate ,LiveController.changeLiveStatus)
+
+router.patch('/ClearAll' ,authenticate ,UserController.clearAllNotifications)
+
+
+
 export default router;

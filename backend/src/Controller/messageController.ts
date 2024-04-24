@@ -8,7 +8,7 @@ import { ErrorMessages } from "../Util/enums";
 class messageController{
 
 
-    async createMessage (req: Request, res: Response):Promise<any>{
+    async createMessage (req: Request, res: Response):Promise<void>{
 
         const {conversationId , senderId , text } = req.body;
     
@@ -28,14 +28,14 @@ class messageController{
 
 
 
-    async getMessages (req: Request, res: Response):Promise<any>{
+    async getMessages (req: Request, res: Response):Promise<Response>{
         const conversationId = req.query.conversationId;
         try {
             const messages = await messageModel.find({conversationId: conversationId});
-            res.status(200).json(messages);
+            return res.status(200).json(messages);
         } catch (error) {
             console.log(error);
-            res.status(500).json({ message: ErrorMessages.ServerError});
+            return  res.status(500).json({ message: ErrorMessages.ServerError});
             
         }
     }

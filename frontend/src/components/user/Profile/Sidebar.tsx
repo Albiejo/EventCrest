@@ -27,19 +27,21 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { axiosInstance } from "../../../Api/axiosinstance";
 import { logout } from "../../../Redux/slices/UserSlice";
-
+import { USERROUTES } from "../../../Constants/constants";
 
 export default function Sidebar() {
   
   const navigate =useNavigate();
   const dispatch= useDispatch();
 
+
+
   const handleLogout=(e: React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
-    axiosInstance.get("/logout")
+    axiosInstance.get(USERROUTES.LOGOUT)
       .then(() => {
         dispatch(logout());
-        navigate("/login");
+        navigate(USERROUTES.USER_LOGIN);
       })
       .catch((error) => {
         console.log('here', error);
@@ -56,7 +58,7 @@ export default function Sidebar() {
  
   return (
     <>
-      <IconButton variant="text" size="lg" onClick={openDrawer} className="mt-20 fixed" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IconButton variant="text" size="lg" onClick={openDrawer}  className="md:mt-10 sm:mt-10 xsm:ml-20 w-full bottom-0 right-0 fixed top-0 left-0 z-10"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         {isDrawerOpen ? (
           <XMarkIcon className="h-8 w-8 stroke-2" />
         ) : (
@@ -81,7 +83,7 @@ export default function Sidebar() {
          
             <hr className="my-2 border-blue-gray-50" />
             
-            <Link to="/profile" >
+            <Link to={USERROUTES.USER_PROFILE} >
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <UserCircleIcon className="h-5 w-5" />
@@ -90,7 +92,7 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <Link to="/profile/change-password">
+            <Link to={USERROUTES.PROFILE_CHANGEPASSWORD}>
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <LockClosedIcon className="h-5 w-5" />
@@ -99,7 +101,7 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <Link to="/profile/Favorites">
+            <Link to={USERROUTES.FAVORITES}>
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <HeartIcon className="h-5 w-5" />
@@ -108,7 +110,7 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <Link to="/profile/Bookings">
+            <Link to={USERROUTES.BOOKINGS}>
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <BookmarkIcon className="h-5 w-5" />
@@ -117,15 +119,16 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-            <Link to="/profile/notifications">
+            <Link to={USERROUTES.USER_NOTIFICATIONS}>
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <BookmarkIcon className="h-5 w-5" />
+              <i className="fa-solid fa-bell mr-2 cursor-pointer" style={{ color: '#ffffff' }}></i>
               </ListItemPrefix>
               Notifications
             </ListItem>
             </Link>
 
+             {/* <Link to={USERROUTES.CHAT}>
             <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
               <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                 <InboxIcon className="h-5 w-5 " />
@@ -141,6 +144,7 @@ export default function Sidebar() {
                 />
               </ListItemSuffix>
             </ListItem>
+              </Link> */}
         
            
             <hr className="my-2 border-blue-gray-50" />

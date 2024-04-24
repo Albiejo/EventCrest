@@ -70,7 +70,7 @@ const LiveEvents = () => {
         <AccordionHeader
           style={{ fontFamily: 'playfair', fontSize: '18px' }}
           onClick={handleAlwaysOpen}
-          className="text-center" 
+          className="text-center text-gray" 
           placeholder={undefined}
           onPointerEnterCapture={undefined}
           onPointerLeaveCapture={undefined}

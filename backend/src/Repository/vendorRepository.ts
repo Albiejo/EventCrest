@@ -224,3 +224,17 @@ export const updateNotificationstatus =async(vendorid:string , notifid:string)=>
     throw error;
   }
 }
+
+export const clearNotification = async(vendorid :string) => {
+  try {
+    const vendorData = await Vendor.findById(vendorid);
+    if (!vendorData) {
+      throw new Error('vendor not found');
+    }
+    vendorData.notifications = [];
+    await vendorData.save();
+    return true;
+  } catch (error) {
+    throw error;
+  }
+  }

@@ -41,11 +41,8 @@ class BookingController{
               } catch (error) {
                     console.error("Error acquiring lock:", error);
                     return res.status(400).json({ message: "Sorry, this date is currently not available." });
-              }
-         
+              }        
             }
-
-
           } catch (error) {
             console.error(error);
             return res.status(500).json({ message:ErrorMessages.ServerError});
@@ -53,7 +50,7 @@ class BookingController{
     }
 
 
-    async getBookingsByUser(req: Request, res: Response): Promise<void> {
+    async getBookingsByUser(req: Request, res: Response): Promise<Response> {
         try {
         
           const userId: string = req.query.userId as string;
@@ -68,42 +65,42 @@ class BookingController{
 
           const bookings = await getAllBookingsByUser(userId , skip, pageSize);
           
-          res.status(201).json({bookings , totalPages });
+         return res.status(201).json({bookings , totalPages });
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message:ErrorMessages.ServerError});
+          return res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
 
 
-      async getAllBookings(req: Request, res: Response): Promise<void> {
+      async getAllBookings(req: Request, res: Response): Promise<Response> {
         try {
           const vendorId: string = req.query.vendorId as string;
           const bookings = await getAllBookingsByVendor(vendorId);
           console.log("bookings are ",bookings)
-          res.status(201).json({bookings});
+          return res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message:ErrorMessages.ServerError});
+          return res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
 
 
-      async getBookingsById(req: Request, res: Response): Promise<void> {
+      async getBookingsById(req: Request, res: Response): Promise<Response> {
         try {
           const bookingId: string = req.query.bookingId as string;
           const bookings = await getAllBookingsById(bookingId);
-          res.status(201).json({bookings});
+          return res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message:ErrorMessages.ServerError});
+          return res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
    
 
-      async updateStatus(req: Request, res: Response): Promise<void> {
+      async updateStatus(req: Request, res: Response): Promise<Response> {
         try {
           const userId  :string = req.query.userId as string;
           const bookingId: string = req.query.bookingId as string;
@@ -111,36 +108,34 @@ class BookingController{
           const status=req.body.status
 
           const bookings = await updateStatusById(bookingId,status ,vendorid , userId);
-          console.log("bookings ",bookings)
-          res.status(201).json(bookings);
+          return res.status(201).json(bookings);
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message:ErrorMessages.ServerError});
+          return res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
 
-      async MarkasCancel(req: Request, res: Response): Promise<void>{
+      async MarkasCancel(req: Request, res: Response): Promise<Response>{
         try {
-          const bookingId:string = req.query.bookingId as string;
-          const vendorId:string = req.query.vendorId as string;
-          const date:string = req.body.date as string; console.log("date and type of date :",date , typeof date)
-          const data = await MarkBookingCancel(bookingId , vendorId , date);
-          res.status(200).json({data:data});
+          const date:string = req.body.date as string; 
+          const {bookingId ,vendorId } =  req.query;
+          const data = await MarkBookingCancel(bookingId as string , vendorId as string , date);
+          return  res.status(200).json({data:data});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message:ErrorMessages.ServerError});
+          return res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 
 
-      async getallBookings(req: Request, res: Response): Promise<void>{
+      async getallBookings(req: Request, res: Response): Promise<Response>{
         try {
           const bookings = await getAllBookings();
-          res.status(201).json({bookings});
+          return res.status(201).json({bookings});
         } catch (error) {
           console.error(error);
-          res.status(500).json({ message:ErrorMessages.ServerError});
+          return res.status(500).json({ message:ErrorMessages.ServerError});
         }
       }
 }

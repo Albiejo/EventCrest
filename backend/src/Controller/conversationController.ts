@@ -8,7 +8,7 @@ import { ErrorMessages } from '../Util/enums';
 class conversationController{
 
   
-  async createChat(req: Request, res: Response): Promise<void>{
+  async createChat(req: Request, res: Response): Promise<Response>{
 
     const {senderId , receiverId} = req.body;
    
@@ -18,27 +18,27 @@ class conversationController{
         const newChat = new ConversationModel({ members: [senderId, receiverId] });
         chat = await newChat.save();
       }
-      res.status(200).json(chat);
+     return res.status(200).json(chat);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ message:ErrorMessages.ServerError });
+      return  res.status(500).json({ message:ErrorMessages.ServerError });
     }
 }
 
 
 
 
-  async findUserchats(req: Request, res: Response):Promise<any>{
+  async findUserchats(req: Request, res: Response):Promise<Response>{
 
     let userId  = req.query.userId;
 
     try {
         const chats  = await ConversationModel.find({members:{$in :[userId]}})
         
-        res.status(200).json(chats);
+        return res.status(200).json(chats);
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message:ErrorMessages.ServerError});
+        return  res.status(500).json({ message:ErrorMessages.ServerError});
     }
 
 }

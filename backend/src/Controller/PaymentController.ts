@@ -82,10 +82,10 @@ async makePayment(req: Request, res: Response) {
 
 
 
+
   async getAllPayments(req: Request, res: Response){
     try {
    
-
       const page: number = parseInt(req.query.page as string) || 1; 
       const pageSize: number = parseInt(req.query.pageSize as string) || 4; 
       const skip = (page - 1) * pageSize;
