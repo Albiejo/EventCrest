@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link ,useNavigate} from 'react-router-dom';
 import {
   Navbar,
@@ -13,6 +13,7 @@ import AdminState  from '../../Redux/rootstate/AdminState';
 import {axiosInstanceAdmin} from '../../Api/axiosinstance';
 import { logout } from "../../Redux/slices/AdminSlice";
 import { ADMINROUTES } from "../../Constants/constants";
+import AdminRootState from "../../Redux/rootstate/AdminState";
 
 
 
@@ -22,12 +23,26 @@ import { ADMINROUTES } from "../../Constants/constants";
 
 
 const AdminNavbar=()=> {
+
+
+
   const [openNav, setOpenNav] = React.useState(false);
   const isAdminSignedIn = useSelector((state: AdminState) => state.admin.isAdminSignedIn);
-
+  const[unreadlength , setunreadlength] = useState(0);
   const navigate = useNavigate();
   const dispatch= useDispatch();
 
+
+  const admin  = useSelector((state:AdminRootState)=>state.admin.admindata)
+  const unreadNotificationsCount = admin?.notifications?.filter(notification => notification.Read === false);
+
+  useEffect(()=>{
+    setunreadlength(unreadNotificationsCount?.length)
+  },[admin]) 
+
+
+
+  
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -61,9 +76,23 @@ const AdminNavbar=()=> {
        
         <div className="flex items-center gap-x-1">
         {isAdminSignedIn &&
+        <>
           <Button variant="gradient" color="green" size="sm" className="hidden lg:inline-block" placeholder={undefined} onClick={handleLogout}>
             <span>Logout</span>
           </Button>
+          <div style={{ position: 'relative' }}>
+          <Link to='/admin/notifications'>
+               <i className="fa-solid fa-bell ml-6 cursor-pointer" style={{ color: '#ffffff' }}></i>
+          </Link>
+                {unreadlength > 0 && (
+                  
+                  <div style={{ position: 'absolute', top: '1%',right:'50%' , backgroundColor: 'red', borderRadius: '50%', padding: '3px ', fontSize: '10px', color: '#ffffff' }}>
+                    {unreadlength}
+                  </div>
+                
+                )}
+         </div>  
+        </>
         }
       </div>
         <IconButton

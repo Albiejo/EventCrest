@@ -5,14 +5,11 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
   Drawer,
   Card,
 } from "@material-tailwind/react";
 import {
   UserCircleIcon,
-  InboxIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import {
@@ -58,7 +55,7 @@ export default function Sidebar() {
  
   return (
     <>
-      <IconButton variant="text" size="lg" onClick={openDrawer}  className="md:mt-10 sm:mt-10 xsm:ml-20 w-full bottom-0 right-0 fixed top-0 left-0 z-10"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IconButton variant="text" size="lg" onClick={openDrawer}  className="md:mt-18 sm:mt-10 xsm:ml-20 w-full bottom-0 right-0 fixed top-0 left-0 z-10"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         {isDrawerOpen ? (
           <XMarkIcon className="h-8 w-8 stroke-2" />
         ) : (
@@ -160,6 +157,7 @@ export default function Sidebar() {
       
         </Card>
       </Drawer>
+      
     </>
   );
 }

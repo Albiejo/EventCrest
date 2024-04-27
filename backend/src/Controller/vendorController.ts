@@ -1,6 +1,4 @@
 import { Request , Response } from "express";
-
-
 import { signup , login , CheckExistingVendor , getVendors , toggleVendorBlock , getSingleVendor , ResetVendorPasswordService ,
   PushVendorReview,checkVendorCurrentPassword,changeVerifyStatus ,UpdateVendorPasswordService , updateVendorprof ,verificationRequest , addReviewReplyController ,
   createRefreshToken , updateNotification ,clearalldata} from "../Service/vendorService";
@@ -302,7 +300,7 @@ class VendorController{
           
           const content = req.body.content;
           const rating :number = req.body.rate as number;
-         const {vendorid , username } = req.query;
+          const {vendorid , username } = req.query;
 
           const status = await PushVendorReview(content,rating,username as string ,vendorid as string);
           if(!status){

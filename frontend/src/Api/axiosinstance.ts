@@ -1,21 +1,30 @@
 import axios from 'axios';
 
+
+const USERAPI = import.meta.env.VITE_USERAPI;
+const ADMINAPI = import.meta.env.VITE_ADMINAPI;
+const VENDORAPI = import.meta.env.VITE_VENDORAPI;
+const CONVERSATIONAPI = import.meta.env.VITE_CHATAPI;
+const MESSAGEAPI = import.meta.env.VITE_MESSAGEAPI;
+
+
+
 export const axiosInstance = axios.create({
-    baseURL:'http://localhost:3001/api/user'
+    baseURL:USERAPI
 })
 export const axiosInstanceAdmin = axios.create({
-    baseURL:'http://localhost:3001/api/admin'
+    baseURL:ADMINAPI
 })
 export const axiosInstanceVendor = axios.create({
-    baseURL:'http://localhost:3001/api/vendor'
+    baseURL:VENDORAPI
 })
 
 export const axiosInstanceChat = axios.create({
-    baseURL:'http://localhost:3001/api/conversation'
+    baseURL:CONVERSATIONAPI
 })
 
 export const axiosInstanceMsg = axios.create({
-    baseURL:'http://localhost:3001/api/messages'
+    baseURL:MESSAGEAPI
 })
 
 

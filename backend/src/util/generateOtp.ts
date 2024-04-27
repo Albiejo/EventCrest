@@ -27,7 +27,6 @@ export default async function generateOtp(email: string){
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log("Email sent: " + info.response);
         return otpCode;
     } catch (error) {
         console.error("Error sending email:", error);

@@ -23,6 +23,7 @@ export interface VendorData{
     logoUrl:string;
     reviews:Array<Review>;
     notifications:Array<object>;
+    bookedDates:Array<string>;
 }
 
 export interface VendorState{

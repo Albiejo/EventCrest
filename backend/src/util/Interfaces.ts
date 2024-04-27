@@ -67,3 +67,32 @@ export interface Review {
   reply:Array<string>
 }
 
+//for vendor model
+export interface Vendor {
+  email : string;
+  password : string;
+  name:string;
+  city:string;
+  about:string;
+  phone:number;
+  logo:string;
+  coverpic:string;
+  reviews:Array<Review>;
+  isVerified:boolean;
+  verificationRequest:boolean;
+  totalBooking:number;
+  vendor_type:Schema.Types.ObjectId;
+  isActive:boolean;
+  coverpicUrl:string;
+  logoUrl:string;
+  bookedDates:Array<string>;
+  refreshToken:string;
+  notifications:Array<Notification>;
+  OverallRating:Number;
+  locks: Lock[];
+}
+
+export interface Lock {
+  date: string;
+  isLocked: boolean;
+}

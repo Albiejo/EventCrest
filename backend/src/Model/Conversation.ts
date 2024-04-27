@@ -2,7 +2,7 @@ import { Document, Schema, model } from "mongoose";
 
 export interface conversationDocument extends Document {
     members: string[];
-    createdAt: Date;
+    timestamps: Date;
 }
 
 const ConversationSchema = new Schema<conversationDocument>(
