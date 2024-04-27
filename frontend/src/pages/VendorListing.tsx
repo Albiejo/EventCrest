@@ -6,7 +6,6 @@ import Footer from '../Components/home/Footer';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { axiosInstance } from '../Api/axiosinstance';
 import LoadingSpinner from '../Components/common/LoadingSpinner';
-//lazy loading here for vendor listing
 const VendorCard = lazy(() => import('../Components/home/VendorListingCard'));
 import { useLocation } from 'react-router-dom';
 import debounce from 'lodash/debounce';
@@ -39,19 +38,19 @@ const VendorsListing = () => {
   const [search, setSearch] = useState<string>("");
   const location = useLocation();
   const [vendorTypeData, setVendorTypeData] = useState([]);
-  const [categoryData, setCategoryData] = useState("");
+  const [category, setCategory] = useState<string[]>([]);
   
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const searchParam = queryParams.get("search");
     fetchVendors(currentPage,searchParam);
     fetchVendorTypes();
-  }, [currentPage , search , location.search , sortBy ,categoryData]);
+  }, [currentPage , search , location.search , sortBy ,category]);
 
 
   const fetchVendors = async (page: number , searchParam?: string | null) => {
     try {
-      const response = await axiosInstance.get(`/getvendors?page=${page}&search=${searchParam || search}&sortBy=${sortBy}&category=${categoryData}`, { withCredentials: true });
+      const response = await axiosInstance.get(`/getvendors?page=${page}&search=${searchParam || search}&sortBy=${sortBy}&category=${category.join(",")}`, { withCredentials: true });
       if (response.data.vendors.length === 0) {
         setNoResults(true);
       } else {
@@ -96,14 +95,6 @@ const handleSortChange = (value: string) => {
 // implemented debouncing
 const debouncedFetchVendors = debounce(fetchVendors, 300);
 
-const handleCategorySelection = async (categoryId:string) => {
-  if (categoryData.includes(categoryId)) {
-    setCategoryData(categoryData.filter(_id => _id !== categoryId));
-  } else {
-    setCategoryData([...categoryData, categoryId]);
-  }
-  setCategoryData(category);
-}
 
 
   return (
@@ -148,7 +139,7 @@ const handleCategorySelection = async (categoryId:string) => {
       <div className="w-full md:w-1/6 mb-6 md:mb-0 flex-shrink-0 ">
           <h3 className="mt-4 mb-2 text-lg font-semibold">Filter By</h3>
 
-          <VendorFilters  vendorTypeData={vendorTypeData} onCategorySelect={handleCategorySelection}/>
+          <VendorFilters  vendorTypeData={vendorTypeData}   setCategory={setCategory}/>
       </div>
       <div className="flex flex-wrap justify-center md:justify-start w-full md:w-3/4 flex-grow">
       {noResults ? (

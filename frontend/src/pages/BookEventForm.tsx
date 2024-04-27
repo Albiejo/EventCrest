@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Input, Typography } from '@material-tailwind/react';
 import Footer from '../Components/home/Footer';
 import 'react-datepicker/dist/react-datepicker.css';
-import { validate} from '../Validations/bookingValidation';
+import { validate } from '../Validations/BookingValidation';
 import { axiosInstance } from '../Api/axiosinstance';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -89,6 +89,18 @@ const BookEventForm: React.FC = () => {
   };
   
 
+  function getCurrentDate(): string {
+    const today: Date = new Date();
+    const year: number = today.getFullYear();
+    let month: number | string = today.getMonth() + 1;
+    let day: number | string = today.getDate();
+
+    month = month < 10 ? '0' + month : month;
+    day = day < 10 ? '0' + day : day;
+
+    return `${year}-${month}-${day}`;
+}
+
 
 
   return (
@@ -119,6 +131,7 @@ const BookEventForm: React.FC = () => {
                     onChange={handleChange}
                     value={formValues.date}
                     name="date"
+                    min={getCurrentDate()}
                     onPointerEnterCapture={undefined}
                     onPointerLeaveCapture={undefined}
                     crossOrigin={undefined}

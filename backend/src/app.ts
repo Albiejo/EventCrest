@@ -10,7 +10,7 @@ import vendorRoutes from "./Routes/vendorRoutes"
 import cors from 'cors';
 import session from 'express-session';
 import cookieParser from "cookie-parser";
-import { userEmailVerifyOtp, userOtpExpiration, vendorOtpExpiration } from './Middleware/otpExpiration';
+import { userEmailVerifyOtp, userOtpExpiration, vendorOtpExpiration } from './Middleware/OtpExpiration';
 
 
 

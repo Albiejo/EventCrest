@@ -22,14 +22,16 @@ export const findvendorByEmail = async (email: string): Promise<VendorDocument |
 
 
 
-export const findAllVendors = async (page: number, pageSize: number , search:string ,sortBy: string | null , category:string | null): Promise<VendorDocument[] | null> => {
+export const findAllVendors = async (page: number, pageSize: number , search:string ,sortBy: string | null , category:string ): Promise<VendorDocument[] | null> => {
   try {
     let query: any = {};
-    if (category) {
-      console.log("category is",category)
-      query.vendor_type = category;
+   
+    if (category && category.trim()) {
+      const categories = category.split(',').map(c => c.trim());
+      query.vendor_type = { $in: categories };
     }
-    if (search) {
+
+    if (search && search.trim()) {
       query = {
         $or: [
           { name: { $regex: search, $options: "i" } },
@@ -40,13 +42,13 @@ export const findAllVendors = async (page: number, pageSize: number , search:str
     }
 
     const skip = (page - 1) * pageSize;
-    let cursor = Vendor.find(query).skip(skip).limit(pageSize);
+    let data = Vendor.find(query).skip(skip).limit(pageSize);
 
     if (sortBy) {
-      cursor = cursor.sort(sortBy); 
+      data = data.sort(sortBy); 
     }
 
-    return await cursor.exec();
+    return await data.exec();
   } catch (error) {
     throw error;
   }

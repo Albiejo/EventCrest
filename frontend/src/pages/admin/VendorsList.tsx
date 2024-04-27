@@ -68,7 +68,7 @@ function VendorsList() {
       <div className="flex flex-wrap">
         {currentVendors.map((vendor, index) => (
           <Link key={index} to={`/admin/vendor?Id=${vendor._id}`} className="m-3">
-            <VendorCard {...vendor} className="max-w-xs" />
+            <VendorCard {...vendor} />
           </Link>
         ))}
       </div>
