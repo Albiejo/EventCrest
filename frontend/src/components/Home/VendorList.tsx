@@ -29,7 +29,6 @@ const VendorList=()=> {
     const [vendors,setVendors]=useState<Vendors[]>([])
 
     useEffect(()=>{
-      console.log("searching for vendor...");
         axiosInstance
       .get('/getvendors',{withCredentials:true})
       .then((response) => {

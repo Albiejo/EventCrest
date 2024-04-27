@@ -35,13 +35,25 @@ function Icon({ id, open }: IconProps) {
   );
 }
 
-const VendorFilters = ({vendorTypeData , onCategorySelect }) => {
+const VendorFilters = ({vendorTypeData , setCategory }) => {
 
 
   const [open, setOpen] = React.useState(0);
 
   const handleOpen = (value: React.SetStateAction<number>) =>
     setOpen(open === value ? 0 : value);
+
+
+  const handleCategoryChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setCategory(prevCategories => [...prevCategories, value]);
+    } else {
+      setCategory(prevCategories => prevCategories.filter(category => category !== value));
+    }
+  };
+
+
 
   return (
     <>
@@ -76,12 +88,14 @@ const VendorFilters = ({vendorTypeData , onCategorySelect }) => {
                   >
                     <ListItemPrefix className="mr-3"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                       <Checkbox
-                        id={`vertical-list-react-${index}`}
+                        key={vendorType._id}
+                        value={vendorType._id}
                         ripple={false}
                         className="hover:before:opacity-0"
                         containerProps={{
                           className: "p-0",
                         }}
+                        onChange={handleCategoryChange}
                         onPointerEnterCapture={undefined}
                         onPointerLeaveCapture={undefined}
                         crossOrigin={undefined}              

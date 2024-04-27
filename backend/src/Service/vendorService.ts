@@ -115,7 +115,7 @@ export const createRefreshToken = async (refreshToken:string)=>{
 }
 
 
-export const getVendors=async(page: number, pageSize: number, search:string , sortBy: string | null , category:string | null)=>{
+export const getVendors=async(page: number, pageSize: number, search:string , sortBy: string | null , category:string)=>{
   try {
     const vendors=await findAllVendors(page ,pageSize , search ,sortBy ,category);
     const totalVendorsCount = await getTotalVendorsCount();

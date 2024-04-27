@@ -217,9 +217,9 @@ class VendorController{
           const sortBy: string | null = req.query.sortBy as string | null;
           const pageSize: number = parseInt(req.query.pageSize as string) || 8; 
           let sortCriteria: string | null = null; 
-          const category: string | null = req.query.category as string | null
+          const category: string  = req.query.category as string 
           
-          
+         
           switch (sortBy) {
             case 'rating':
               sortCriteria = 'OverallRating'; 
@@ -230,8 +230,11 @@ class VendorController{
             default:
               break;
           }
-          const { vendors, totalVendorsCount } = await getVendors(page, pageSize , search.toString(),sortCriteria ,category);
+
+          const { vendors, totalVendorsCount } = await getVendors(page, pageSize , search.toString(),sortCriteria ,category.toString());
           const totalPages = Math.ceil(totalVendorsCount / pageSize);
+
+
           return res.status(200).json({ vendors:vendors, totalPages:totalPages });
         }catch(error){
           console.log(error);

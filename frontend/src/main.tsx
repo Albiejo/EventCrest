@@ -27,7 +27,7 @@ import AdminNotifications from './Pages/admin/AdminNotifications.tsx';
 //common routes
 import HomePage from './Pages/HomePage.tsx'
 import ForgotPassword from './Components/common/ForgotPassword.tsx';
-import ResetPassword from './Components/common/ResetPassword.tsx'
+import ResetPassword from './Components/common/ResetPassword.tsx';
 import AboutPage from './Pages/AboutPage.tsx';
 import NotFound from './Components/Error/NotFound.tsx';
 import Room from './Components/Live/Room.tsx';
@@ -36,7 +36,7 @@ import Room from './Components/Live/Room.tsx';
 //user
 import UserLoginForm from './Components/user/Login.tsx';
 import UserSignupForm from './Components/user/Signup.tsx'
-import VerifyEmail from './Components/common/VerifyEmail.tsx';
+import VerifyEmail from './Components/common/VerifyEmail.tsx'
 import UsersList from './Pages/admin/UsersList.tsx';
 import UserPrivateRoute from './Components/user/UserPrivateRoute.tsx';
 import UserVendorProfile from './Pages/user/UserVendorProfile.tsx';
