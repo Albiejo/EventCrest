@@ -1,95 +1,45 @@
-import React, {  useState } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  IconButton,
-  Typography,
-} from '@material-tailwind/react';
+import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton, Typography } from '@material-tailwind/react';
+import React, { useState } from 'react'
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { Link, useNavigate} from 'react-router-dom';
-import { axiosInstanceChat } from '../../Api/axiosinstance';
-
-
-interface ProfileButtonsProps {
-  vendorId: string | undefined; 
-  bookedDates:Array<string> | undefined;
-  userId:string | undefined; 
-}
+import { useSelector } from 'react-redux';
+import VendorRootState from '../../../Redux/rootstate/VendorState';
 
 
 
 
 
-const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates,userId }) => {
 
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen((cur) => !cur);
-  const navigate = useNavigate();
 
 
-  const handleChat =async()=>{
-    const body ={
-      senderId :userId,
-      receiverId:vendorId
-    }
-    try {
-      await axiosInstanceChat.post('/' , body).then((res)=>{
-        navigate('/chat')
-      })
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
 
+const Calendar = () => {
+
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen((cur) => !cur);
+
+    const vendor = useSelector((state:VendorRootState)=>state.vendor.vendordata)
+    const bookedDates = vendor?.bookedDates;
+
+    
   return (
-    <>
-      <div className="flex md:flex-row flex-col justify-start py-4 pt-8 lg:pt-4 bg-gray-600 rounded-lg mt-2">
-      <div className="mr-1 p-3 text-center">
-          <Button
-            className="w-fit bg-white text-black"
+   <>
+
+
+        <Button
+            className="w-fit bg-green-700 text-black font-bold border-2 border-gray-900"
             onClick={handleOpen}
             placeholder={undefined}
             onPointerEnterCapture={undefined}
             onPointerLeaveCapture={undefined}
           >
-            Check Availability
+            Check Current Availability
           </Button>
-        </div>
-        <div className="mr-1 p-3 text-center">
-          <Link to={`/bookevent?vid=${vendorId}`}>
-          <Button
-            className="w-fit"
-            style={{ backgroundColor: 'red', color: 'white' }}
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-          >
-            Book Now
-          </Button>
-          </Link>
-        </div>
-        <div className="mr-1 p-3 text-center">
-          <Button
-            className="w-fit"
-            style={{ backgroundColor: 'green', color: 'white' }}
-            placeholder={undefined}
-            onPointerEnterCapture={undefined}
-            onPointerLeaveCapture={undefined}
-            onClick={handleChat}
-          >
-            Chat with us
-          </Button>
-        </div>
-      </div>
 
 
-      
-      <Dialog
+
+          <Dialog
         size="sm"
         open={open}
         handler={handleOpen}
@@ -175,9 +125,8 @@ const ProfileButtons: React.FC<ProfileButtonsProps> = ({ vendorId,bookedDates,us
       <Button className='rouded-lg bg-green-600 w-auto h-auto text-black font-bold'  placeholder={undefined}>available</Button>
      </DialogFooter>
       </Dialog>
-     
-    </>
-  );
-};
+   </>
+  )
+}
 
-export default ProfileButtons;
+export default Calendar

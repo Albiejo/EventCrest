@@ -28,8 +28,7 @@ import dotenv from 'dotenv';
 import { UserSession } from "../util/Interfaces";
 import { OTP } from "../util/Interfaces";
 import { DecodedData } from "../util/Interfaces";
-import { Data } from "emoji-mart";
-import mailchimp from '@mailchimp/mailchimp_marketing';
+import nodemailer from 'nodemailer';
 import { ErrorMessages } from "../Util/enums";
 dotenv.config();
 
@@ -56,11 +55,6 @@ const s3 = new S3Client({
 const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 
-//newsletter settings from mailchimp 
-mailchimp.setConfig({
-  apiKey: "b0a219b6e00fc58ff5462687fae8fdce-us22",
-  server: "us22",
-});
 
 
 
@@ -600,14 +594,29 @@ class UserController{
   async subscribe(req: Request, res: Response): Promise<Response> {
     try {
       const { email } = req.body;
+    
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        auth: {
+            user: process.env.USER_NAME,
+            pass: process.env.USER_PASSWORD,
+        },
+        tls: {
+            rejectUnauthorized: false 
+        }
+    });
 
-      const audienceId = 'be2599e6c3';
-      const url = `/3.0/lists/${audienceId}/members`; 
+    const mailOptions = {
+        from: process.env.USER_NAME,
+        to: email,
+        subject: "NEWS-LETTER",
+        text: `Congrats for subscribing to Event Crest newsletter ! , You wll receive a newsletter from  event crest every week`,
+    };
 
-      const response = await mailchimp.lists.addListMember(url, {
-        email_address: email,
-        status: 'subscribed',
-      });
+    const info = await transporter.sendMail(mailOptions);
      return res.status(200).json({ success: true });
     } catch (error) {
       console.log(error)

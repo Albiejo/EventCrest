@@ -1,6 +1,6 @@
 import DefaultLayout from '../../Layout/DefaultLayout'
 import Breadcrumb from '../../Components/vendor/Breadcrumbs/Breadcrumb'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import VendorRootState from '../../Redux/rootstate/VendorState'
 import { useEffect, useState } from 'react'
 import { axiosInstanceAdmin, axiosInstanceVendor } from '../../Api/axiosinstance'
@@ -9,6 +9,10 @@ import Pagination from '../../Components/common/Pagination'
 import { format } from 'date-fns';
 import { toast } from 'react-toastify'
 import ClearButton from '../../Components/common/ClearButton'
+import { setVendorInfo } from '../../Redux/slices/VendorSlice'
+
+
+
 
 
 
@@ -36,7 +40,7 @@ const notificationsPerPage = 5;
 const totalPages = Math.ceil(Notifications.length / notificationsPerPage);
 const startIndex = (currentPage - 1) * notificationsPerPage;
 const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificationsPerPage);
-
+const dispatch = useDispatch();
 
 const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
   setCurrentPage(pageNumber);
@@ -54,7 +58,7 @@ const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
     try {
       await axiosInstanceVendor.patch( `/MarkAsRead?Id=${id}&notifiId=${notifiID}`,{ withCredentials: true } )
       .then((res) => {
-        console.log(res.data.data)
+        dispatch(setVendorInfo(res.data.data.vendordata))
         setnotifications(res.data.data.vendordata.notifications);
       })
     } catch (error) {

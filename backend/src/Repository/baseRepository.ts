@@ -1,40 +1,34 @@
-import { Model, Document } from "mongoose";
+import mongoose from "mongoose";
 
-abstract class BaseRepository<T extends Document> {
-  protected model: Model<T>;
+export class BaseRepository<T extends mongoose.Document>{
+    private model:mongoose.Model<T>;
 
-  constructor(model: Model<T>) {
-    this.model = model;
-  }
+    constructor(model:mongoose.Model<T>){
+        this.model=model;
+    }
 
-  async findById(id: string): Promise<T | null> {
-    return this.model.findById(id);
-  }
+    async getAll():Promise<T[]>{
+        return await this.model.find();
+    }
 
-  async findOne(conditions: any): Promise<T | null> {
-    return this.model.findOne(conditions);
-  }
+    async getById(id:string):Promise<T|null>{
+        return await this.model.findById(id);
+    }
 
-  async create(data: Partial<T>): Promise<T> {
-    return this.model.create(data);
-  }
+    async create(data:Partial<T>):Promise<T>{
+        const newItem=new this.model(data);
+        return await newItem.save();
+    }
 
-  
-  async findByEmail(email: string): Promise<T | null> {
-    return this.model.findOne({ email });
-  }
-  
-  async update(id: string, update: Partial<T>): Promise<T | null> {
-    return this.model.findByIdAndUpdate(id, update, { new: true });
-  }
+    async update(id:string,data:Partial<T>):Promise<T|null>{
+        return await this.model.findByIdAndUpdate(id,data)
+    }
 
-  async delete(id: string): Promise<void> {
-    await this.model.findByIdAndDelete(id);
-  }
+    async delete(id:string):Promise<T|null>{
+        return await this.model.findByIdAndDelete(id);
+    }
 
-  async find(conditions: any): Promise<T[]> {
-    return this.model.find(conditions);
-  }
+    async countDocuments(condition?:Record<string,unknown>):Promise<number>{
+        return await this.model.countDocuments(condition||{})
+    }
 }
-
-export default BaseRepository;

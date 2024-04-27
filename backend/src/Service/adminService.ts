@@ -1,7 +1,10 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { findAdminByEmail , updateNotificationstatus ,getdata} from "../Repository/adminRepository";
+import { findAdminByEmail , updateNotificationstatus ,getdata,} from "../Repository/adminRepository";
 import admin from "../Model/Admin";
+import { CustomError } from "../Error/CustomError";
+import { AdminRepository } from "../Repository/adminRepository";
+
 
 interface LoginResponse {
     token: string;
@@ -10,6 +13,52 @@ interface LoginResponse {
     refreshToken:string;
 
   }
+
+
+// class AdminService{
+
+//   private adminRepository: AdminRepository;
+
+//   constructor() {
+//     this.adminRepository = new AdminRepository();
+//   }
+
+
+//   async login(email: string, password: string): Promise<LoginResponse>{
+//     try {
+//       const existingAdmin = await this.adminRepository.findByEmail(email);
+
+//       if (!existingAdmin) {
+//         throw new CustomError('Admin not exists..', 404);
+//       }
+  
+//       const passwordMatch = await bcrypt.compare(password, existingAdmin.password);
+//       if (!passwordMatch) {
+//         throw new CustomError('Incorrect password..', 404);
+//       }
+  
+//       let refreshToken = existingAdmin.refreshToken;
+  
+     
+//       if (!refreshToken) {
+       
+//         refreshToken = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
+//       }
+  
+  
+//       existingAdmin.refreshToken = refreshToken;
+//       await existingAdmin.save();
+  
+//       const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!, { expiresIn: '24h'});
+  
+//       return {refreshToken , token, adminData: existingAdmin, message: "Successfully logged in.." };
+//     } catch (error) {
+//       throw error;
+//     }
+//   };
+
+
+// }
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
   try {
@@ -45,16 +94,6 @@ export const login = async (email: string, password: string): Promise<LoginRespo
 
 
 
-export class CustomError extends Error {
-  statusCode: number;
-
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}
-
-
 export const createRefreshTokenAdmin = async (refreshToken:string)=>{
   try {
 
@@ -65,7 +104,7 @@ export const createRefreshTokenAdmin = async (refreshToken:string)=>{
         throw new Error('Invalid refresh token');
       }
 
-    const accessToken = jwt.sign({ _id: Admin._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    const accessToken = jwt.sign({ _id: Admin._id }, process.env.JWT_SECRET!, { expiresIn: '24h' });
     return accessToken;
 
   } catch (error) {

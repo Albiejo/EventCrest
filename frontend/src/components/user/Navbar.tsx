@@ -37,9 +37,9 @@ const MyNavbar=()=> {
   const formattedTimestamp1 = format(notification1?.timestamp)
   const formattedTimestamp2 = format(notification1?.timestamp)
 
-  useEffect(()=>{
+ useEffect(()=>{
     setunreadlength(unreadNotificationsCount?.length)
-  },[user])
+  },[user]) 
 
 
 

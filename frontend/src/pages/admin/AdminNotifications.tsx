@@ -1,5 +1,5 @@
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AdminRootState from '../../Redux/rootstate/AdminState';
 import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 import { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import Pagination from '../../Components/common/Pagination';
 import { toast } from 'react-toastify';
 import ClearButton from '../../Components/common/ClearButton';
+import { setAdminInfo } from '../../Redux/slices/AdminSlice';
 
 
 
@@ -32,7 +33,7 @@ const totalPages = Math.ceil(Notifications.length / notificationsPerPage);
 const startIndex = (currentPage - 1) * notificationsPerPage;
 const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificationsPerPage);
 
-
+const dispatch = useDispatch();
 
   const handlePageChange = (pageNumber: React.SetStateAction<number>) => {
   setCurrentPage(pageNumber);
@@ -61,6 +62,8 @@ const rowsForPage = sortedNotifications.slice(startIndex, startIndex + notificat
     try {
       await axiosInstanceAdmin.patch( `/MarkAsRead?id=${id}&notifid=${notifiID}`,{ withCredentials: true } )
       .then((res) => {
+       
+        dispatch(setAdminInfo(res.data.data.adminData));
         setnotifications(res.data.data.adminData.notifications);
       })
     } catch (error) {

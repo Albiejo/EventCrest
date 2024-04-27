@@ -106,7 +106,7 @@ export const createRefreshToken = async (refreshToken:string)=>{
         throw new Error('Invalid refresh token');
       }
 
-    const accessToken = jwt.sign({ _id: Vendor._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    const accessToken = jwt.sign({ _id: Vendor._id }, process.env.JWT_SECRET!, { expiresIn: '24h' });
     return accessToken;
 
   } catch (error) {

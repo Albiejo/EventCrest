@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import DefaultLayout from '../../Layout/DefaultLayout';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../Redux/rootstate/VendorState';
@@ -8,8 +8,9 @@ import {
   CardFooter,
   Typography,
 } from "@material-tailwind/react";
-import { axiosInstanceVendor } from '../../Api/axiosinstance';
-
+import BookingPieChart from '../../Components/vendor/Charts/BookingPieChart';
+import Calendar from '../../Components/vendor/Charts/Calendar';
+import { Link } from 'react-router-dom';
 
 
 
@@ -21,21 +22,42 @@ import { axiosInstanceVendor } from '../../Api/axiosinstance';
 const Dashboard: React.FC = () => {
 
   const vendor = useSelector((state:VendorRootState)=>state.vendor.vendordata)
+  const[unreadlength , setunreadlength] = useState(0);
+  const [currentColorIndex, setCurrentColorIndex] = useState(0);
+  const colors = ['text-red-900', 'text-green-700', 'text-black', 'text-blue-700'];
+  const unreadNotificationsCount = vendor?.notifications?.filter(notification => notification.Read === false);
+  
+  
+  
+  useEffect(()=>{
+    setunreadlength(unreadNotificationsCount?.length)
+  },[vendor]) 
 
 
-   
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+
+  const acceptedCount = 20;
+  const cancelledCount = 10;
 
   return (
     <DefaultLayout>
     <div className="grid gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3 2xl:gap-7.5">
       
       <div className="md:col-span-2 2xl:col-span-1 ">
-        <Card className="mt-6 w-full  bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 " placeholder={undefined}>
+        <Card className="mt-6 w-full bg-black" placeholder={undefined}>
           <CardBody placeholder={undefined}>
-            <Typography variant="h5" color="blue-gray" className="mb-2" placeholder={undefined}>
-           TOTAL BOOKING
+            <Typography variant="h5" color="white" className="mb-2" placeholder={undefined}>
+           TOTAL BOOKING<i className="fa-regular fa-calendar ml-2"></i>
             </Typography>
-            <Typography placeholder={undefined}>
+            <Typography placeholder={undefined} color='white'>
              {vendor?.totalBooking}
             </Typography>
           </CardBody>
@@ -47,18 +69,18 @@ const Dashboard: React.FC = () => {
       
       
       <div className="md:col-span-2 2xl:col-span-1">
-        <Card className="mt-6 w-full  bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600" placeholder={undefined}>
+        <Card className="mt-6 w-full  bg-black" placeholder={undefined}>
           <CardBody placeholder={undefined}>
-            <Typography variant="h5" color="blue-gray" className="mb-2" placeholder={undefined}>
-             OVERALL RATING
+            <Typography variant="h5" color="white" className="mb-2" placeholder={undefined}>
+             OVERALL RATING<i className="fa-regular fa-star ml-2"></i>
             </Typography>
-            <Typography placeholder={undefined}>
+            <Typography placeholder={undefined}  color="white">
               <div className='flex'>
               {vendor?.OverallRating}
               <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
-              fill="green"
+              fill="gold"
               className="h-5 w-5 text-yellow-700"
             >
               <path
@@ -79,12 +101,12 @@ const Dashboard: React.FC = () => {
       
       
       <div className="md:col-span-2 2xl:col-span-1">
-        <Card className="mt-6 w-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 " placeholder={undefined}>
+        <Card className="mt-6 w-full bg-black" placeholder={undefined}>
           <CardBody placeholder={undefined}>
-            <Typography variant="h5" color="blue-gray" className="mb-2" placeholder={undefined}>
-             TOTAL REVIEWS
+            <Typography variant="h5"  color="white" className="mb-2" placeholder={undefined}>
+             TOTAL REVIEWS<i className="fa-regular fa-file ml-2"></i>
             </Typography>
-            <Typography placeholder={undefined}>
+            <Typography placeholder={undefined}  color="white">
             {vendor?.reviews.length}
             </Typography>
           </CardBody>
@@ -95,6 +117,27 @@ const Dashboard: React.FC = () => {
       </div>
   
     </div>
+
+
+  
+  <div className="flex justify-between">
+        <div className="flex-1 ml-32 mt-10">
+          <BookingPieChart
+            acceptedCount={acceptedCount}
+            cancelledCount={cancelledCount}
+          />
+        </div>
+
+        <div className="flex-1  mt-32">
+          <Calendar />
+          {unreadlength &&<><Link to='/vendor/notifications'>  <Typography
+            placeholder={undefined}
+            className={`font-bold mt-8 text-lg ${colors[currentColorIndex]}`}
+          >
+            You have {unreadlength} unread notifications! Click to view
+          </Typography></Link></>}
+        </div>
+</div>
 
 
   </DefaultLayout>

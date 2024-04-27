@@ -69,7 +69,7 @@ const VendorFilters = ({vendorTypeData , onCategorySelect }) => {
     
     
       {vendorTypeData.map((vendorType, index) => (
-                <ListItem key={index} className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onClick={() => onCategorySelect(vendorType._id)}>
+                <ListItem key={index} className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onChange={() => onCategorySelect(vendorType._id)}>
                   <label
                     htmlFor={`vertical-list-react-${index}`}
                     className="flex w-full cursor-pointer items-center px-3 py-2"
