@@ -14,6 +14,7 @@ class AdminController {
       const {refreshToken ,  token, adminData, message } = await login(email, password);
       
       res.cookie('jwtToken', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+      console.log("testing");
       return res.status(200).json({token, refreshToken , adminData, message });
       
     } catch (error) {
