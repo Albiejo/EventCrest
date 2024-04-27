@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Chat } from '../../../types/chat';
+import { Chat } from '../../../Types/chat';
 import head from '../../../../public/imgs/head.png'
 
 const chatData: Chat[] = [

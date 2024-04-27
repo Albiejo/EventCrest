@@ -66,7 +66,7 @@ export default function VendorTabs({ reviews }) {
 {value === 'reviews' && ( 
   <div className="grid grid-cols-1 gap-4 ">
     {reviews?.map((review, index) => (
-      <div key={index} className="border-4 border-gray-600 bg-gray-300  rounded-md p-4">
+      <div key={index} className="border-2 border-blue-600 bg-gray-200  rounded-md p-4">
         <ReviewCard {...review} />
         {review.reply && review.reply.length > 0 && (
           <div className="ml-8">
