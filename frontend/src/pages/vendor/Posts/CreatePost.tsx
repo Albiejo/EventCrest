@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { axiosInstanceVendor } from "../../../Api/axiosinstance";
 import DefaultLayout from "../../../Layout/DefaultLayout";
-import Breadcrumb from "../../../Components/vendor/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
   
   const CreatePost = () => {
     const vendor = useSelector(

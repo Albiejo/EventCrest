@@ -1,13 +1,13 @@
 import { Suspense, lazy } from 'react';
 
-const Hero = lazy(() => import('../Components/home/Hero'));
-const Footer = lazy(() => import('../Components/home/Footer'));
-const VendorList = lazy(() => import('../Components/home/VendorList'));
-const Hero2 = lazy(() => import('../Components/home/Hero2'));
-const Hero3 = lazy(() => import('../Components/home/Hero3'));
-const Hero4 = lazy(() => import('../Components/home/Hero4'));
+const Hero = lazy(() => import('../Components/Home/Hero'));
+const Footer = lazy(() => import('../Components/Home/Footer'));
+const VendorList = lazy(() => import('../Components/Home/VendorList'));
+const Hero2 = lazy(() => import('../Components/Home/Hero2'));
+const Hero3 = lazy(() => import('../Components/Home/Hero3'));
+const Hero4 = lazy(() => import('../Components/Home/Hero4'));
 
-import LoadingSpinner from '../Components/common/LoadingSpinner';
+import LoadingSpinner from '../Components/Common/LoadingSpinner';
 
 
 

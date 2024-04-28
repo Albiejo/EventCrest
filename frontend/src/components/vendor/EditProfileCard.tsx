@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input, Button } from "@material-tailwind/react";
 import { useSelector } from "react-redux";
-import VendorRootState from "../../redux/rootstate/VendorState";
+import VendorRootState from "../../Redux/rootstate/VendorState";
 
 const initialFormState = {
   name: "",

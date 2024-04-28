@@ -1,5 +1,5 @@
 import DefaultLayout from '../../../Layout/DefaultLayout';
-import Breadcrumb from '../../../Components/vendor/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../../Components/Vendor/Breadcrumbs/Breadcrumb';
 import {
   Card,
   CardBody,

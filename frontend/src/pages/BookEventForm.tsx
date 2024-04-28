@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, Typography } from '@material-tailwind/react';
-import Footer from '../Components/home/Footer';
+import Footer from '../Components/Home/Footer';
 import 'react-datepicker/dist/react-datepicker.css';
 import { validate } from '../Validations/BookingValidation';
 import { axiosInstance } from '../Api/axiosinstance';

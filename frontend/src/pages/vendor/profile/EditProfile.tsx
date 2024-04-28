@@ -6,7 +6,7 @@ import { axiosInstanceVendor } from "../../../Api/axiosinstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DefaultLayout from "../../../Layout/DefaultLayout";
-import Breadcrumb from "../../../Components/vendor/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
 
 
 const initialFormState = {

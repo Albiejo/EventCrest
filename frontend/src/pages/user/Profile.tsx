@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import ChangePassword from "../../Components/user/Profile/ChangePassword";
-import Favorites from "../../Components/user/Profile/Favorites";
-import UserSidebar from "../../Components/user/Profile/Sidebar";
-import  ProfileCard  from "../../Components/user/Profile/ProfileCard";
-import BookingDetails from "../../Components/user/Profile/BookingDetails";
-import SingleBooking from "../../Components/user/Profile/SingleBooking";
+import ChangePassword from "../../Components/User/Profile/ChangePassword";
+import Favorites from "../../Components/User/Profile/Favorites";
+import UserSidebar from "../../Components/User/Profile/Sidebar";
+import  ProfileCard  from "../../Components/User/Profile/ProfileCard";
+import BookingDetails from "../../Components/User/Profile/BookingDetails";
+import SingleBooking from "../../Components/User/Profile/SingleBooking";
 import NotificationPage from "./NotificationPage";
 import NotFound from "../../Components/Error/NotFound";
 const Profile = () => {

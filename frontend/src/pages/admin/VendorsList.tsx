@@ -1,9 +1,9 @@
-import VendorCard from "../../Components/admin/vendorList/VendorCard"
+import VendorCard from "../../Components/Admin/vendorList/VendorCard"
 import { Button } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { axiosInstanceAdmin } from "../../Api/axiosinstance";
-import Pagination from "../../Components/common/Pagination";
+import Pagination from "../../Components/Common/Pagination";
 
 interface Vendor {
   _id: string;

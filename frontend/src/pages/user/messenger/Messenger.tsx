@@ -1,12 +1,12 @@
 
 import './Messenger.css';
-import Conversation from '../../../Components/user/conversations/Conversation';
+import Conversation from '../../../Components/User/conversations/Conversation';
 import { useSelector } from 'react-redux';
 import UserRootState from '../../../Redux/rootstate/UserState';
 import { useEffect, useRef, useState } from 'react';
 import { axiosInstanceAdmin, axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
 import {io} from 'socket.io-client'
-import Message from '../../../Components/user/messages/Message';
+import Message from '../../../Components/User/messages/Message';
 import Picker from '@emoji-mart/react'
 
 

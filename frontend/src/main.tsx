@@ -18,34 +18,34 @@ import { PersistGate } from 'redux-persist/integration/react';
 //admin
 import AdminApp from './Pages/admin/AdminApp.tsx'
 import Dashboard from './Pages/admin/Dahboard.tsx';
-import AdminLogin from './Components/admin/Login.tsx'
-import AdminPrivateRoute from './Components/admin/AdminPrivateRoute.tsx';
+import AdminLogin from './Components/Admin/Login.tsx'
+import AdminPrivateRoute from './Components/Admin/AdminPrivateRoute.tsx';
 import Wallet from './Pages/admin/Wallet.tsx';
 import AdminNotifications from './Pages/admin/AdminNotifications.tsx';
 
 
 //common routes
 import HomePage from './Pages/HomePage.tsx'
-import ForgotPassword from './Components/common/ForgotPassword.tsx';
-import ResetPassword from './Components/common/ResetPassword.tsx';
+import ForgotPassword from './Components/Common/ForgotPassword.tsx';
+import ResetPassword from './Components/Common/ResetPassword.tsx';
 import AboutPage from './Pages/AboutPage.tsx';
 import NotFound from './Components/Error/NotFound.tsx';
 import Room from './Components/Live/Room.tsx';
 
 
 //user
-import UserLoginForm from './Components/user/Login.tsx';
-import UserSignupForm from './Components/user/Signup.tsx'
-import VerifyEmail from './Components/common/VerifyEmail.tsx'
+import UserLoginForm from './Components/User/Login.tsx';
+import UserSignupForm from './Components/User/Signup.tsx'
+import VerifyEmail from './Components/Common/VerifyEmail.tsx'
 import UsersList from './Pages/admin/UsersList.tsx';
-import UserPrivateRoute from './Components/user/UserPrivateRoute.tsx';
+import UserPrivateRoute from './Components/User/UserPrivateRoute.tsx';
 import UserVendorProfile from './Pages/user/UserVendorProfile.tsx';
 import LiveStreaming from './Pages/user/LiveStream.tsx';
 //vendor
 import VendorApp from './Pages/vendor/VendorApp.tsx';
 import VendorsList from './Pages/admin/VendorsList.tsx';
 import VendorTypes from './Pages/admin/VendorTypes.tsx';
-import VendorProfile from './Components/admin/vendorList/VendorProfile.tsx';
+import VendorProfile from './Components/Admin/vendorList/VendorProfile.tsx';
 import VendorListing from './Pages/VendorListing.tsx';
 import Profile from './Pages/user/Profile.tsx';
 import BookEventForm from './Pages/BookEventForm.tsx';

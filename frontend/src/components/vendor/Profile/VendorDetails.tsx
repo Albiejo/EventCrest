@@ -7,8 +7,8 @@ import {
 } from "@material-tailwind/react";
 import { Link ,useLocation} from "react-router-dom";
 import { useSelector } from "react-redux";
-import VendorRootState from "../../../redux/rootstate/VendorState";
-import UserRootState from "../../../redux/rootstate/UserState";
+import VendorRootState from "../../../Redux/rootstate/VendorState";
+import UserRootState from "../../../Redux/rootstate/UserState";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { axiosInstance } from "../../../Api/axiosinstance";
 import { toast } from "react-toastify";

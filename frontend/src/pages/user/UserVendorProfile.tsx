@@ -7,16 +7,16 @@
   import {
     MapPinIcon,
   } from '@heroicons/react/24/solid';
-  import Footer from '../../Components/home/Footer';
+import Footer from '../../Components/Home/Footer';
   import { useLocation } from 'react-router-dom';
   import { useEffect, useState } from 'react';
   import { axiosInstance } from '../../Api/axiosinstance';
-  import VendorTabs from '../../Components/vendor/Profile/VendorTabs';
+  import VendorTabs from '../../Components/Vendor/Profile/VendorTabs';
   import { toast } from 'react-toastify';
   import UserRootState from '../../Redux/rootstate/UserState';
   import { useSelector } from 'react-redux';
-  import {Review} from '../../Components/vendor/Profile/Review';
-  import ProfileButtons from '../../Components/vendor/ProfileButtons';
+  import {Review} from '../../Components/Vendor/Profile/Review';
+  import ProfileButtons from '../../Components/Vendor/ProfileButtons';
   import { useDispatch } from 'react-redux';
   import { setUserInfo } from '../../Redux/slices/UserSlice';
 import { setVendorInfo } from '../../Redux/slices/VendorSlice';

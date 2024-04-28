@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import Breadcrumb from "../../../Components/vendor/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "../../../Layout/DefaultLayout";
 import { useLocation } from "react-router-dom";
 import VendorRootState from "../../../Redux/rootstate/VendorState";

@@ -4,10 +4,10 @@ import { ToastContainer } from "react-toastify";
 import { Toaster } from "react-hot-toast";
 import VendorSignupForm from "./Authentication/Signup";
 import VendorLoginForm from "./Authentication/Login";
-import VendorPrivateRoute from "../../Components/vendor/VendorPrivateRoute";
+import VendorPrivateRoute from "../../Components/Vendor/VendorPrivateRoute";
 import Dashboard from "./Dashboard";
 import { useEffect } from "react";
-import PageTitle from "../../Components/vendor/PageTitle";
+import PageTitle from "../../Components/Vendor/PageTitle";
 import Profile from "./profile/Profile";
 import EditProfile from "./profile/EditProfile";
 import ChangePassword from "./profile/ChangePassword";
@@ -20,7 +20,7 @@ import VendorNotifications from "./VendorNotifications";
 import ViewBooking from "./Booking/ViewBooking";
 import Messenger from "./Messenger/Messenger";
 import NotFound from "../../Components/Error/NotFound";
-import VerifyEmail from "../../Components/common/VerifyEmail";
+import VerifyEmail from "../../Components/Common/VerifyEmail";
 
 
 const VendorApp = () => {

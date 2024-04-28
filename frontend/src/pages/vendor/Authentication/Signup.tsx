@@ -15,7 +15,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import { axiosInstanceVendor } from "../../../Api/axiosinstance";
 import { toast } from "react-toastify";
 import { validate } from "../../../Validations/vendor/registerVal";
-import LoadingSpinner from "../../../Components/common/LoadingSpinner";
+import LoadingSpinner from "../../../Components/Common/LoadingSpinner";
 
 
 interface VendorType {

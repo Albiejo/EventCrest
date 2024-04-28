@@ -13,7 +13,7 @@ import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { validate } from "../../../Validations/changePwdValidation";
 import { axiosInstanceVendor } from "../../../Api/axiosinstance";
 import DefaultLayout from "../../../Layout/DefaultLayout";
-import Breadcrumb from "../../../Components/vendor/Breadcrumbs/Breadcrumb";
+import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
 
   
   interface FormValues {

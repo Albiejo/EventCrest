@@ -1,5 +1,5 @@
 import { Button, Progress, Rating, Textarea } from '@material-tailwind/react';
-import Breadcrumb from '../../Components/vendor/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../Components/Vendor/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../Layout/DefaultLayout';
 import {  useDispatch, useSelector } from 'react-redux';
 import VendorRootState from '../../Redux/rootstate/VendorState';

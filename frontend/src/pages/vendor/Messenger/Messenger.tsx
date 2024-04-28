@@ -1,7 +1,7 @@
 
 import './vendorMessenger.css'
-import Conversation from '../../../Components/vendor/Conversations/Conversation';
-import Message from '../../../Components/user/messages/Message';
+import Conversation from '../../../Components/Vendor/Conversations/Conversation';
+import Message from '../../../Components/User/messages/Message';
 
 import { useSelector } from 'react-redux';
 import UserRootState from '../../../Redux/rootstate/UserState';

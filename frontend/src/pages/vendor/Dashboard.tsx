@@ -8,8 +8,8 @@ import {
   CardFooter,
   Typography,
 } from "@material-tailwind/react";
-import BookingPieChart from '../../Components/vendor/Charts/BookingPieChart';
-import Calendar from '../../Components/vendor/Charts/Calendar';
+import BookingPieChart from '../../Components/Vendor/Charts/BookingPieChart';
+import Calendar from '../../Components/Vendor/Charts/Calendar';
 import { Link } from 'react-router-dom';
 
 

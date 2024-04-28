@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import Breadcrumb from '../../../Components/vendor/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../../Components/Vendor/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../../Layout/DefaultLayout';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../Redux/rootstate/VendorState';

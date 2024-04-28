@@ -10,7 +10,7 @@ import {
  Typography,
 
 } from "@material-tailwind/react";
-import VendorRootState from "../../../redux/rootstate/VendorState";
+import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { useSelector } from "react-redux";
 
 

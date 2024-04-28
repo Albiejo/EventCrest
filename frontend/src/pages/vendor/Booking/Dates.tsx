@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import DefaultLayout from '../../../Layout/DefaultLayout';
-import Breadcrumb from '../../../Components/vendor/Breadcrumbs/Breadcrumb';
+import Breadcrumb from '../../../Components/Vendor/Breadcrumbs/Breadcrumb';
 
 
 

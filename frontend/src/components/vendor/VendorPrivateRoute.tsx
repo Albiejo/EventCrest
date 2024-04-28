@@ -1,6 +1,6 @@
 import {Navigate,Outlet} from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import VendorRootState from '../../redux/rootstate/VendorState';
+import VendorRootState from '../../Redux/rootstate/VendorState';
 
 
 const VendorPrivateRoute = () => {

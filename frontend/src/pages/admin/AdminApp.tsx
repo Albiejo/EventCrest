@@ -1,9 +1,9 @@
 // AdminApp.tsx
 
 import { Outlet } from "react-router-dom";
-import AdminNavbar from '../../Components/admin/Navbar';
+import AdminNavbar from '../../Components/Admin/Navbar';
 import Layout from "../../Components/Layout";
-import Sidebar from "../../Components/admin/Sidebar";
+import Sidebar from "../../Components/Admin/Sidebar";
 import { useSelector } from 'react-redux';
 import AdminState  from '../../Redux/rootstate/AdminState';
 import { ToastContainer } from "react-toastify"

@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { axiosInstance , axiosInstanceVendor } from "../../Api/axiosinstance";
 import { DialogWithImage } from "./DialogWithImage";
 import { useSelector } from "react-redux";
-import VendorRootState from "../../redux/rootstate/VendorState";
+import VendorRootState from "../../Redux/rootstate/VendorState";
 
 
 // Define the interface for your response data

@@ -1,6 +1,6 @@
 import {Navigate,Outlet} from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import UserRootState from '../../redux/rootstate/UserState';
+import UserRootState from '../../Redux/rootstate/UserState';
 
 
 const UserPrivateRoute = () => {

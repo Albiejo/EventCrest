@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { axiosInstanceVendor } from '../../../Api/axiosinstance';
 import { useSelector } from 'react-redux';
-import VendorRootState from '../../../redux/rootstate/VendorState';
+import VendorRootState from '../../../Redux/rootstate/VendorState';
 import { Link } from 'react-router-dom';
 
 

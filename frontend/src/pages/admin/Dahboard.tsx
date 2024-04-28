@@ -4,7 +4,7 @@ import { axiosInstance } from '../../Api/axiosinstance';
 import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 import { useSelector } from 'react-redux';
 import AdminRootState from '../../Redux/rootstate/AdminState';
-import RevenueChart from '../../Components/admin/RevenueChart ';
+import RevenueChart from '../../Components/Admin/RevenueChart ';
 
 
 function Dashboard() {

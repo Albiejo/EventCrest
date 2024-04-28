@@ -5,7 +5,7 @@ import { Outlet    } from 'react-router-dom';
 import Layout from './Components/Layout';
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import MyNavbar from './Components/user/Navbar';
+import MyNavbar from './Components/User/Navbar';
 
 
 

@@ -1,14 +1,14 @@
 import DefaultLayout from '../../Layout/DefaultLayout'
-import Breadcrumb from '../../Components/vendor/Breadcrumbs/Breadcrumb'
+import Breadcrumb from '../../Components/Vendor/Breadcrumbs/Breadcrumb'
 import { useDispatch, useSelector } from 'react-redux'
 import VendorRootState from '../../Redux/rootstate/VendorState'
 import { useEffect, useState } from 'react'
 import { axiosInstanceAdmin, axiosInstanceVendor } from '../../Api/axiosinstance'
 import { Button, Card } from '@material-tailwind/react'
-import Pagination from '../../Components/common/Pagination'
+import Pagination from '../../Components/Common/Pagination';
 import { format } from 'date-fns';
 import { toast } from 'react-toastify'
-import ClearButton from '../../Components/common/ClearButton'
+import ClearButton from '../../Components/Common/ClearButton'
 import { setVendorInfo } from '../../Redux/slices/VendorSlice'
 
 

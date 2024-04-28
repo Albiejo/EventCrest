@@ -2,13 +2,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import UserRootState from '../../Redux/rootstate/UserState';
 import { useEffect, useState } from 'react';
 import { Button, Card } from '@material-tailwind/react';
-import Pagination from '../../Components/common/Pagination';
+import Pagination from '../../Components/Common/Pagination';
 import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 import { format } from 'date-fns';
 import { axiosInstance } from '../../Api/axiosinstance';
 import { toast } from 'react-toastify';
 import { setUserInfo } from '../../Redux/slices/UserSlice';
-import ClearButton from '../../Components/common/ClearButton';
+import ClearButton from '../../Components/Common/ClearButton';
 
 
 

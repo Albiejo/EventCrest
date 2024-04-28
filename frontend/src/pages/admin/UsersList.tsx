@@ -1,4 +1,4 @@
-import UsersTable from "../../Components/admin/usersList/usersTable";
+import UsersTable from "../../Components/Admin/usersList/usersTable";
 
 function UsersList() {
 

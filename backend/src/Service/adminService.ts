@@ -15,50 +15,6 @@ interface LoginResponse {
   }
 
 
-// class AdminService{
-
-//   private adminRepository: AdminRepository;
-
-//   constructor() {
-//     this.adminRepository = new AdminRepository();
-//   }
-
-
-//   async login(email: string, password: string): Promise<LoginResponse>{
-//     try {
-//       const existingAdmin = await this.adminRepository.findByEmail(email);
-
-//       if (!existingAdmin) {
-//         throw new CustomError('Admin not exists..', 404);
-//       }
-  
-//       const passwordMatch = await bcrypt.compare(password, existingAdmin.password);
-//       if (!passwordMatch) {
-//         throw new CustomError('Incorrect password..', 404);
-//       }
-  
-//       let refreshToken = existingAdmin.refreshToken;
-  
-     
-//       if (!refreshToken) {
-       
-//         refreshToken = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_REFRESH_SECRET!, { expiresIn: "7d" });
-//       }
-  
-  
-//       existingAdmin.refreshToken = refreshToken;
-//       await existingAdmin.save();
-  
-//       const token = jwt.sign({ _id: existingAdmin._id }, process.env.JWT_SECRET!, { expiresIn: '24h'});
-  
-//       return {refreshToken , token, adminData: existingAdmin, message: "Successfully logged in.." };
-//     } catch (error) {
-//       throw error;
-//     }
-//   };
-
-
-// }
 
 export const login = async (email: string, password: string): Promise<LoginResponse> => {
   try {

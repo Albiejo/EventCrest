@@ -1,12 +1,12 @@
  
 import { Card, CardBody, Typography } from '@material-tailwind/react';
-import VendorFilters from '../Components/home/VendorFilter';
-import VendorSort from '../Components/home/VendorSort';
-import Footer from '../Components/home/Footer';
+import VendorFilters from '../Components/Home/VendorFilter';
+import VendorSort from '../Components/Home/VendorSort';
+import Footer from '../Components/Home/Footer';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { axiosInstance } from '../Api/axiosinstance';
-import LoadingSpinner from '../Components/common/LoadingSpinner';
-const VendorCard = lazy(() => import('../Components/home/VendorListingCard'));
+import LoadingSpinner from '../Components/Common/LoadingSpinner';
+const VendorCard = lazy(() => import('../Components/Home/VendorListingCard'));
 import { useLocation } from 'react-router-dom';
 import debounce from 'lodash/debounce';
 

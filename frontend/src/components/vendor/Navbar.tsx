@@ -9,9 +9,9 @@ import {
   MobileNav,
 } from "@material-tailwind/react";
 import { useSelector,useDispatch } from 'react-redux';
-import VendorState  from '../../redux/rootstate/VendorState';
+import VendorState  from '../../Redux/rootstate/VendorState';
 import {axiosInstanceVendor} from '../../Api/axiosinstance';
-import { logout } from "../../redux/slices/VendorSlice";
+import { logout } from "../../Redux/slices/VendorSlice";
 import { HomeIcon, ShoppingCartIcon } from "@heroicons/react/24/solid";
 
 

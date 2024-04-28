@@ -5,9 +5,9 @@ import { axiosInstanceAdmin } from '../../Api/axiosinstance';
 import { useEffect, useState } from 'react';
 import { Button, Card } from '@material-tailwind/react';
 import { format } from 'date-fns';
-import Pagination from '../../Components/common/Pagination';
+import Pagination from '../../Components/Common/Pagination';
 import { toast } from 'react-toastify';
-import ClearButton from '../../Components/common/ClearButton';
+import ClearButton from '../../Components/Common/ClearButton';
 import { setAdminInfo } from '../../Redux/slices/AdminSlice';
 
 

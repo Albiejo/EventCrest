@@ -9,7 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { axiosInstanceAdmin } from "../../Api/axiosinstance";
-import Pagination from "../../Components/common/Pagination";
+import Pagination from "../../Components/Common/Pagination";
 
 
 interface User {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import Footer from '../Components/home/Footer';
+import Footer from '../Components/Home/Footer';
 import { Button, Card } from '@material-tailwind/react';
 
 const AboutPage = () => {

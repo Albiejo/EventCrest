@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { axiosInstanceVendor } from "../../Api/axiosinstance";
 import { toast } from "react-toastify";
-import VendorRootState from "../../redux/rootstate/VendorState";
+import VendorRootState from "../../Redux/rootstate/VendorState";
 import { useSelector } from "react-redux";
 
 const CreatePost = () => {

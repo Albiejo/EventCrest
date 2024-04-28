@@ -9,7 +9,7 @@ import {
   import { useNavigate } from "react-router-dom";
   import { useSelector } from "react-redux";
   import { useState } from "react";
-import VendorRootState from "../../redux/rootstate/VendorState";
+import VendorRootState from "../../Redux/rootstate/VendorState";
 import { axiosInstanceVendor } from "../../Api/axiosinstance";
 import { validate } from "../../validations/changePwdValidation";
   
