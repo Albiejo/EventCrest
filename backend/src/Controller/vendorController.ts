@@ -19,7 +19,7 @@ import {
   updateNotification,
   clearalldata,
 } from "../Service/vendorService";
-
+import moment from 'moment';
 import generateOtp from "../Util/generateOtp";
 import { CustomError } from "../Error/CustomError";
 import { ObjectId } from "mongoose";
@@ -33,6 +33,34 @@ import dotenv from "dotenv";
 import { vendorSession } from "../util/Interfaces";
 import { ErrorMessages } from "../Util/enums";
 import { handleError } from "../Util/handleError";
+import { Types } from "mongoose";
+import Payment from "../Model/Payment";
+
+
+
+function getCurrentWeekRange() {
+  const startOfWeek = moment().startOf('isoWeek').toDate();
+  const endOfWeek = moment().endOf('isoWeek').toDate();
+  return { startOfWeek, endOfWeek };
+}
+
+// Function to get current year range
+function getCurrentYearRange() {
+  const startOfYear = new Date(new Date().getFullYear(), 0, 1);
+  const endOfYear = new Date(new Date().getFullYear() + 1, 0, 1);
+  return { startOfYear, endOfYear };
+}
+
+// Function to calculate the last five years' range
+function getLastFiveYearsRange() {
+  const currentYear = new Date().getFullYear();
+  const startOfFiveYearsAgo = new Date(currentYear - 5, 0, 1);
+  const endOfCurrentYear = new Date(currentYear + 1, 0, 1);
+  return { startOfFiveYearsAgo, endOfCurrentYear };
+}
+
+
+
 const sharp = require("sharp");
 
 interface OTP {
@@ -535,6 +563,90 @@ class VendorController {
       handleError(res, error, "clearAllNotifications vendor");
     }
   }
+
+  async getRevenue(req: Request, res: Response): Promise<void> {
+    try {
+      const vendorId = req.query.vendorId as string;
+      const dateType = req.query.date as string;
+  
+      if (!vendorId || !Types.ObjectId.isValid(vendorId)) {
+        res.status(400).json({ message: 'Invalid or missing vendorId' });
+        return;
+      }
+  
+      let start, end, groupBy, sortField, arrayLength=0;
+  
+      switch (dateType) {
+        case 'week':
+          const { startOfWeek, endOfWeek } = getCurrentWeekRange();
+          start = startOfWeek;
+          end = endOfWeek;
+          groupBy = { day: { $dayOfMonth: '$createdAt' } }; // Group by day
+          sortField = 'day';// Sort by day
+          arrayLength = 7;
+          break;
+        case 'month':
+          const { startOfYear, endOfYear } = getCurrentYearRange();
+          start = startOfYear;
+          end = endOfYear;
+          groupBy = { month: { $month: '$createdAt' } }; // Group by month
+          sortField = 'month'; // Sort by month
+          arrayLength = 12;
+          break;
+        case 'year':
+          const { startOfFiveYearsAgo, endOfCurrentYear } = getLastFiveYearsRange();
+          start = startOfFiveYearsAgo;
+          end = endOfCurrentYear;
+          groupBy = { year: { $year: '$createdAt' } }; // Group by year
+          sortField = 'year';// Sort by year
+          arrayLength = 5;
+          break;
+        default:
+          res.status(400).json({ message: 'Invalid date parameter' });
+          return;
+      }
+  
+      const revenueData = await Payment.aggregate([
+        {
+          $match: {
+            vendorId: new Types.ObjectId(vendorId),
+            createdAt: {
+              $gte: start,
+              $lt: end,
+            },
+          },
+        },
+        {
+          $group: {
+            _id: groupBy,
+            totalRevenue: { $sum: '$amount' },
+          },
+        },
+        {
+          $sort: { [`_id.${sortField}`]: 1 },
+        },
+      ]);
+      const revenueArray = Array.from({ length: arrayLength }, (_, index) => {
+        const item = revenueData.find((r) => {
+          if (dateType === 'week') {
+            return r._id.day === index + 1;
+          } else if (dateType === 'month') {
+            return r._id.month === index + 1;
+          } else if (dateType === 'year') {
+            return r._id.year === new Date().getFullYear() - (arrayLength - 1) + index;
+          }
+          return false;
+        });
+        return item ? item.totalRevenue : 0; // Default to 0 if no data for the expected index
+      });
+  
+      res.status(200).json({ revenue: revenueArray }); 
+    } catch (error) {
+      handleError(res, error, "getRevenue");
+    }
+  }
+
+
 }
 
 export default new VendorController();

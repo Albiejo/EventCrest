@@ -55,4 +55,8 @@ router.post('/verification-request',authenticate ,VendorController.sendVerifyReq
 router.patch('/MarkAsRead' , authenticate , VendorController.MarkasRead)
 router.patch('/ClearAll' ,authenticate ,VendorController.clearAllNotifications)
 
+
+router.get("/revenue", VendorController.getRevenue);
+
+
 export default router;

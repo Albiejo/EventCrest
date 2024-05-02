@@ -10,6 +10,8 @@ const Header = (props: {
       <div className="flex flex-grow items-center justify-between px-4 py-2 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           {/* <!-- Hamburger Toggle BTN --> */}
+        
+        
           <button
             aria-controls="sidebar"
             onClick={(e) => {
@@ -53,7 +55,7 @@ const Header = (props: {
           {/* <!-- Hamburger Toggle BTN --> */}
 
           <Link className="block flex-shrink-0 lg:hidden" to="/vendor">
-            <h5>Event Crest</h5>
+            <h5 className='text-white font-bold'>Event Crest</h5>
           </Link>
         </div>
 
