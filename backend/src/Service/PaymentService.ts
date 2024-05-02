@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import { createNewPaymnet , findAllPayments ,updateAdminWalletAmount , findPaymentCount} from "../Repository/paymentRepository";
+import { CustomError } from "../Error/CustomError";
 
 
 
@@ -14,7 +15,8 @@ export const addNewPayment=async(amount:number,userId:string,vendorId:string,boo
       return booking;
 
     } catch (error) {
-      throw error;
+      console.error("Error fetching addNewPayment", error);
+      throw new CustomError("Unable to fetch addNewPayment", 500);
     }
 }
 
@@ -24,7 +26,8 @@ export const getPayments=async(skip:number , limit:number)=>{
     const payment=await findAllPayments(skip, limit);
     return payment;
   } catch (error) {
-    throw error;
+    console.error("Error fetching getPayments", error);
+    throw new CustomError("Unable to fetch getPayments", 500);
   }
 }
 
@@ -34,7 +37,8 @@ try {
   
 } catch (error) {
   console.log(error);
-  throw error;
+  console.error("Error fetching updateAdminWallet", error);
+  throw new CustomError("Unable to fetch updateAdminWallet", 500);
 }
 }
 
@@ -43,6 +47,7 @@ export const CountTotalPayments = async()=>{
     const count=await findPaymentCount();
     return count;
   } catch (error) {
-    throw error;
+    console.error("Error fetching CountTotalPayments", error);
+      throw new CustomError("Unable to fetch CountTotalPayments", 500);
   }
 }

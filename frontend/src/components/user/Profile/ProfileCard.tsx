@@ -48,23 +48,43 @@ const ProfileCard = () => {
 
   const [file, setFile] = useState<File | undefined>(undefined);
 
-useEffect(() =>console.log("data is ",user));
 
+
+  const checkerror = (file)=>{
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
+    if (!allowedTypes.includes(file?.type)) {
+     toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
+     return;
+   }
+   
+  }
 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const formData = new FormData();
     formData.append("name", inputs.name);
     formData.append("phone", inputs.phone);
+
+
     if (file) {
       formData.append("image", file, file.name);
     }
+
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
+    if (!allowedTypes.includes(file?.type)) {
+     toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
+     return;
+   }
+
+
     axiosInstance
       .put(`/updateProfile?userid=${user?._id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },withCredentials: true })
       .then((response) => {
-        console.log("response is",response.data.data.NewUserData);
         toast.success("Profile updated successfully...!");
         dispatch(setUserInfo(response.data.data.NewUserData));
         navigate("/profile");
@@ -136,9 +156,12 @@ useEffect(() =>console.log("data is ",user));
            
             onChange={(e) => {
               if (e.target.files && e.target.files.length > 0) {
+                
                 const file = e.target.files[0];
                 setFile(file);
+                checkerror(file)
                 setPreviewUrl(URL.createObjectURL(file));
+                
               }
             }}
           />

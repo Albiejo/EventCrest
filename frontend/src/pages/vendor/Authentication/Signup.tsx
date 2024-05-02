@@ -72,6 +72,8 @@ const VendorSignupForm = () => {
   ) => {
     if (typeof e === "string") {
       setFormValues({ ...formValues, vendor_type: e });
+      setFormValues({...formValues})
+
     } else {
       const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
       setFormValues({ ...formValues, [name]: value });

@@ -4,27 +4,14 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { axiosInstanceAdmin } from "../../Api/axiosinstance";
 import Pagination from "../../Components/Common/Pagination";
-
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: number;
-  city:string;
-  password:string;
-  isActive: boolean;
-  isVerified:boolean;
-  verificationRequest:boolean;
-  totalBooking:number;
-
-}
+import { VendorData } from "../../Types/vendorType";
 
 
 
 function VendorsList() {
 
 
-  const [vendors,setVendors]=useState<Vendor[]>([]);
+  const [vendors,setVendors]=useState<VendorData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const vendorsPerPage = 8;
 

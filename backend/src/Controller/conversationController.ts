@@ -1,6 +1,7 @@
 import ConversationModel from '../Model/Conversation';
 import { Request, Response } from "express";
 import { ErrorMessages } from '../Util/enums';
+import { handleError } from '../Util/handleError';
 
 
 
@@ -8,11 +9,10 @@ import { ErrorMessages } from '../Util/enums';
 class conversationController{
 
   
-  async createChat(req: Request, res: Response): Promise<Response>{
+  async createChat(req: Request, res: Response){
 
     const {senderId , receiverId} = req.body;
-    console.log("sender id",typeof senderId);
-    console.log("receiver id",typeof receiverId);
+
     try {
 
       let chat = await ConversationModel.findOne({ members: [senderId, receiverId] });
@@ -25,40 +25,25 @@ class conversationController{
      return res.status(200).json(chat);
 
     } catch (error) {
-      console.log(error);
-      return  res.status(500).json({ message:ErrorMessages.ServerError });
+      handleError(res, error, "createChat");
     }
 }
 
 
 
 
-  async findUserchats(req: Request, res: Response):Promise<Response>{
+  async findUserchats(req: Request, res: Response){
 
-    const {userId , search}  = req.query;
-    console.log("search",search)
+    const {userId }  = req.query;
     try {
 
-      let chats;
-
-      if (search) { 
-        // chats = await ConversationModel.find({ members: { $in: [userId] } }).populate('members');
-
-     
-        // chats = chats.map(chat => {
-        //     chat.members = chat.members.filter(member => member._id.toString() !== userId);
-        //     return chat;
-        // });
-
-       
-        // chats = chats.filter(chat => chat.members.some(member => member.name.includes(search)));
-    }  else {
-        chats = await ConversationModel.find({ members: { $in: [userId] } });
-    }
-        return res.status(200).json(chats);
+      const chats = await ConversationModel.find({ members: { $in: [userId] } });
+    
+      chats.sort((a, b) => (b.latestMessageTimestamp || new Date()).getTime() - (a.latestMessageTimestamp || new Date()).getTime());
+      
+      return res.status(200).json(chats);
     } catch (error) {
-        console.log(error);
-        return  res.status(500).json({ message:ErrorMessages.ServerError});
+      handleError(res, error, "findUserchats");
     }
 
 }

@@ -46,7 +46,7 @@ router.put('/updateProfile',authenticate ,upload.fields([{ name: 'coverpic', max
 router.put('/add-review-reply',authenticate ,VendorController.addReviewReply)
 
 
-router.get('/booking-details',authenticate ,BookingController.getAllBookings);
+router.get('/booking-details',authenticate ,BookingController.getAllBookingsbyvendor);
 router.get('/single-booking-details',authenticate ,BookingController.getBookingsById);
 router.put('/update-booking-status',authenticate ,BookingController.updateStatus)
 router.get('/getallBookings',authenticate ,BookingController.getallBookings)

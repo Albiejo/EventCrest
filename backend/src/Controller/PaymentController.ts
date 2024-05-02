@@ -3,7 +3,7 @@ import { addNewPayment , getPayments , updateAdminWallet , CountTotalPayments} f
 const Stripe = require("stripe");
 require("dotenv").config();
 import { PaymentSession } from "../util/Interfaces";
-import { ErrorMessages } from "../Util/enums";
+import { handleError } from "../Util/handleError";
 
 
   
@@ -65,7 +65,6 @@ async makePayment(req: Request, res: Response) {
 
   async addPayment(req: Request, res: Response){
     try {
-      console.log(req.session.payment)
       const paymentData = req.session.payment;
       const amount=paymentData.amount;
       const userId=paymentData.userId;
@@ -75,8 +74,7 @@ async makePayment(req: Request, res: Response) {
       await updateAdminWallet(amount);
       res.status(201).json({payment})
     } catch (error) {
-      console.log(error)
-      res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "addPayment");
     }
   }
 
@@ -85,7 +83,6 @@ async makePayment(req: Request, res: Response) {
 
   async getAllPayments(req: Request, res: Response){
     try {
-   
       const page: number = parseInt(req.query.page as string) || 1; 
       const pageSize: number = parseInt(req.query.pageSize as string) || 4; 
       const skip = (page - 1) * pageSize;
@@ -96,8 +93,7 @@ async makePayment(req: Request, res: Response) {
       const payment=await getPayments(skip , pageSize)
       res.status(200).json({payment , totalPages})
     } catch (error) {
-      console.log(error)
-      res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "getAllPayments");
     }
   }
 

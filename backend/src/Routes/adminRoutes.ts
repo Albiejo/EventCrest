@@ -4,8 +4,11 @@ import  UserController  from "../Controller/userController";
 import VendorTypeController  from "../Controller/vendorTypeController";
 import  VendorController  from "../Controller/vendorController";
 import  PaymentController  from "../Controller/paymentController";
-import authenticate from "../Middleware/adminAuth";
+import authenticate from "../Middleware/AdminAuth";
 import adminController from "../Controller/adminController";
+import bookingController from "../Controller/bookingController";
+
+
 
 const router = express.Router();
 
@@ -37,8 +40,9 @@ router.get('/all-payment-details',authenticate,PaymentController.getAllPayments)
 
 router.patch('/MarkasRead' ,authenticate, AdminController.MarkasRead)
 router.get('/getall-payment-details',authenticate,PaymentController.getAllPayments)
+router.get('/getallBookings',authenticate ,bookingController.getallBookings)
 
-
+router.get('/revenue' , authenticate , adminController.getRevenue)
 
 export default router;
 

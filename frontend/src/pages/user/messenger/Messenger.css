@@ -5,7 +5,7 @@
 
 .chatmenu{
 
-    background-color: #2D3F50;
+    background-color: #002F5E;
     border-radius: 18px;
     width: 100px; 
     overflow-y: scroll;
@@ -96,12 +96,9 @@ padding-left:30%;
 }
 
 .userTyping {
-    display: flex;
-    align-items: center; /* Background color */
-    color: #000000; /* Text color */
-    border-radius: 5px; /* Rounded corners */ /* Adjust margin-top as needed */
+    color: #000000;
     margin-left: 10px;
-    font-weight: bold; /* Specify font-weight value */
+    font-weight: bold; 
 }
 
 .userTyping::after {

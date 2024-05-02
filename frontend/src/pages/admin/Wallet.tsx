@@ -10,53 +10,9 @@ import {
 import { useEffect, useState } from "react";
 import { axiosInstanceAdmin } from "../../Api/axiosinstance";
 import Pagination from "../../Components/Common/Pagination";
+import { payment } from "../../Types/commonTypes";
 
 
-interface User {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  isActive: boolean;
-}
-interface Vendor {
-  _id: string;
-  name: string;
-  email: string;
-  phone: number;
-  city:string;
-  password:string;
-  isActive: boolean;
-  isVerified:boolean;
-  verificationRequest:boolean;
-  totalBooking:number;
-  coverpicUrl:string;
-  logoUrl:string;
-}
-
-interface booking{
-  date:string;
-  name:string;
-  eventName:string;
-  city:string;
-  pin:number;
-  mobile:number;
-  createdAt:Date;
-  vendorId:string;
-  userId:string;
-  status:string;
-  payment_status:string;
-  amount:number;
-}
-
-interface payment{
-  _id:string;
-    amount:number;
-    vendorId:Vendor;
-    userId:User;
-    bookingId:booking;
-    createdAt:Date
-}
 
 function Wallet() {
 
@@ -80,7 +36,7 @@ function Wallet() {
 
   useEffect(()=>{
     axiosInstanceAdmin
-      .get(`/all-payment-details?page=${currentPage}`, { withCredentials: true })
+      .get(`/getall-payment-details?page=${currentPage}`, { withCredentials: true })
       .then((response) => {
         setPayments(response.data.payment.result);
         setadmin(response.data.payment.AdminData);

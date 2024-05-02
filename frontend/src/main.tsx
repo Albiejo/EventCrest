@@ -25,10 +25,10 @@ import AdminNotifications from './Pages/admin/AdminNotifications.tsx';
 
 
 //common routes
-import HomePage from './Pages/HomePage.tsx'
+import HomePage from './Pages/home/HomePage.tsx'
 import ForgotPassword from './Components/Common/ForgotPassword.tsx';
 import ResetPassword from './Components/Common/ResetPassword.tsx';
-import AboutPage from './Pages/AboutPage.tsx';
+import AboutPage from './Pages/home/AboutPage.tsx';
 import NotFound from './Components/Error/NotFound.tsx';
 import Room from './Components/Live/Room.tsx';
 
@@ -46,10 +46,10 @@ import VendorApp from './Pages/vendor/VendorApp.tsx';
 import VendorsList from './Pages/admin/VendorsList.tsx';
 import VendorTypes from './Pages/admin/VendorTypes.tsx';
 import VendorProfile from './Components/Admin/vendorList/VendorProfile.tsx';
-import VendorListing from './Pages/VendorListing.tsx';
+import VendorListing from './Pages/home/VendorListing.tsx';
 import Profile from './Pages/user/Profile.tsx';
-import BookEventForm from './Pages/BookEventForm.tsx';
-import PaymentSuccess from './Pages/PaymentSuccess.tsx';
+import BookEventForm from './Pages/user/BookEventForm.tsx';
+import PaymentSuccess from './Pages/user/PaymentSuccess.tsx';
 import Messenger from './Pages/user/messenger/Messenger.tsx';
 
 
@@ -63,7 +63,6 @@ import { ADMINROUTES } from './Constants/constants.ts';
 const router = createBrowserRouter(
   createRoutesFromElements(
   <>
-   
     <Route path="/" element={<App/>}>
               <Route index={true}  path="/" element={<HomePage/>} />
               <Route path={USERROUTES.USER_LOGIN} element={<UserLoginForm />} />

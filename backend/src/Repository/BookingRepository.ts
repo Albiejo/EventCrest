@@ -2,106 +2,88 @@ import mongoose from "mongoose";
 import Booking, { bookingDocument } from "../Model/Booking"
 import vendor from "../Model/Vendor"
 import user from "../Model/User";
+import { BaseRepository } from "./baseRepository";
 
 
 
 
-export const checkDate = async (vendorId:string , date:string): Promise<boolean> => {
-try {
-  const vendorData = await vendor.findById(vendorId);
-    if (!vendorData) {
-      throw new Error('Vendor not found');
-    }
-    const isBooked = vendorData.bookedDates.includes(date);
-    return isBooked? true : false;
-} catch (error) {
-  throw error;
-}
+class BookingRepository extends BaseRepository<bookingDocument>{
 
-}
+  constructor(){
+    super(Booking)
+  }
 
 
 
-
-export const createNewBooking=async(  bookingData: Partial<bookingDocument> ): Promise<bookingDocument> =>{
+  async findBookingsByVendorId( vendorId: string){
     try {
 
-         let vendorId = bookingData.vendorId;
-         const result = await Booking.create(bookingData);
-       
+      const result = await Booking.find({ vendorId: vendorId });
+      return result;
 
-        await vendor.findByIdAndUpdate(vendorId, {
-          $push: { bookedDates: bookingData.date },
-        }); 
-        
-        const vendorData  = await vendor.findById(vendorId);
-        if(!vendorData){
-          throw Error;
-        }
-        vendorData.notifications.push({
-          _id: new mongoose.Types.ObjectId(),
-          message:"New Event Booked!",
-          timestamp: new Date() ,
-          Read:false
-        })
+    } catch (error) {
+      throw error;
+    }
+  }
 
-        return result;
-      } catch (error) {
-        throw error;
-      }
-}
-
-
-
-export const findBookingsByUserId=async (
-    userId: string,
-    skip: number, limit: number
-  ): Promise<bookingDocument[]> => {
+  async findBookingsByUserId(userId: string,  skip: number, limit: number){
     try {
       const result = await Booking.find({ userId: userId }).populate('vendorId').skip(skip).limit(limit);
       return result;
     } catch (error) {
       throw error;
     }
-};
+  }
 
 
-export const findBookingsByVendorId = async (
-    vendorId: string
-  ): Promise<bookingDocument[]> => {
-    try {
-      const result = await Booking.find({ vendorId: vendorId });
-      
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  };
-
-
-  export const findBookingsByBookingId=async (
-    bookingId: string
-  ): Promise<bookingDocument|{}> => {
+  async findBookingsByBookingId( bookingId: string){
     try {
       const result = await Booking.find({ _id: bookingId }).populate('userId').populate('vendorId');
       return result;
     } catch (error) {
       throw error;
     }
-  };
+  }
+
+
+  async getfullbookingdetails(){
+    try {
+      const data  = await Booking.find();
+      if(!data){
+        throw new Error("Booking details not found");
+      }
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  async updatebookingCancel(bookingId:string , vendorId:string , date:string):Promise<void>{
+    try {
+      const bookingData = await Booking.findById(bookingId);
+      if (!bookingData) {
+        throw new Error('Booking not found');
+      }
+
+      bookingData.status = 'Cancelled'; 
+      bookingData.payment_status = 'Cancelled';
+      await bookingData.save();
+
+      await vendor.findByIdAndUpdate(vendorId, {
+        $pull: { bookedDates: date }
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 
 
 
-  export const updateBookingStatusById=async (
-    bookingId: string,
-    status:string,
-    vid:string,
-    userId:string
-  ) => {
+  async updateBookingStatusById(bookingId: string,status:string,vid:string,userId:string){
     try {
 
       const result = await Booking.findByIdAndUpdate(bookingId,{$set:{status:status}});
-
 
       const vendordata = await vendor.findById(vid)
       
@@ -131,37 +113,25 @@ export const findBookingsByVendorId = async (
     } catch (error) {
       throw error;
     }
-  };
-
-
-  export const updatebookingCancel = async(bookingId:string , vendorId:string , date:string):Promise<void>=>{
-    try {
-      const bookingData = await Booking.findById(bookingId);
-      if (!bookingData) {
-        throw new Error('Booking not found');
-      }
-
-      bookingData.status = 'Cancelled'; 
-      bookingData.payment_status = 'Cancelled';
-      await bookingData.save();
-
-      await vendor.findByIdAndUpdate(vendorId, {
-        $pull: { bookedDates: date }
-      });
-    } catch (error) {
-      throw error;
-    }
   }
 
 
-  export const getfullbookingdetails = async()=>{
-    try {
-      const data  = await Booking.find();
-      if(!data){
-        throw new Error("Booking details not found");
-      }
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  }
+
+ 
+}
+
+
+export default new BookingRepository()
+
+
+
+
+
+
+
+
+
+
+
+
+

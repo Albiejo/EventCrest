@@ -74,7 +74,7 @@ const renderChart = () => {
 };
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-4 mt-6">Revenue Chart</h2>
+      <h2 className="text-lg font-semibold mb-4 mt-6 ">Revenue Chart</h2>
       <canvas ref={chartRef} width={300} height={100}></canvas>
     </div>
   );

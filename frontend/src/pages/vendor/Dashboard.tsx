@@ -121,12 +121,12 @@ const Dashboard: React.FC = () => {
 
   
   <div className="flex justify-between">
-        <div className="flex-1 ml-32 mt-10">
+        {/* <div className="flex-1 ml-32 mt-10">
           <BookingPieChart
             acceptedCount={acceptedCount}
             cancelledCount={cancelledCount}
           />
-        </div>
+        </div> */}
 
         <div className="flex-1  mt-32">
           <Calendar />

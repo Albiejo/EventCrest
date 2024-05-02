@@ -11,6 +11,8 @@
     "start": "nodemon socket/Index.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.567.0",
+    "@aws-sdk/s3-request-presigner": "^3.567.0",
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -26,6 +28,7 @@
     "axios": "^1.6.7",
     "chart.js": "^4.4.2",
     "emoji-mart": "^5.5.2",
+    "file-loader": "^6.2.0",
     "formik": "^2.4.5",
     "gapi-script": "^1.2.0",
     "jsvectormap": "^1.5.3",
@@ -52,7 +55,8 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "sort-by": "^1.2.0",
-    "sweetalert2": "^11.10.7"
+    "sweetalert2": "^11.10.7",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
@@ -61,6 +65,7 @@
     "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^18.2.19",
     "@types/react-slick": "^0.23.13",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.2.1",

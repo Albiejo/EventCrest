@@ -1,3 +1,4 @@
+import { CustomError } from "../Error/CustomError";
 import { createVendorType, findVerndorTypeByName ,findVerndorTypes , VendorfindByIdAndDelete , getVendorById , UpdateTypeById} from "../Repository/vendorTypeRepository";
 
 
@@ -12,16 +13,20 @@ export const addType = async (type: string, status: string)=> {
 
     return {  message: "New Type added..." ,new_type};
   } catch (error) {
-    throw error;
+    console.error("Error fetching addType", error);
+    throw new CustomError("Unable to fetch addType", 500);
   }
 };
+
+
 
 export const getTypes = async ()=> {
   try {
     const availableTypes=await findVerndorTypes()
     return availableTypes;
   } catch (error) {
-    throw error;
+    console.error("Error fetching getTypes", error);
+    throw new CustomError("Unable to fetch getTypes", 500);
   }
 };
 
@@ -36,7 +41,8 @@ export const deleteVendorType = async(vendorId:string): Promise<void> =>{
       throw new Error('Vendor not found');
     }
   } catch (error) {
-    throw error;
+    console.error("Error fetching deleteVendorType", error);
+    throw new CustomError("Unable to fetch deleteVendorType", 500);
   }
 
 }
@@ -46,7 +52,8 @@ export const getSingleVendordata = async(vendorId:string)=>{
 try {
   return await getVendorById(vendorId)
 } catch (error) {
-  throw error
+  console.error("Error fetching getSingleVendordata", error);
+  throw new CustomError("Unable to fetch getSingleVendordata", 500);
 }
 }
 
@@ -56,7 +63,8 @@ try {
   const updateddata = await UpdateTypeById(vendorTypeId , {type , status:status==="Active"?true:false});
   return updateddata;
 } catch (error) {
-  throw new Error('Failed to update vendor type , please try again..');
+  console.error("Error fetching updateVendorType", error);
+  throw new CustomError("Unable to fetch updateVendorType", 500);
 }
 }
 

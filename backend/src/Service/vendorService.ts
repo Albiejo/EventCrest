@@ -37,7 +37,8 @@ export const signup = async (email:string ,password:string, name:string , phone:
       return "vendor created";
 
     } catch (error) {
-      throw error;
+      console.error("Error fetching signup", error);
+      throw new CustomError("Unable to fetch signup", 500);
     }
   };
 
@@ -80,7 +81,8 @@ export const signup = async (email:string ,password:string, name:string , phone:
         return {refreshToken , token,vendorData:existingVendor,message:"Successfully logged in.."};
         
       } catch (error) {
-        throw error;
+        console.error("Error fetching login", error);
+        throw new CustomError("Unable to fetch login", 500);
       }
 }
 
@@ -90,7 +92,8 @@ export const CheckExistingVendor = async(email:string)=>{
     const existingVendor = await findvendorByEmail(email);
     return existingVendor;
   } catch (error) {
-    throw error
+    console.error("Error fetching CheckExistingVendor", error);
+    throw new CustomError("Unable to fetch CheckExistingVendor", 500);
   }
 }
 
@@ -110,7 +113,8 @@ export const createRefreshToken = async (refreshToken:string)=>{
     return accessToken;
 
   } catch (error) {
-    
+    console.error("Error fetching createRefreshToken", error);
+    throw new CustomError("Unable to fetch createRefreshToken", 500);
   }
 }
 
@@ -121,7 +125,8 @@ export const getVendors=async(page: number, pageSize: number, search:string , so
     const totalVendorsCount = await getTotalVendorsCount();
     return { vendors, totalVendorsCount };
   } catch (error) {
-    throw error;
+    console.error("Error fetching getVendors", error);
+    throw new CustomError("Unable to fetch getVendors", 500);
   }
 }
 
@@ -147,7 +152,8 @@ export const toggleVendorBlock = async(vendorId:string): Promise<void> =>{
     await Admin.save();
     console.log("notifi pushed",Admin);
 } catch (error) {
-    throw error;
+  console.error("Error fetching toggleVendorBlock", error);
+  throw new CustomError("Unable to fetch toggleVendorBlock", 500);
 }
 
 }
@@ -162,7 +168,8 @@ export const getSingleVendor = async(vendorId:string): Promise<VendorDocument> =
     }
    return Vendor;
 } catch (error) {
-    throw error;
+    console.error("Error fetching getSingleVendor", error);
+    throw new CustomError("Unable to fetch getSingleVendor", 500);
 }
 
 }
@@ -177,7 +184,8 @@ export const ResetVendorPasswordService = async(password:string , email:string)=
       throw new Error(status.message)
     }
   } catch (error) {
-    throw error;
+    console.error("Error fetching ResetVendorPasswordService", error);
+    throw new CustomError("Unable to fetch ResetVendorPasswordService", 500);
   }
 }
 
@@ -187,7 +195,8 @@ export const PushVendorReview = async(content:string , rating:number , username:
     const data = await AddVendorReview(content , rating, username , vendorid)
     return  data;
   } catch (error) {
-    throw error;
+    console.error("Error fetching PushVendorReview", error);
+    throw new CustomError("Unable to fetch PushVendorReview", 500);
   }
 }
 
@@ -212,7 +221,8 @@ try {
 
     return passwordMatch; 
 } catch (error) {
-  throw error;
+  console.error("Error fetching checkVendorCurrentPassword", error);
+  throw new CustomError("Unable to fetch checkVendorCurrentPassword", 500);
 }
 }
 
@@ -238,7 +248,8 @@ export const UpdateVendorPasswordService=async(newPassword:string , vendorid:str
     }
     return false
   } catch (error) {
-    
+    console.error("Error fetching UpdateVendorPasswordService", error);
+    throw new CustomError("Unable to fetch UpdateVendorPasswordService", 500); 
   }
 }
 
@@ -252,7 +263,8 @@ export const updateVendorprof=async(vendorId: string, formData: any, coverpicUrl
 
     return updatedVendor;
 } catch (error) {
-    throw new Error('Failed to update vendor data');
+  console.error("Error fetching updateVendorprof", error);
+  throw new CustomError("Unable to fetch updateVendorprof", 500);
 }
 }
 
@@ -263,7 +275,8 @@ export const addReviewReplyController=async(vendorId:string,content:string,revie
     const vendordata=await addReviewReplyById(vendorId,content,reviewId)
     return vendordata;
   } catch (error) {
-    throw error
+    console.error("Error fetching addReviewReplyController", error);
+    throw new CustomError("Unable to fetch addReviewReplyController", 500);
   }
 }
 
@@ -274,7 +287,8 @@ export const  verificationRequest=async(vendorId:string)=>{
     const data=await requestForVerification(vendorId)
     return data
   } catch (error) {
-    throw error
+    console.error("Error fetching verificationRequest", error);
+    throw new CustomError("Unable to fetch verificationRequest", 500);
   }
 }
 
@@ -284,7 +298,8 @@ export async function changeVerifyStatus(vendorId:string,status:string){
     const data=await updateVerificationStatus(vendorId,status)
     return data
   } catch (error) {
-    throw error
+    console.error("Error fetching changeVerifyStatus", error);
+    throw new CustomError("Unable to fetch changeVerifyStatus", 500);
   }
 }
 
@@ -293,7 +308,8 @@ try {
   const data = await updateNotificationstatus(vendorid ,notifiId)
   return data;
 } catch (error) {
-  throw error
+    console.error("Error fetching updateNotification", error);
+    throw new CustomError("Unable to fetch updateNotification", 500);
 }
 }
 
@@ -302,6 +318,7 @@ export const clearalldata = async(vendorid:string):Promise<boolean>=>{
    const data  = await clearNotification(vendorid);
    return data;
   } catch (error) {
-    throw error ;
+    console.error("Error fetching clearalldata", error);
+    throw new CustomError("Unable to fetch clearalldata", 500);
   }
 }

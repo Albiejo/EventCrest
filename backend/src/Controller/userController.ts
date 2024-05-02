@@ -30,6 +30,7 @@ import { OTP } from "../util/Interfaces";
 import { DecodedData } from "../util/Interfaces";
 import nodemailer from 'nodemailer';
 import { ErrorMessages } from "../Util/enums";
+import { handleError } from "../Util/handleError";
 dotenv.config();
 
 
@@ -62,7 +63,7 @@ const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 class UserController{
 
-  async UserSignup(req: Request, res: Response): Promise<Response> {
+  async UserSignup(req: Request, res: Response){
     try {
 
       const { email, password, name, phone } = req.body;
@@ -86,8 +87,7 @@ class UserController{
           });
       }
     } catch (error) {
-      console.error(error);
-      return  res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "UserSignup");
     }
   }
 
@@ -130,7 +130,7 @@ class UserController{
       if (error.code === 11000 && error.keyPattern && error.keyValue) {
         const duplicateField = Object.keys(error.keyPattern)[0];
         const duplicateValue = error.keyValue[duplicateField];
-        res
+         res
           .status(500)
           .json({
             message: `The ${duplicateField} '${duplicateValue}' is already in use.`,
@@ -146,19 +146,14 @@ class UserController{
 
 
 
-  async UserLogin(req: Request, res: Response): Promise<Response> {
+  async UserLogin(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
       const {refreshToken,  token, userData, message } = await login(email, password);
       res.cookie("jwtToken", token, { httpOnly: true });
       return res.status(200).json({ token, userData, message , refreshToken });
     } catch (error) {
-      if (error instanceof CustomError) {
-        return  res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        return res.status(500).json({ message: ErrorMessages.ServerError});
-      }
+      handleError(res, error, "UserLogin");
     }
   }
 
@@ -166,7 +161,7 @@ class UserController{
 
 
 
-  async getUser(req: Request, res: Response): Promise<Response>{
+  async getUser(req: Request, res: Response){
     try {
       
       const userId:string = req.query.userId as string;
@@ -175,8 +170,7 @@ class UserController{
       return res.status(200).json(data);
       
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "getUser");
     }
   }
 
@@ -185,19 +179,18 @@ class UserController{
 
 
 
-  async UserLogout(req: Request, res: Response): Promise<Response> {
+  async UserLogout(req: Request, res: Response){
     try {
       res.clearCookie("jwtToken");
       return  res.status(200).json({ message: "User logged out successfully" });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "UserLogout");
     }
   }
 
 
 
-  async createRefreshToken(req: Request, res: Response):Promise<Response>{
+  async createRefreshToken(req: Request, res: Response){
     try {
      
       const { refreshToken } = req.body;
@@ -207,8 +200,7 @@ class UserController{
       return res.status(200).json({ token });
 
     } catch (error) {
-      console.error('Error refreshing token:', error);
-      return res.status(401).json({ message: 'Failed to refresh token' });
+      handleError(res, error, "createRefreshToken");
     }
   }
 
@@ -216,7 +208,7 @@ class UserController{
 
 
 
-  async allUsers(req: Request, res: Response): Promise<Response> {
+  async allUsers(req: Request, res: Response){
     try {
       const { page = 1, limit = 10, search = "" } = req.query;
       const pageNumber = parseInt(page as string, 10);
@@ -224,15 +216,14 @@ class UserController{
       const users = await getUsers(pageNumber, limitNumber, search.toString());
       return res.status(200).json({ users, pageNumber });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "get allUsers");
     }
   }
 
 
 
 
-  async Toggleblock(req: Request, res: Response): Promise<Response> {
+  async Toggleblock(req: Request, res: Response){
     try {
       const userId: string | undefined = req.query.userId as string | undefined;
       if (!userId) {
@@ -244,14 +235,13 @@ class UserController{
 
       return res.status(200).json({ message: "User block status updated." });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "Toggleblock user block");
     }
   }
 
 
 
-  async UserForgotPassword(req: Request, res: Response): Promise<Response> {
+  async UserForgotPassword(req: Request, res: Response){
     try {
       const email = req.body.email;
       const user = await CheckExistingUSer(email);
@@ -267,15 +257,14 @@ class UserController{
         return res.status(400).json({ error: "Email not Registered with us !!" });
       }
     } catch (error) {
-       console.log(error);
-       return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "UserForgotPassword");
     }
   }
 
 
 
 
-  async VerifyOtpForPassword(req: Request, res: Response): Promise<Response> {
+  async VerifyOtpForPassword(req: Request, res: Response){
     try {
       const ReceivedOtp = req.body.otp;
       const generatedOtp = req.session.otp?.otp;
@@ -291,18 +280,13 @@ class UserController{
         throw new CustomError("Invalid OTP !!", 400);
       }
     } catch (error) {
-      if (error instanceof CustomError) {
-        return  res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        return res.status(500).json({ message: ErrorMessages.ServerError});
-      }
+      handleError(res, error, "VerifyOtpForPassword");
     }
   }
 
 
 
-  async ResetUserPassword(req: Request, res: Response): Promise<Response> {
+  async ResetUserPassword(req: Request, res: Response){
     try {
       const password = req.body.password;
       const confirmPassword = req.body.confirm_password;
@@ -314,14 +298,13 @@ class UserController{
         return res.status(400).json({ error: "Passwords do not match." });
       }
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "ResetUserPassword");
     }
   }
 
 
 
-  async ResendOtp(req: Request, res: Response): Promise<Response> {
+  async ResendOtp(req: Request, res: Response){
     try {
       
       const userData: UserSession | undefined = req.session.user;
@@ -349,8 +332,7 @@ class UserController{
       console.log("user session after resend" , req.session.user);
       return  res.status(200).json({ message: "New OTP sent to email" });
     } catch (error) {
-      console.error(error);
-      return  res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "ResendOtp");
     }
   }
 
@@ -372,12 +354,7 @@ class UserController{
       });
       res.status(200).json({ token, userData, message });
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: ErrorMessages.ServerError});
-      }
+      handleError(res, error, "UseGoogleLogin");
     }
   }
 
@@ -394,7 +371,7 @@ class UserController{
         res.status(200).json({ message: "User account registered .." });
       }
     } catch (error) {
-      res.status(400).json({ error: "User already exists" });
+      handleError(res, error, "UseGoogleRegister");
     }
   }
 
@@ -421,14 +398,13 @@ class UserController{
         return;
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "passwordResendOtp");
     }
   }
 
 
 
-  async AddFavVendor(req: Request, res: Response): Promise<Response> {
+  async AddFavVendor(req: Request, res: Response){
     try {
 
       const {vendorId , userId} = req.query;
@@ -447,15 +423,14 @@ class UserController{
       return  res.status(200).json({ data: data});
       
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "AddFavVendor");
     }
   }
 
 
 
 
-  async getFavoriteVendors(req: Request, res: Response): Promise<Response>{
+  async getFavoriteVendors(req: Request, res: Response){
     try {
       const userId: string = req.query.userid as string;
       const page: number = parseInt(req.query.page as string) || 1; 
@@ -474,15 +449,14 @@ class UserController{
       }
 
     } catch (error) {
-      console.error(error);
-      return  res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "getFavoriteVendors");
     }
   }
 
 
 
 
-  async UpdatePasswordController(req: Request, res: Response): Promise<Response> {
+  async UpdatePasswordController(req: Request, res: Response){
     
     try {
 
@@ -506,8 +480,7 @@ class UserController{
       return res.status(200).json({message:"password updated successfully.."})
 
     } catch (error) {
-      console.error(error);
-      return  res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "UpdatePasswordController user");
     }
   }
   
@@ -566,12 +539,7 @@ class UserController{
     res.status(200).json({message:"Profile details updated successfully" , data:data})
     
   } catch (error) {
-    if (error instanceof CustomError) {
-      res.status(error.statusCode).json({ message: error.message });
-    } else {
-      console.error(error);
-      res.status(500).json({ message: ErrorMessages.ServerError});
-    }
+    handleError(res, error, "UpdateProfileDetails");
   }
   }
 
@@ -586,12 +554,12 @@ class UserController{
          res.status(200).json({data:data});
       }
     } catch (error) {
-       res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "MarkRead");
     }
   }
 
 
-  async subscribe(req: Request, res: Response): Promise<Response> {
+  async subscribe(req: Request, res: Response){
     try {
       const { email } = req.body;
     
@@ -619,8 +587,7 @@ class UserController{
     const info = await transporter.sendMail(mailOptions);
      return res.status(200).json({ success: true });
     } catch (error) {
-      console.log(error)
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "subscribe");
     }
   }
 
@@ -632,12 +599,7 @@ class UserController{
       const data  = await clearalldata(userid)
       res.status(200).json(data)
     } catch (error) {
-      if (error instanceof CustomError) {
-        res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        res.status(500).json({ message: ErrorMessages.ServerError});
-      }
+      handleError(res, error, "clearAllNotifications");
     }
   }
 };

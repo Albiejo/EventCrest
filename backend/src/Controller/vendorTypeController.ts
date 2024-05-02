@@ -7,6 +7,7 @@ import {
   updateVendorType
 } from "../Service/vendorTypeService";
 import { ErrorMessages } from "../Util/enums";
+import { handleError } from "../Util/handleError";
 
 
 
@@ -17,28 +18,26 @@ class VendorTypeController  {
 
 
 
-  async addVendorType(req: Request, res: Response): Promise<Response> {
+  async addVendorType(req: Request, res: Response){
     try {
       let { type, status } = req.body;
       const vendor = await addType(type, status);
       return res.status(201).json(vendor);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "addVendorType");
     }
   }
 
-  async getVendorTypes(req: Request, res: Response): Promise<Response> {
+  async getVendorTypes(req: Request, res: Response){
     try {
       const vendorTypes = await getTypes();
       return  res.status(200).json(vendorTypes);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "getVendorTypes");
     }
   }
 
-  async DeleteVendorType(req: Request, res: Response): Promise<Response> {
+  async DeleteVendorType(req: Request, res: Response){
     try {
       const Id: string = req.query.Id as string;
 
@@ -49,12 +48,11 @@ class VendorTypeController  {
       await deleteVendorType(Id);
       return res.status(200).json({ message: "vendor deleted" });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "DeleteVendorType");
     }
   }
 
-  async getSingleVendor(req: Request, res: Response): Promise<Response> {
+  async getSingleVendor(req: Request, res: Response){
     try {
       const vendorTypeId: string | undefined = req.query?.id as
         | string
@@ -67,12 +65,11 @@ class VendorTypeController  {
       const result = await getSingleVendordata(vendorTypeId);
       return res.status(200).json(result);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "getSingleVendor");
     }
   }
 
-  async typeUpdate(req: Request, res: Response): Promise<Response> {
+  async typeUpdate(req: Request, res: Response){
     try {
       const vendorTypeId: string | undefined = req.query?.id as
         | string
@@ -85,8 +82,7 @@ class VendorTypeController  {
       const result = await updateVendorType(vendorTypeId, type, status);
       return res.status(200).json(result);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "typeUpdate in vendor");
     }
   }
 

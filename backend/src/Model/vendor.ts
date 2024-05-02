@@ -51,6 +51,7 @@ const VendorSchema: Schema = new Schema({
     }],
     
     OverallRating:{ type: Number, default: 0 },
+    
     locks: [{
         date: {
           type: String,

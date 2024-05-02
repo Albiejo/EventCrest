@@ -57,7 +57,7 @@ router.post('/add-payment', authenticate , PaymentController.addPayment);
 router.get('/single-booking', authenticate ,BookingController.getBookingsById);
 
 router.patch('/MarkAsRead' ,authenticate, UserController.MarkRead)
-router.patch('/markCancel' , authenticate,BookingController.MarkasCancel)
+router.patch('/markCancel' , authenticate,BookingController.cancelBooking)
 
 router.get('/getVendorTypes'  ,authenticate ,vendorTypeController.getVendorTypes);
 

@@ -55,7 +55,8 @@ export const signup = async (
     return {user: newUser };
 
   } catch (error) {
-    throw error;
+      console.error("Error fetching signup", error);
+      throw new CustomError("Unable to fetch signup", 500);
   }
 };
 
@@ -82,7 +83,8 @@ export const createRefreshToken = async (refreshToken:string)=>{
 
 
   } catch (error) {
-   throw error 
+    console.error("Error fetching createRefreshToken", error);
+    throw new CustomError("Unable to fetch createRefreshToken", 500);
   }
 }
 
@@ -124,7 +126,8 @@ export const login = async (
       message: "Successfully logged in..",
     };
   } catch (error) {
-    throw error;
+      console.error("Error fetching login", error);
+      throw new CustomError("Unable to fetch login", 500);
   }
 };
 
@@ -133,7 +136,8 @@ export const getUsers = async (page: number, limit: number, search: string) => {
     const users = await findAllUsers(page, limit, search);
     return users;
   } catch (error) {
-    throw error;
+    console.error("Error fetching getUsers", error);
+    throw new CustomError("Unable to fetch getUsers", 500);
   }
 };
 
@@ -160,7 +164,8 @@ export const toggleUserBlock = async (userId: string): Promise<void> => {
     console.log("notifi pushed",Admin);
     
   } catch (error) {
-    throw error;
+    console.error("Error fetching toggleUserBlock", error);
+    throw new CustomError("Unable to fetch toggleUserBlock", 500);
   }
 };
 
@@ -170,7 +175,8 @@ try {
   const user = await findUserById(userId)
   return user;
 } catch (error) {
-  throw error ;
+      console.error("Error fetching findUser", error);
+      throw new CustomError("Unable to fetch findUser", 500);
 }
 
 };
@@ -186,7 +192,8 @@ export const generateOtpForPassword = async (email: string) => {
       throw new Error(`couldn't generate otp, error occcured ,please fix !!`);
     }
   } catch (error) {
-    throw error;
+    console.error("Error fetching generateOtpForPassword", error);
+    throw new CustomError("Unable to fetch generateOtpForPassword", 500);
   }
 };
 
@@ -199,18 +206,25 @@ export const ResetPassword = async (password: string, email: string) => {
       throw new Error(status.message);
     }
   } catch (error) {
-    throw error;
+      console.error("Error fetching ResetPassword", error);
+      throw new CustomError("Unable to fetch ResetPassword", 500);
   }
 };
+
+
 
 export const CheckExistingUSer = async (email: string) => {
   try {
     const existingUser = await findUserByEmail(email);
     return existingUser;
   } catch (error) {
-    throw error;
+      console.error("Error fetching CheckExistingUSer", error);
+      throw new CustomError("Unable to fetch CheckExistingUSer", 500);
   }
 };
+
+
+
 
 export const gLogin = async (email: string, password: string) => {
   try {
@@ -241,9 +255,14 @@ export const gLogin = async (email: string, password: string) => {
       message: "logged in successfully!",
     };
   } catch (error) {
-    throw error;
+      console.error("Error fetching gLogin", error);
+      throw new CustomError("Unable to fetch gLogin", 500);
   }
 };
+
+
+
+
 
 export const googleSignup = async (
   email: string,
@@ -260,7 +279,8 @@ export const googleSignup = async (
     const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET!);
     return { token: token, user: newUser };
   } catch (error) {
-    throw error;
+    console.error("Error fetching googleSignup", error);
+    throw new CustomError("Unable to fetch googleSignup", 500);
   }
 };
 
@@ -315,8 +335,8 @@ export const FavoriteVendor = async(vendorId:string , userId:string)=>{
 };
     
 } catch (error) {
-    console.error("Error in addToFavorites service:", error);
-    throw new Error("Failed to add vendor to favorites.");
+  console.error("Error fetching FavoriteVendor", error);
+  throw new CustomError("Unable to fetch FavoriteVendor", 500);
 }
 };
 
@@ -341,7 +361,8 @@ export const checkCurrentPassword = async(currentpassword:string , userId:string
     return passwordMatch; 
 
   } catch (error) {
-    throw error;
+    console.error("Error fetching checkCurrentPassword", error);
+    throw new CustomError("Unable to fetch checkCurrentPassword", 500);
   }
 }
 
@@ -370,7 +391,8 @@ export const UpdatePasswordService = async(newPassword:string , userId:string)=>
     }
     return false
   } catch (error) {
-    throw error;
+      console.error("Error fetching UpdatePasswordService", error);
+      throw new CustomError("Unable to fetch UpdatePasswordService", 500);
   }
 }
 
@@ -384,7 +406,8 @@ export const UpdateUserProfile=async(userId:string , name:string , phone:number 
     }
     return data;
   } catch (error) {
-    throw error
+      console.error("Error fetching UpdateUserProfile", error);
+      throw new CustomError("Unable to fetch UpdateUserProfile", 500);
   }
 }
 
@@ -394,7 +417,8 @@ export const FavoriteVendors=async(userid:string , page: number, pageSize: numbe
       const {favoriteVendors , totalFavVendorsCount} = await getfavVendors(userid , page ,pageSize);
       return {favoriteVendors , totalFavVendorsCount}
     } catch (error) {
-      throw error;
+      console.error("Error fetching FavoriteVendors", error);
+      throw new CustomError("Unable to fetch FavoriteVendors", 500);
     }
 }
 
@@ -404,7 +428,8 @@ export const updateNotification = async(userid:string ,notifiID:string ):Promise
     const data = await updateNotificationstatus(userid ,notifiID)
     return data
   } catch (error) {
-    throw error;
+    console.error("Error fetching updateNotification", error);
+    throw new CustomError("Unable to fetch updateNotification", 500);
   }
 }
 
@@ -414,6 +439,7 @@ export const clearalldata = async(userid:string):Promise<boolean>=>{
    const data  = await clearNotification(userid);
    return data;
   } catch (error) {
-    throw error ;
+      console.error("Error fetching clearalldata", error);
+      throw new CustomError("Unable to fetch clearalldata", 500);
   }
 }

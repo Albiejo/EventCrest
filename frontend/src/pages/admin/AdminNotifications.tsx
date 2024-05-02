@@ -42,8 +42,10 @@ const dispatch = useDispatch();
 
 
   const fetchdata=async()=>{
-    await axiosInstanceAdmin.get(`/getadmin`).then((res)=>{
-      const admin = res.data.data[0];
+  
+    await axiosInstanceAdmin.get(`/getadmin?adminId=${admin?._id}`).then((res)=>{
+      
+      const admin = res.data.data;
       setnotifications(admin.notifications);
      
     })
@@ -111,10 +113,10 @@ const dispatch = useDispatch();
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     {
                               notification.Read ?  <Button color="blue-gray" className="font-bold " placeholder={undefined} onClick={() => handleClick(admin?._id, notification._id)} style={{background:'green'}}>
-                                          Mark Unread
+                                          Unread
                                       </Button> :
                                       <Button color="blue-gray" className="font-bold" placeholder={undefined} onClick={() => handleClick(admin?._id, notification._id)}style={{background:'blue'}}>
-                                          Mark Read
+                                          Read
                                     </Button>
                           }
                     </td>

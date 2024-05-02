@@ -9,8 +9,6 @@ const io = new Server(8900, {
 let users = [];
 
 
-//methods
-
 const addUser = (userId, socketId)=>{
     !users.some((user)=> user.userId === userId) && 
     users.push({userId, socketId , lastSeen: Date.now() })
@@ -38,19 +36,11 @@ const updateUserLastSeen = (socketId) => {
 
 
 const isUserActive = (lastSeen) => {
-    const heartbeatInterval = 60000; // 1 minute interval for heartbeat
+    const heartbeatInterval = 60000; 
     return Date.now() - lastSeen <= heartbeatInterval;
 };
 
 
-const emitActiveStatus = () => {
-    const activeUsers = users.map(user => ({
-        userId: user.userId,
-        active: isUserActive(user.lastSeen)
-    }));
-    io.emit("activeStatus", activeUsers);
-    console.log("active user from socket",activeUsers)
-};
 
 
 
@@ -59,7 +49,7 @@ const emitActiveStatus = () => {
 
 io.on("connection", (socket) => {
   
-console.log("server started");
+console.log("socket server running");
 
     
     socket.on("adduser" , (userId)=>{
@@ -69,13 +59,15 @@ console.log("server started");
 
 
 
-    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    socket.on("sendMessage", ({ senderId, receiverId, text, imageName ,imageUrl}) => {
         
         const user = getUser(receiverId);
         if (user) {
             io.to(user.socketId).emit("getMessage", {
                 senderId,
-                text
+                text,
+                imageName,
+                imageUrl
             });
       
         } else {
@@ -105,7 +97,6 @@ console.log("server started");
        
     const user = getUser(receiverId); 
     if (user) {
-        console.log(user);
         io.to(user.socketId).emit("stopTypingsent", {
             senderId: socket.id, 
         });
@@ -114,16 +105,30 @@ console.log("server started");
     }
 });
 
- 
+
+    socket.on("checkUserActiveStatus", (receiverId) => {
+        console.log("receiverid",receiverId)
+        console.log(users)
+        const user = users.find(u => u.userId === receiverId );
+        if (user) {
+            const active = isUserActive(user.lastSeen);
+            const lastSeen = new Date(user.lastSeen).toLocaleString();
+            socket.emit("userActiveStatus", { receiverId, active , lastSeen});
+        }else{
+            const message = "Not Active";
+            socket.emit("userNotACtive", { message });
+        }
+    });
+    
     socket.on("disconnect" , ()=>{
         removeUser(socket.id);
         io.emit("getUsers", users);
     });
 
+    
     socket.on("heartbeat", () => {
         updateUserLastSeen(socket.id);
     });
    
 });
 
-setInterval(emitActiveStatus, 60000);

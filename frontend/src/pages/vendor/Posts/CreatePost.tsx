@@ -15,23 +15,46 @@ import { axiosInstanceVendor } from "../../../Api/axiosinstance";
 import DefaultLayout from "../../../Layout/DefaultLayout";
 import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
   
+
+
+
+
+
+
   const CreatePost = () => {
+
+
     const vendor = useSelector(
       (state: VendorRootState) => state.vendor.vendordata
     );
+
   
     useEffect(() => {
       console.log(vendor?._id);
     }, []);
   
+
     const [caption, setCaption] = useState<string>("");
     const [file, setFile] = useState<File | undefined>(undefined);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   
     const navigate = useNavigate();
   
+    const handleerror = (file) =>{
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
+      if (!allowedTypes.includes(file?.type)) {
+       toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
+       return;
+     }
+    }
+
+
+
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+
+
       if (!caption) {
         toast.error('Caption is required.', {
           style: {
@@ -42,6 +65,15 @@ import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
        });
         return;
      }
+
+
+     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
+     if (!allowedTypes.includes(file?.type)) {
+      toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
+      return;
+    }
+
+
      if (!file) {
         toast.error("Image is required.");
         return;
@@ -67,6 +99,9 @@ import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
         });
     };
   
+
+
+
     return (
         <DefaultLayout>
         <Breadcrumb pageName="Add Post" folderName="Posts"/>
@@ -122,6 +157,7 @@ import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
                   if (e.target.files && e.target.files.length > 0) {
                     const file = e.target.files[0];
                     setFile(file);
+                    handleerror(file);
                     setPreviewUrl(URL.createObjectURL(file));
                   }
                 }}

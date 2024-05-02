@@ -1,45 +1,36 @@
 import { Request, Response } from "express";
 import { CustomError } from "../Error/CustomError";
 import { addNewLive, changeStatus, getAllLive } from "../Service/liveService";
+import { handleError } from "../Util/handleError";
 
 class LiveController{
 
-  async getLive(req: Request, res: Response): Promise<Response> {
+  async getLive(req: Request, res: Response){
 
     try {
       const data = await getAllLive();
       console.log("data",data);
       return res.status(200).json({ live: data });
     } catch (error) {
-      if (error instanceof CustomError) {
-        return  res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        return  res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "getLive");
     }
   }
 
 
   
-  async addLive(req: Request, res: Response): Promise<Response> {
+  async addLive(req: Request, res: Response){
     try {
       console.log("inside live controller 2 and adding live to db")
       const { url } = req.body;
       const data = await addNewLive(url);
       return res.status(200).json({ live: data });
     } catch (error) {
-      if (error instanceof CustomError) {
-        return res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        return  res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "addLive");
     }
   }
 
 
-  async changeLiveStatus(req: Request, res: Response): Promise<Response> {
+  async changeLiveStatus(req: Request, res: Response){
     try {
       console.log("inside live controller 3")
       const { url } = req.body;
@@ -47,12 +38,7 @@ class LiveController{
       const data = await changeStatus(url);
       return res.status(200).json({ live: data });
     } catch (error) {
-      if (error instanceof CustomError) {
-        return   res.status(error.statusCode).json({ message: error.message });
-      } else {
-        console.error(error);
-        return res.status(500).json({ message: "Server Error" });
-      }
+      handleError(res, error, "changeLiveStatus");
     }
   }
 };

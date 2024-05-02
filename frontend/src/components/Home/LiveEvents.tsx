@@ -34,6 +34,9 @@ interface Live {
 }
 
 const LiveEvents = () => {
+
+
+
   const [live, setLive] = useState<Live[]>([]);
   const [alwaysOpen, setAlwaysOpen] = React.useState(true);
   const handleAlwaysOpen = () => setAlwaysOpen((cur) => !cur);
@@ -42,7 +45,6 @@ const LiveEvents = () => {
     axiosInstance
       .get('/get-live')
       .then((response) => {
-        console.log(response.data.live);
         const filteredLive = response.data.live.filter((event) => !event.finished);
         setLive(filteredLive);
       })
@@ -76,7 +78,7 @@ const LiveEvents = () => {
           onPointerLeaveCapture={undefined}
         >
        
-               Experience the Buzz of Live Events Directly from Your Screen
+       Experience the thrill of live events right at your fingertips! Stay tuned for the latest updates and join the excitement by accessing the live stream link here.
        
         </AccordionHeader>
 

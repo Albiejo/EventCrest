@@ -71,6 +71,13 @@ const EditProfile: React.FC = () => {
     if (!/^\d{10}$/.test(formState.phone.toString())) {
       errors.phone = "Invalid phone number";
     }
+
+    if (formState.logo && !allowedTypes.includes(formState.logo.type)) {
+      errors.logo = "Only JPEG, JPG, PNG, and GIF image formats are allowed.";
+    }
+    if (formState.coverpic && !allowedTypes.includes(formState.coverpic.type)) {
+      errors.coverpic = "Only JPEG, JPG, PNG, and GIF image formats are allowed.";
+    }
    
  
     if (Object.keys(errors).length === 0) {
@@ -106,7 +113,7 @@ const EditProfile: React.FC = () => {
     }
   };
 
-
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
 
   const handleInputChange = (
 
@@ -116,6 +123,13 @@ const EditProfile: React.FC = () => {
     const { name, files, value } = target;
     if (files && files.length > 0) {
       const file = files[0];
+
+    
+      if (!allowedTypes.includes(file?.type)) {
+       toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
+       return;
+     }
+
       const reader = new FileReader();
       reader.onload = () => {
         setFormState((prevState) => ({
@@ -170,6 +184,9 @@ const EditProfile: React.FC = () => {
               alt="Logo Preview"
               className="mt-2 w-full h-32 object-cover"
             />)}
+             {formErrors.coverpic && (
+                  <p className="text-red-500 text-sm">{formErrors.coverpic}</p>
+                )}
             </div>
 
             <div className="md:w-1/2 ">
@@ -186,6 +203,9 @@ const EditProfile: React.FC = () => {
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 onChange={handleInputChange}
               />
+                {formErrors.logo && (
+                  <p className="text-red-500 text-sm">{formErrors.logo}</p>
+                )}
               {formState.logoUrl? (
                 <img
                   src={formState.logoUrl}

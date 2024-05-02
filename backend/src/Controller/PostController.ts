@@ -10,9 +10,9 @@ import sharp from "sharp";
 import { createPost, deletePost, getAllPosts, getPostById } from "../Service/postService";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
-import { ErrorMessages } from "../Util/enums";
 dotenv.config();
 import { CustomError } from "../Error/CustomError";
+import { handleError } from "../Util/handleError";
 
 
 //configuring s3
@@ -32,7 +32,7 @@ const randomImage = (bytes = 32) => crypto.randomBytes(bytes).toString("hex");
 
 class PostController {
   
-  async addNewPost(req: Request, res: Response): Promise<Response> {
+  async addNewPost(req: Request, res: Response){
     
     try {
       const caption = req.body.caption;
@@ -57,14 +57,13 @@ class PostController {
       const post = await createPost(caption, imageName, vendor_id);
       return res.status(201).json(post);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "addNewPost");
     }
   }
 
 
   
-  async getPosts(req: Request, res: Response): Promise<Response> {
+  async getPosts(req: Request, res: Response){
     try {
 
       const vendor_id:string=req.query.vendorid as string;
@@ -86,8 +85,7 @@ class PostController {
       
       return  res.status(201).json(posts);
     } catch (error) {
-      console.error(error);
-      return  res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "getPosts");
     }
   }
 
@@ -95,7 +93,7 @@ class PostController {
 
 
 
-  async deletePost(req: Request, res: Response): Promise<Response> {
+  async deletePost(req: Request, res: Response){
     try {
       const id=req.params.id;
       const post=await getPostById(id);
@@ -116,8 +114,7 @@ class PostController {
 
 
     } catch (error) {
-      console.error(error);
-      return  res.status(500).json({ message: ErrorMessages.ServerError});
+      handleError(res, error, "deletePost");
     }
   }
 };

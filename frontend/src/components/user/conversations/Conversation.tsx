@@ -14,7 +14,7 @@ const backupImage = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAA
 
 
 
-const Conversation = ({conversation , currentUser , active}) => {
+const Conversation = ({conversation , currentUser }) => {
   
   const [vendor , setVendor] = useState(null)
 
@@ -35,7 +35,7 @@ const Conversation = ({conversation , currentUser , active}) => {
       }
     }
     getUser();
-  },[currentUser , conversation , active])
+  },[currentUser , conversation ])
 
 
 
@@ -45,7 +45,6 @@ const Conversation = ({conversation , currentUser , active}) => {
     <div className='conversation'>
        <img className="conversationImg" src={ vendor?.logoUrl ? vendor.logoUrl : backupImage} alt=""/>
         <span className="conversationName">{vendor?.name}</span>
-        {active && <div className="activeIndicator"></div>}
     </div>
   )
 }
