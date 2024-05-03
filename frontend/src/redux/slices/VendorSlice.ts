@@ -24,6 +24,8 @@ export interface VendorData{
     reviews:Array<Review>;
     notifications:Array<object>;
     bookedDates:Array<string>;
+    totalBooking:number;
+    OverallRating:number;
 }
 
 export interface VendorState{

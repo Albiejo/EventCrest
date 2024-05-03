@@ -107,8 +107,6 @@ console.log("socket server running");
 
 
     socket.on("checkUserActiveStatus", (receiverId) => {
-        console.log("receiverid",receiverId)
-        console.log(users)
         const user = users.find(u => u.userId === receiverId );
         if (user) {
             const active = isUserActive(user.lastSeen);

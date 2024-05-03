@@ -39,7 +39,7 @@ const ResetPassword = () => {
       location.pathname === "/vendor/reset-password"
       ? axiosInstanceVendor
       .post("/resetpassword", values, { withCredentials: true })
-        .then((response) => {
+        .then(() => {
           toast.success("password updated successfully..")
           navigate("/");
      })
@@ -50,7 +50,7 @@ const ResetPassword = () => {
     :
       axiosInstance
         .post("/resetpassword", values, { withCredentials: true })
-        .then((response) => {
+        .then(() => {
           toast.success("password updated successfully..")
           navigate("/");
         })

@@ -11,7 +11,7 @@ import {
   import { useState } from "react";
 import VendorRootState from "../../Redux/rootstate/VendorState";
 import { axiosInstanceVendor } from "../../Api/axiosinstance";
-import { validate } from "../../validations/changePwdValidation";
+import { validate } from "../../Validations/changePwdValidation";
   
   interface FormValues {
     current_password: string;

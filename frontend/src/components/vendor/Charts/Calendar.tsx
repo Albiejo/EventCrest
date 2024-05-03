@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogBody, DialogFooter, DialogHeader, IconButton, Typography } from '@material-tailwind/react';
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import DatePicker from 'react-datepicker';
 import { useSelector } from 'react-redux';
 import VendorRootState from '../../../Redux/rootstate/VendorState';

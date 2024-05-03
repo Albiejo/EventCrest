@@ -1,5 +1,5 @@
 import {Document,Schema,Types,model} from "mongoose";
-import { Notification } from '../util/Interfaces';
+import { Notification } from '../Util/Interfaces';
 
 
 export interface AdminDocument extends Document{

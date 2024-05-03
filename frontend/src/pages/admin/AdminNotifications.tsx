@@ -9,7 +9,8 @@ import Pagination from '../../Components/Common/Pagination';
 import { toast } from 'react-toastify';
 import ClearButton from '../../Components/Common/ClearButton';
 import { setAdminInfo } from '../../Redux/slices/AdminSlice';
-
+import axios , { AxiosError } from 'axios';
+import { Notification } from '../../Types/notificationType';
 
 
 
@@ -21,8 +22,8 @@ const AdminNotifications = () => {
   const [Notifications, setnotifications] = useState([]);
 
   const sortedNotifications = Notifications.slice().sort((a: { timestamp: string | number | Date; }, b: { timestamp: string | number | Date; }) => {
-   const dateA = new Date(a.timestamp);
-   const dateB = new Date(b.timestamp);
+   const dateA = new Date(a.timestamp).getTime();
+   const dateB = new Date(b.timestamp).getTime();
    return dateB - dateA;
  });
  
@@ -59,7 +60,7 @@ const dispatch = useDispatch();
   },[])
   
 
-  const handleClick = async(id: any ,notifiID: any ) => {
+  const handleClick = async(id: string | undefined ,notifiID: string ) => {
    
     try {
       await axiosInstanceAdmin.patch( `/MarkAsRead?id=${id}&notifid=${notifiID}`,{ withCredentials: true } )
@@ -69,7 +70,13 @@ const dispatch = useDispatch();
         setnotifications(res.data.data.adminData.notifications);
       })
     } catch (error) {
-      toast.warning(error.message);
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        toast.warning(axiosError.message);
+      } else {
+       
+        console.error('Non-Axios error occurred:', error);
+      }
     }
   }
 
@@ -98,10 +105,11 @@ const dispatch = useDispatch();
 
 
         <tbody className="bg-white divide-y divide-gray-200">
+
           {Notifications.length > 0 ? 
           <>
       
-            {rowsForPage.map((notification: { message: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; timestamp: string | number | Date; _id: any; }, index: React.Key | null | undefined)  => (
+            {rowsForPage.map((notification:Notification , index: React.Key | null | undefined)  => (
                 
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -126,7 +134,7 @@ const dispatch = useDispatch();
       </> :
       <>
         <tr>
-                 <td colSpan="2" className="p-4">
+                 <td className="p-4">
                    No new notifications.
                  </td>
                </tr>

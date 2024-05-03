@@ -9,14 +9,16 @@ import DefaultLayout from "../../../Layout/DefaultLayout";
 import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
 
 
+
+
 const initialFormState = {
   name: "",
   city: "",
   phone:"",
-  coverpic: null,
+  coverpic: null as File | null,
   coverpicPreview: null, 
   about: "",
-  logo: null,
+  logo: null as File | null,
   logoPreview: null,
   logoUrl:null,
   coverpicUrl:null 

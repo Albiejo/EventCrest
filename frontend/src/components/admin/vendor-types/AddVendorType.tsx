@@ -11,6 +11,9 @@ import {
 import { ChangeEvent, FormEvent, useState } from "react";
 import { axiosInstanceAdmin } from "../../../Api/axiosinstance";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { validate } from "../../../Validations/admin/vendorTypeValidation";
+
 
 interface FormValues {
   type: string;
@@ -24,19 +27,26 @@ const initialValues: FormValues = {
 
 export default function AddVendorType() {
   const [formValues, setFormValues] = useState<FormValues>(initialValues);
+  const [formErrors, setFormErrors] = useState<FormValues>({
+    type: '',
+    status: '',
+  });
+
   const navigate = useNavigate();
 
 
 
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement> | string,
   ) => {
     if (typeof e === "string") {
       setFormValues({ ...formValues, status: e });
     } else {
       const { name, value } = e.target as HTMLInputElement & HTMLSelectElement;
       setFormValues({ ...formValues, [name]: value });
+      const errors = validate({ ...formValues, [name]: value });
+      setFormErrors((prevErrors) => ({ ...prevErrors, ...errors }));
     }
   };
 
@@ -45,18 +55,24 @@ export default function AddVendorType() {
 
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    console.log(formValues);
     
     e.preventDefault();
-    axiosInstanceAdmin.post("/add-type", formValues)
-    .then((response) => {
-      setFormValues({type:"",status:""});
-      navigate("/admin/vendor-types")
-    })
-    .catch((error) => {
-      console.log('here', error);
-    });
-  };
+    const errors = validate(formValues);
+    setFormErrors(errors);
+    if (Object.values(errors).every((error) => error === '')) {
+          axiosInstanceAdmin.post("/add-type", formValues)
+          .then((response) => {
+            console.log(response)
+            toast.success("new type added successfully")
+            setFormValues({type:"",status:""});
+            navigate("/admin/vendor-types")
+          })
+          .catch((error) => {
+            console.log('here', error);
+          });
+        }
+    }
+   
 
   return (
     <Card className="w-full mx-auto border-4 border-black" placeholder={undefined} shadow={true}>
@@ -72,6 +88,8 @@ export default function AddVendorType() {
         </Typography>
       </CardHeader>
       <CardBody placeholder={undefined} className="ml-20">
+
+
         <form className="flex flex-row gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col">
             <Typography
@@ -82,6 +100,7 @@ export default function AddVendorType() {
             >
               Vendor Type
             </Typography>
+
             <Input
               placeholder="Vendor Type"
               className=" focus:!border-t-gray-900"
@@ -95,6 +114,13 @@ export default function AddVendorType() {
               containerProps={{ className: "mt-4" }}
               crossOrigin={undefined}
             />
+             {formErrors.type ? (
+              <p className="text-sm" style={{ color: 'red' }}>
+                {formErrors.type}
+              </p>
+            ) : null}
+
+
           </div>
           <div className="flex flex-col">
             <Typography                                            
@@ -113,11 +139,21 @@ export default function AddVendorType() {
               }}
               value={formValues.status}
               name="status"
-              onChange={(e:ChangeEvent<HTMLSelectElement>)=>handleChange(e)}
+              onChange={(e) => {
+                if (e) {
+                  handleChange(e);
+                }
+              }}
             >
               <Option value="Active">Active</Option>
               <Option value="Non-Active">Non-Active</Option>
             </Select>
+            {formErrors.status ? (
+              <p className="text-sm" style={{ color: 'red' }}>
+                {formErrors.status}
+              </p>
+            ) : null}
+
           </div>
           <div className="mt-11">
             <Button size="md" placeholder={undefined} type="submit">
@@ -125,6 +161,8 @@ export default function AddVendorType() {
             </Button>
           </div>
         </form>
+
+
       </CardBody>
     </Card>
   );

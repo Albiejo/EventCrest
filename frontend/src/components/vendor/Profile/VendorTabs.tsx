@@ -9,11 +9,11 @@ import {
 } from "@material-tailwind/react";
 import VendorPosts from "./VendorPosts";
 import ReviewCard from "../ReviewCard";
+import { Review } from "../../../Types/reviewType";
 
 
 
-
-export default function VendorTabs({ reviews }) {
+export default function VendorTabs({ reviews } : { reviews: Review[]  }) {
 
 
   const [activeTab, setActiveTab] = useState("images");
@@ -55,7 +55,7 @@ export default function VendorTabs({ reviews }) {
 
       <TabsBody placeholder={undefined}>
         
-        {data.map(({ value, desc }) => (
+        {data.map(({ value }) => (
           <TabPanel key={value} value={value}>
             
             

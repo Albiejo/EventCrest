@@ -1,7 +1,13 @@
 import { Select ,Option} from '@material-tailwind/react'
 
 
-const VendorSort = ({ onChange }) => {
+interface VendorSortProps {
+  onChange: (value: string) => void; 
+}
+
+
+
+const VendorSort : React.FC<VendorSortProps> = ({ onChange }) => {
   return (
     <Select
           placeholder="Sort by "

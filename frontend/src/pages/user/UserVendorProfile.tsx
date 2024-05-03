@@ -20,10 +20,12 @@ import Footer from '../../Components/Home/Footer';
   import { useDispatch } from 'react-redux';
   import { setUserInfo } from '../../Redux/slices/UserSlice';
 import { setVendorInfo } from '../../Redux/slices/VendorSlice';
-import { truncate } from 'fs';
 
 
   interface Review {
+    _id:string;
+    date:Date;
+    reply:Array<string>;
     username: string;
     rating: number;
     content: string;
@@ -263,7 +265,7 @@ import { truncate } from 'fs';
           </div>
         </section>
         <section>
-          <VendorTabs reviews={vendor?.reviews}/>
+        <VendorTabs reviews={vendor?.reviews ?? []} />
         </section>
         <section className='mb-20'>
         <Review/>

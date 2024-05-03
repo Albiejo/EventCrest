@@ -117,6 +117,22 @@ interface LoginResponse {
       }
     }
 
+    async countNotification(adminId:string):Promise<object>{
+      try {
+        let adminData = await this.adminRepository.getById(adminId);
+        if (!adminData) {
+          throw new Error('admin not found');
+        }
+
+        const notification = adminData.notifications.length
+      
+        return {notification};
+      } catch (error) {
+        console.error("Error fetching countNotification", error);
+        throw new CustomError("Unable to fetch countNotification", 500);
+      }
+    }
+
   }
 
   export default new AdminService();

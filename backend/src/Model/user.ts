@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
-import { Notification } from '../util/Interfaces';
+import { Notification } from '../Util/Interfaces';
 
 export interface User {
     email : string;

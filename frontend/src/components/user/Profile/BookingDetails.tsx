@@ -3,7 +3,7 @@ import { axiosInstance } from '../../../Api/axiosinstance';
 import { useSelector } from 'react-redux';
 import UserRootState from '../../../Redux/rootstate/UserState';
 import { Link } from 'react-router-dom';
-
+import { VendorData } from '../../../Types/vendorType';
 
 interface Booking{
   _id:string;
@@ -13,7 +13,7 @@ interface Booking{
   city:string;
   pin:number;
   mobile:number;
-  vendorId:object;
+  vendorId:VendorData;
   status:string;
   payment_status:string;
 }

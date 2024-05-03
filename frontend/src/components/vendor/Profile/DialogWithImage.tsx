@@ -1,8 +1,6 @@
-import React from "react";
-import {
 
-    Avatar,
-    Button,
+import {
+ Avatar,
  Dialog,
  DialogBody,
  DialogFooter,
@@ -10,6 +8,7 @@ import {
  Typography,
 
 } from "@material-tailwind/react";
+
 import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { useSelector } from "react-redux";
 
@@ -28,7 +27,7 @@ export function DialogWithImage({ imageUrl, open, handler }:DialogWithImageProps
 
 
  return (
-    <Dialog size="sm" open={open} onClose={handler}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+    <Dialog size="sm" open={open} handler={handler}  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <DialogHeader className="justify-between"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <div className="flex items-center gap-3">
             <Avatar
@@ -60,32 +59,8 @@ export function DialogWithImage({ imageUrl, open, handler }:DialogWithImageProps
           src={imageUrl}
         />
       </DialogBody>
-      <DialogFooter className="justify-between"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-          {/* <div className="flex items-center gap-16">
-            <div>
-              <Typography variant="small" color="gray" className="font-normal"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                Views
-              </Typography>
-              <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                44,082,044
-              </Typography>
-            </div>
-            <div>
-              <Typography variant="small" color="gray" className="font-normal"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                Downloads
-              </Typography>
-              <Typography color="blue-gray" className="font-medium"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                553,031
-              </Typography>
-            </div>
-          </div> */}
-          {/* <Button
-                 size="sm"
-                 variant="outlined"
-                 color="blue-gray"
-                 className="mr-5 flex items-center"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          >
-            Share
-          </Button> */}
+      <DialogFooter className="justify-between" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} children={undefined}>
+         
         </DialogFooter>
     </Dialog>
  );

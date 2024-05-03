@@ -7,7 +7,7 @@ import {
   TabPanel,
   Button,
 } from '@material-tailwind/react';
-import VendorPosts from './VendorsPosts';
+import VendorPosts from './VendorPosts';
 import ReviewCard from './ReviewCard';
 
 interface Review {

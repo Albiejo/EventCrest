@@ -1,9 +1,18 @@
 import { Link } from 'react-router-dom';
 import Footer from '../../Components/Home/Footer';
-import { Button, Card } from '@material-tailwind/react';
+import { Button } from '@material-tailwind/react';
+
+
+
+
+
 
 const AboutPage = () => {
-    return (
+  
+  
+  
+  
+  return (
         <>
         <div className=" text-white pt-2"  style={{ fontFamily: 'Arial, sans-serif' }}>
           <div className="max-w-8xl ">

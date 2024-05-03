@@ -8,7 +8,7 @@ import vendorTypeController from '../Controller/vendorTypeController';
 import LiveController from '../Controller/livecontroller';
 
 //middleware
-import authenticate from '../Middleware/userAuth';
+import authenticate from '../Middleware/UserAuth';
 
 const router = express.Router();
 

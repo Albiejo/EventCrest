@@ -96,3 +96,8 @@ export interface Lock {
   date: string;
   isLocked: boolean;
 }
+
+export interface VendorType {
+  type:string;
+  status:boolean;
+}

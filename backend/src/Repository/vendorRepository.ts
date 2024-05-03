@@ -1,5 +1,5 @@
 import Vendor , {VendorDocument } from "../Model/Vendor";
-import { Review } from "../util/Interfaces";
+import { Review } from "../Util/Interfaces";
 import { CustomError } from "../Error/CustomError";
 import mongoose from "mongoose";
 

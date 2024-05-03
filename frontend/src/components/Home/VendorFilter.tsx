@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Accordion,
   AccordionHeader,
@@ -15,6 +16,19 @@ interface IconProps {
   id: number;
   open: number;
 }
+
+
+interface VendorType {
+  _id:string
+  type:string;
+  status:boolean;
+}
+
+interface VendorFiltersProps {
+  vendorTypeData: VendorType[];
+  setCategory: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
 
 function Icon({ id, open }: IconProps) {
   return (
@@ -35,7 +49,7 @@ function Icon({ id, open }: IconProps) {
   );
 }
 
-const VendorFilters = ({vendorTypeData , setCategory }) => {
+const VendorFilters : React.FC<VendorFiltersProps> =({vendorTypeData , setCategory }) => {
 
 
   const [open, setOpen] = React.useState(0);
@@ -80,8 +94,8 @@ const VendorFilters = ({vendorTypeData , setCategory }) => {
     
     
     
-      {vendorTypeData.map((vendorType, index) => (
-                <ListItem key={index} className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} onChange={() => onCategorySelect(vendorType._id)}>
+      {vendorTypeData.map((vendorType:VendorType, index:number) => (
+                <ListItem key={index} className="p-0"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} >
                   <label
                     htmlFor={`vertical-list-react-${index}`}
                     className="flex w-full cursor-pointer items-center px-3 py-2"

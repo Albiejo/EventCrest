@@ -1,4 +1,4 @@
-
+import  { MouseEvent } from 'react';
 import './Messenger.css';
 import Conversation from '../../../Components/User/conversations/Conversation';
 import { useSelector } from 'react-redux';
@@ -10,8 +10,10 @@ import Message from '../../../Components/User/messages/Message';
 import Picker from '@emoji-mart/react'
 import { IconButton } from '@material-tailwind/react';
 import { v4 as uuidv4 } from "uuid";
-
-
+import { ChangeEvent } from 'react';
+import React from 'react';
+import { MessageType } from '../../../Types/messageType';
+import { VendorData } from '../../../Types/vendorType';
 import {
     S3Client,
     PutObjectCommand,
@@ -22,12 +24,22 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 
 
+interface conversationType{
+  _id:string;
+  members: string[];
+  latestMessageTimestamp:Date;
+  timestamps: Date;
+}
+
 const ACCESS_KEY = import.meta.env.VITE_ACCESS_KEY|| "";
 const BUCKET_REGION = import.meta.env.VITE_BUCKET_REGION || "";
 const BUCKET_NAME = import.meta.env.VITE_BUCKET_NAME || "";
 const SECRET_ACCESS_KEY = import.meta.env.VITE_SECRET_ACCESS_KEY || "";
 
-
+interface FileState {
+  filename: string;
+  originalFile: File;
+}
 
 const Messenger = () => {
 
@@ -45,13 +57,13 @@ const Messenger = () => {
     const user = useSelector((state: UserRootState) => state.user.userdata);
 
     const [conversation , setconversation] = useState([]);
-    const [currentchat , setcurrentchat]  = useState(null);
-    const [messages , setmessages] = useState([]);
-    const [arrivalMessage , setArrivalMessage] = useState(null)
+    const [currentchat , setcurrentchat]  = useState<conversationType | null>(null);
+    const [messages , setmessages] = useState<MessageType[]>([]);
+    const [arrivalMessage , setArrivalMessage] = useState<MessageType | null>(null)
     const [newMessage, setnewMessage] = useState("");
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-    const [receiverdata , setReceiverdata] = useState(null)
-    const scrollRef = useRef()
+    const [receiverdata , setReceiverdata] = useState<VendorData | null>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
     const socket = useRef(io("ws://localhost:8900")); 
 
     //typing status state
@@ -62,7 +74,7 @@ const Messenger = () => {
     const [lastseen ,setlastseen] = useState("");
     const [notActive ,setNotActive] = useState("");
     const [filemodal, setFileModal] = useState(false);
-    const [file, setFile] = useState();
+    const [file, setFile] =  useState<FileState | null>(null);
 
 
     
@@ -83,20 +95,23 @@ const Messenger = () => {
        
         socket.current.on("getMessage" , (data)=>{
             setArrivalMessage({
-                sender : data.senderId , 
+              senderId : data.senderId , 
+              conversationId: data.conversationId || "",
                 text : data.text,
+                imageName: "",
+                imageUrl: "",
                 createdAt : Date.now()
             });
         })
 
-        socket.current.on("typingsent" , (senderId)=>{   
-              
+        socket.current.on("typingsent" , (senderId)=>{  
+            console.log(senderId)
             settypingstatus(true)
           
         })
 
         socket.current.on("stopTypingsent" , (senderId)=>{
-                       
+          console.log(senderId)
             settypingstatus(false)
           
           
@@ -109,14 +124,15 @@ const Messenger = () => {
 
     useEffect(()=>{
         socket.current.emit("adduser" , user?._id);
-        socket.current.on("getUsers" , (users)=>{            
+        socket.current.on("getUsers" , (users)=>{   
+          console.log(users)         
         })
     },[user])
 
 
     
     useEffect(()=>{
-        arrivalMessage && currentchat?.members.includes(arrivalMessage.sender) &&
+        arrivalMessage && currentchat?.members.includes(arrivalMessage.senderId) &&
         setmessages((prev)=>[...prev , arrivalMessage])  
     },[arrivalMessage , currentchat])
 
@@ -158,14 +174,14 @@ const Messenger = () => {
    const receiverId = currentchat?.members.find((member)=>member !==user?._id)
    
    
-    const handleDivClick = (conversation) => {
+    const handleDivClick = (conversation:conversationType) => {
         setcurrentchat(conversation)
         const receiverId = currentchat?.members.find((member)=>member !==user?._id)
-        checkUserActiveStatus(receiverId);
+        checkUserActiveStatus(receiverId as string);
         fetchreceiverdata();
     }
 
-    const checkUserActiveStatus = (receiverId) => {
+    const checkUserActiveStatus = (receiverId:string) => {
         socket.current.emit("checkUserActiveStatus", receiverId);
     };
 
@@ -179,7 +195,7 @@ const Messenger = () => {
     }
 
 
-     const handleSubmit=async(e)=>{
+     const handleSubmit=async(e: MouseEvent<HTMLButtonElement>)=>{
         e.preventDefault();
         sendHeartbeat();
         const message = {
@@ -195,17 +211,13 @@ const Messenger = () => {
             text:newMessage
         })
 
-
-                axiosInstanceMsg.post('/' , message).then((res)=>{
-                setmessages([...messages , res.data]);
-                setnewMessage("")
-            }).catch ((error)=>{
-                console.log(error)
-            })
-          
-         
-
-     };
+  axiosInstanceMsg.post('/' , message).then((res)=>{
+   setmessages([...messages , res.data]);
+   setnewMessage("")
+ }).catch ((error)=>{
+console.log(error)
+ })
+};
 
 
 
@@ -221,7 +233,7 @@ const Messenger = () => {
             socket.current.emit('stopTyping', { receiverId: receiverId });
         };
 
-        const handleInputChange = (e) => {
+        const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
             setnewMessage(e.target.value);
             handleTyping();
         };
@@ -230,8 +242,12 @@ const Messenger = () => {
 
 
         
-        const handleEmojiSelect = emoji => {
+        const handleEmojiSelect = (emoji: string | { native: string }) => {
+          if (typeof emoji === 'string') {
+            setnewMessage(prev => prev + emoji);
+          } else {
             setnewMessage(prev => prev + emoji.native);
+          }
         };
     
 
@@ -261,19 +277,18 @@ const Messenger = () => {
 
 
         // image input
-  const fileInputRef = useRef(null);
+        const fileInputRef = useRef<HTMLInputElement>(null);
 
 
   const handleButtonClick = () => {
-    // When the IconButton is clicked, trigger the hidden file input
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
 
-  const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFileModal(true);
       setFile({
@@ -290,7 +305,7 @@ const Messenger = () => {
   };
 
 
-  const handleSend = async (e) => {
+  const handleSend = async (e: React.MouseEvent<HTMLButtonElement>) => {
     
     e.preventDefault();
 
@@ -380,7 +395,7 @@ const Messenger = () => {
                     <>
                        
                         <div onClick={()=>handleDivClick(c)}>
-                        <Conversation  conversation={c} currentUser={user}/>
+                        <Conversation  conversation={c}  currentUser={{ _id: user?._id || '' }}/>
                         </div>
                     </>
                     ))}

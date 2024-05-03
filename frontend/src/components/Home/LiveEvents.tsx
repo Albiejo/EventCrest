@@ -9,7 +9,9 @@ import {
 import { axiosInstance } from '../../Api/axiosinstance';
 import { Link } from 'react-router-dom';
 
-function Icon({ open }) {
+
+
+function Icon({ open }: { open: boolean }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -45,8 +47,7 @@ const LiveEvents = () => {
     axiosInstance
       .get('/get-live')
       .then((response) => {
-        const filteredLive = response.data.live.filter((event) => !event.finished);
-        setLive(filteredLive);
+        setLive(response.data.data);
       })
       .catch((error) => {
         console.log('here', error);
@@ -64,7 +65,7 @@ const LiveEvents = () => {
     >
       <Accordion
         open={alwaysOpen}
-        icon={<Icon open={handleAlwaysOpen} />}
+        icon={alwaysOpen ? <Icon open={true} /> : <Icon open={false} />}
         placeholder={undefined}
         onPointerEnterCapture={undefined}
         onPointerLeaveCapture={undefined}
@@ -100,10 +101,13 @@ const LiveEvents = () => {
                   <Link to={data.url} className="text-blue-300">
                     {data.url}
                   </Link>
+                    <span className='ml-28 text-blue-900'> Click the link to join the live stream</span>
                 </CardBody>
+              
                 <svg className="absolute top-7 right-8" width="20" height="20">
                   <circle cx="15" cy="5" r="5" fill="red" />
                 </svg>
+              
               </Card>
             );
           })}

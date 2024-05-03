@@ -15,6 +15,7 @@ const Login = () => {
 
 
     const onFailure=(res: GoogleLoginResponse | GoogleLoginResponseOffline)=>{
+       
         if('profileObj' in res){
             console.log("login failure some eror occured:" , res.profileObj);
             
@@ -25,7 +26,8 @@ const Login = () => {
     }
 
   return (
-    <div id="signInButton">
+
+        <div id="signInButton">
             <GoogleLogin
                 clientId={clientId}
                 buttonText='Login'

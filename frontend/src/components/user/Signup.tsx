@@ -103,7 +103,7 @@ const UserSignupForm = () => {
                 className="mt-10 rounded-none text-center"
                 placeholder={undefined}
               >
-                <Typography variant="h4" color="balck" placeholder={undefined}>
+                <Typography variant="h4" color="black" placeholder={undefined}>
                   User - Signup
                 </Typography>
               </CardHeader>

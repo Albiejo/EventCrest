@@ -35,14 +35,14 @@ const VendorTypeList=()=> {
       .catch((error) => {
         console.error("Error fetching users:", error);
       });
-  }, [vendorType , openEditBox , openDeleteBox]); 
+  }, [ openEditBox , openDeleteBox]); 
 
 
 
   const handleDelete=(Id:string)=>{
     console.log("id is :",Id)
     axiosInstanceAdmin.delete(`/deleteType?Id=${Id}` , {withCredentials:true})
-    .then((response)=>{
+    .then(()=>{
       setVendorType(prevVendorTypes => prevVendorTypes.filter(type => type._id !== Id));
       navigate("/admin/vendor-types")
     }).catch((error) => {

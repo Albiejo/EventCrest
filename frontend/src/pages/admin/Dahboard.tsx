@@ -2,14 +2,10 @@ import { useEffect, useState } from 'react'
 import '../../../public/css/vendor-unauth.css'
 import { axiosInstance } from '../../Api/axiosinstance';
 import { axiosInstanceAdmin } from '../../Api/axiosinstance';
-import { useSelector } from 'react-redux';
-import AdminRootState from '../../Redux/rootstate/AdminState';
-// import RevenueChart from '../../Components/Admin/RevenueChart ';
 import CardDataStats from '../../Components/Vendor/CardDataStats';
 import RevenueChart from '../../Components/Admin/Revenuechart';
 
 function Dashboard() {
-  const admin = useSelector((state:AdminRootState)=>state.admin.admindata)
 
   
   

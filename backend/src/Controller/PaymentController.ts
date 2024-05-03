@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { addNewPayment , getPayments , updateAdminWallet , CountTotalPayments} from "../Service/paymentService";
 const Stripe = require("stripe");
 require("dotenv").config();
-import { PaymentSession } from "../util/Interfaces";
+import { PaymentSession } from "../Util/Interfaces";
 import { handleError } from "../Util/handleError";
 
 

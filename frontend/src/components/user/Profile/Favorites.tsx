@@ -3,7 +3,7 @@ import VendorListingCard from "../../Home/VendorListingCard";
 import { axiosInstance } from "../../../Api/axiosinstance";
 import UserRootState from "../../../Redux/rootstate/UserState";
 import { useSelector } from "react-redux";
-import Footer from "../../Home/Footer";
+
 
 
 interface Vendors {
@@ -15,6 +15,7 @@ interface Vendors {
     isActive: boolean;
     totalBooking:number;
     coverpicUrl:string;
+    OverallRating:number
   }
 
   

@@ -1,4 +1,4 @@
-import { Typography, Button, Card, CardBody } from "@material-tailwind/react";
+import { Typography } from "@material-tailwind/react";
 
 
 const Hero3 = () => {

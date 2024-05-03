@@ -17,10 +17,13 @@ import { setVendorInfo } from '../../Redux/slices/VendorSlice';
 
 
 
+
+
+
 export const Reviews = () => {
   
 
-  
+
   const vendor = useSelector(
     (state: VendorRootState) => state.vendor.vendordata,
   );
@@ -40,7 +43,7 @@ export const Reviews = () => {
 
 
   const handleOpen = (reviewId: string) => {
-    setCurrentReviewId(reviewId); // Set the current review ID
+    setCurrentReviewId(reviewId);
     setOpen(true);
   };
 
@@ -49,9 +52,9 @@ export const Reviews = () => {
     const isOpen = openAccordions.includes(index);
     setOpenAccordions((prevState) => {
       if (isOpen) {
-        return prevState.filter((item) => item !== index); // Close the accordion
+        return prevState.filter((item) => item !== index); 
       } else {
-        return [...prevState, index]; // Open the accordion
+        return [...prevState, index];
       }
     });
   };
@@ -362,7 +365,3 @@ export const Reviews = () => {
     </DefaultLayout>
   );
 };
-
-function dispatch(arg0: { payload: any; type: "vendor/setVendorInfo"; }) {
-  throw new Error('Function not implemented.');
-}

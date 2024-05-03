@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy } from 'react';
 
 const Hero = lazy(() => import('../../Components/Home/Hero'));
 const Footer = lazy(() => import('../../Components/Home/Footer'));

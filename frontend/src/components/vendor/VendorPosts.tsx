@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import VendorRootState from "../../Redux/rootstate/VendorState";
 
 
-// Define the interface for your response data
+
 interface Post {
  imageUrl: string;
  _id: string;

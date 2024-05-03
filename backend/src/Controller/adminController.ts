@@ -88,6 +88,16 @@ class AdminController {
     }
   }
 
+  async countNotifications(req: Request, res: Response){
+    try {
+      const adminId:string = req.query.adminId as string;
+      const data  = await adminService.countNotification(adminId)
+      return res.status(200).json({data:data});
+    } catch (error) {
+      handleError(res, error, "MarkasRead");
+    }
+  }
+
 
   async getRevenue(req: Request, res: Response): Promise<void> {
     try {

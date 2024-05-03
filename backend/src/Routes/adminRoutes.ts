@@ -43,6 +43,8 @@ router.get('/getall-payment-details',authenticate,PaymentController.getAllPaymen
 router.get('/getallBookings',authenticate ,bookingController.getallBookings)
 
 router.get('/revenue' , authenticate , adminController.getRevenue)
+router.get('/notificationCount' ,authenticate , adminController.countNotifications)
+
 
 export default router;
 

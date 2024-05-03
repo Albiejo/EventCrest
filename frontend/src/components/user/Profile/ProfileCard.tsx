@@ -9,7 +9,6 @@ import {
 } from "@material-tailwind/react";
 import UserRootState from "../../../Redux/rootstate/UserState";
 import { useSelector,useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { axiosInstance } from "../../../Api/axiosinstance";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -50,7 +49,7 @@ const ProfileCard = () => {
 
 
 
-  const checkerror = (file)=>{
+  const checkerror = (file :File )=>{
 
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
     if (!allowedTypes.includes(file?.type)) {
@@ -75,11 +74,12 @@ const ProfileCard = () => {
 
 
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
-    if (!allowedTypes.includes(file?.type)) {
-     toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
-     return;
-   }
 
+    if (!allowedTypes.includes((file as File).type)) {
+      toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
+      return;
+    }
+ 
 
     axiosInstance
       .put(`/updateProfile?userid=${user?._id}`, formData, {

@@ -73,7 +73,7 @@ const Profile = () => {
         { vendorId: vendor?._id },
         { withCredentials: true }
       )
-      .then((response) => {
+      .then(() => {
 
         toast.success("Requested for Verification!");
       })

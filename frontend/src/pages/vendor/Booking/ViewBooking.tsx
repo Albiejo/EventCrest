@@ -24,7 +24,17 @@ interface Booking {
   status: string;
   payment_status: string;
 }
-
+const initialBookingState: Booking = {
+  _id: "",
+  date: "",
+  name: "",
+  eventName: "",
+  city: "",
+  pin: 0,
+  mobile: 0,
+  status: "",
+  payment_status: ""
+};
 
 
 const ViewBooking = () => {
@@ -32,7 +42,7 @@ const ViewBooking = () => {
 
 
 
-  const [bookings, setBookings] = useState<Booking>({});
+  const [bookings, setBookings] = useState<Booking>(initialBookingState);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get('id');
@@ -263,7 +273,7 @@ const ViewBooking = () => {
         <UpdateStatus
           bookingId={bookings._id}
           onStatusChange={handleStatusChange}
-          vendorid={vid}
+          vendorid={vid ?? ""} 
         />
       </div>
 

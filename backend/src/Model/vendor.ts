@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
-import {Vendor , Lock , Review , Notification} from '../util/Interfaces';
+import {Vendor , Lock , Review , Notification} from '../Util/Interfaces';
 
 
 

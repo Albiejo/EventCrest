@@ -98,7 +98,7 @@ const handleResendOtp=()=>{
  location.pathname === "/vendor/verify"
           ? axiosInstanceVendor
               .get("/resendOtp", { withCredentials: true })
-              .then((response) => {
+              .then(() => {
                 startTimer();
                 toast.success("Successfully resend otp..!");
                 navigate("/verify");
@@ -109,7 +109,7 @@ const handleResendOtp=()=>{
               })
           : axiosInstance
               .get("/resendOtp",  { withCredentials: true })
-              .then((response) => {
+              .then(() => {
                 startTimer();
                 toast.success("Successfully resend otp..!");
                 navigate("/verify");

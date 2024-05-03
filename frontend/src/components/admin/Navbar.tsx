@@ -21,23 +21,24 @@ import AdminRootState from "../../Redux/rootstate/AdminState";
 
 
 
-
 const AdminNavbar=()=> {
 
 
 
   const [openNav, setOpenNav] = React.useState(false);
   const isAdminSignedIn = useSelector((state: AdminState) => state.admin.isAdminSignedIn);
-  const[unreadlength , setunreadlength] = useState(0);
+  const[unreadlength , setunreadlength] = useState<number | undefined>(0);
   const navigate = useNavigate();
   const dispatch= useDispatch();
 
 
   const admin  = useSelector((state:AdminRootState)=>state.admin.admindata)
-  const unreadNotificationsCount = admin?.notifications?.filter(notification => notification.Read === false);
-
+  
+  
   useEffect(()=>{
-    setunreadlength(unreadNotificationsCount?.length)
+    axiosInstanceAdmin.get(`/notificationCount?adminId=${admin?._id}`).then((res)=>{
+      setunreadlength(res.data.data.notification)
+    })
   },[admin]) 
 
 
@@ -49,6 +50,8 @@ const AdminNavbar=()=> {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+
 
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -84,7 +87,7 @@ const AdminNavbar=()=> {
           <Link to='/admin/notifications'>
                <i className="fa-solid fa-bell ml-6 cursor-pointer" style={{ color: '#ffffff' }}></i>
           </Link>
-                {unreadlength > 0 && (
+                {unreadlength && unreadlength > 0 &&(
                   
                   <div style={{ position: 'absolute', top: '1%',right:'50%' , backgroundColor: 'red', borderRadius: '50%', padding: '3px ', fontSize: '10px', color: '#ffffff' }}>
                     {unreadlength}

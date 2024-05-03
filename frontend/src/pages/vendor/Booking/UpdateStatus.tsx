@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -17,7 +17,6 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import UserRootState from '../../../Redux/rootstate/UserState';
 import { setUserInfo } from '../../../Redux/slices/UserSlice';
-import { useNavigate } from 'react-router-dom';
 
 
 

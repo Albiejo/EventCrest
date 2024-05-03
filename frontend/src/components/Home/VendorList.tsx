@@ -4,7 +4,7 @@ import {useState ,useEffect} from "react"
 import {
     Typography,
   } from "@material-tailwind/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import VendorCard from "./VendorListingCard";
 import LiveEvents from "./LiveEvents";
 
@@ -41,7 +41,7 @@ const VendorList=()=> {
         axiosInstance
       .get('/getvendors',{withCredentials:true})
       .then((response) => {
-        const sortedVendors = response.data.vendors.sort((a, b) => b.OverallRating - a.OverallRating);
+        const sortedVendors = response.data.vendors.sort((a: { OverallRating: number }, b: { OverallRating: number }) => b.OverallRating - a.OverallRating);
         setVendors(sortedVendors);
       })
       .catch((error) => {
@@ -79,7 +79,7 @@ const VendorList=()=> {
           id="voice-search"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="bg-gray-50 border-2 border-blue-800 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Search vendors, book dates etc..."
           required
         />

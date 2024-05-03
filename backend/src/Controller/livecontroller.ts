@@ -9,8 +9,7 @@ class LiveController{
 
     try {
       const data = await getAllLive();
-      console.log("data",data);
-      return res.status(200).json({ live: data });
+      return res.status(200).json({ data: data });
     } catch (error) {
       handleError(res, error, "getLive");
     }

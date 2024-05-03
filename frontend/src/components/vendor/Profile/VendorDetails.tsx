@@ -33,7 +33,7 @@ useEffect(()=>{
   const handleclick=()=>{
     axiosInstance.post(`/add-Favorite-Vendor?vendorId=${vendor?._id}&&userId=${user?._id}`,
     {withCredentials:true})
-    .then((response)=>{
+    .then(()=>{
       toast.success("vendor added to favorites.");
     })
     .catch((error) => {

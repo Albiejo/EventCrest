@@ -1,8 +1,16 @@
 import './Message.css'
 import {format} from 'timeago.js'
+import { MessageType } from '../../../Types/messageType';
 
 
-const Message = ({message,own}) => {
+interface MessageProps {
+  message: MessageType;
+  own: boolean;
+}
+
+
+
+const Message: React.FC<MessageProps> = ({message,own}) => {
 
 
     return (

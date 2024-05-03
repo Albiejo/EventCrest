@@ -33,7 +33,7 @@ export default function Sidebar() {
 
 
 
-  const handleLogout=(e: React.MouseEvent<HTMLButtonElement>)=>{
+  const handleLogout=(e: React.MouseEvent<HTMLDivElement , MouseEvent>)=>{
     e.preventDefault();
     axiosInstance.get(USERROUTES.LOGOUT)
       .then(() => {
@@ -125,23 +125,7 @@ export default function Sidebar() {
             </ListItem>
             </Link>
 
-             {/* <Link to={USERROUTES.CHAT}>
-            <ListItem  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} className="text-white">
-              <ListItemPrefix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <InboxIcon className="h-5 w-5 " />
-              </ListItemPrefix>
-              Inbox
-              <ListItemSuffix  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-                <Chip
-                  value="14"
-                  size="sm"
-                  variant="ghost"
-                  color="blue-gray"
-                  className="rounded-full"
-                />
-              </ListItemSuffix>
-            </ListItem>
-              </Link> */}
+          
         
            
             <hr className="my-2 border-blue-gray-50" />

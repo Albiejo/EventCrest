@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { toast } from "react-toastify";
 import {axiosInstanceVendor} from "../../../Api/axiosinstance";
-import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { DialogWithImage } from "./DialogWithImage";
-import { AxiosResponse } from 'axios'; // Import AxiosResponse
+import { AxiosResponse } from 'axios'; 
 
 
 interface Post {
@@ -18,8 +16,6 @@ interface Post {
 const VendorPosts: React.FC = () => {
 
 
- const vendor = useSelector((state: VendorRootState) => state.vendor.vendordata);
- const vendorId = vendor?._id;
  const [posts, setPosts] = useState<Post[]>([]);
  const [fetchTrigger, setFetchTrigger] = useState(false);
  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
@@ -34,7 +30,7 @@ const VendorPosts: React.FC = () => {
 
 
  useEffect(() => {
-    console.log("vendor id is " + vendorid);
+   
     axiosInstanceVendor.get<Post[]>(`/posts?vendorid=${vendorid}` , {withCredentials:true}).then((response: AxiosResponse<Post[]>) => {
       setPosts(response.data);
       console.log("received data length :", response.data.length);

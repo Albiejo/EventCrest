@@ -4,6 +4,6 @@ export interface AdminData{
     password:string;
     createdAt:Date;
     isAdmin:boolean;
-    wallet:number;
+    Wallet:number;
     refreshToken:string;
 }

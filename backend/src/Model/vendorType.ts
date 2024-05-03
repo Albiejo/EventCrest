@@ -1,10 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { VendorType } from '../Util/Interfaces';
 
-
-export interface VendorType {
-    type:string;
-    status:boolean;
-}
 
 export interface VendorTypeDocument extends VendorType, Document {}
 

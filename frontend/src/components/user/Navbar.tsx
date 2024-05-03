@@ -19,7 +19,12 @@ import {format} from 'timeago.js'
 import { USERROUTES } from "../../Constants/constants";
 
 
-
+interface Notification {
+  _id: string; 
+  message: string;
+  timestamp: Date;
+  Read: boolean;
+}
 
 const MyNavbar=()=> {
  
@@ -29,13 +34,14 @@ const MyNavbar=()=> {
   const[unreadlength , setunreadlength] = useState(0);
   const user  = useSelector((state:UserRootState)=>state.user.userdata)
 
+  const notifications: Notification[] = (user?.notifications || []) as Notification[];
 
-  const unreadNotificationsCount = user?.notifications?.filter(notification => notification.Read === false);
+  const unreadNotificationsCount = notifications?.filter(notification => notification.Read === false);
 
-  const notification1 =  user?.notifications[user?.notifications.length-1];
-  const notification2 = user?.notifications[user?.notifications.length-2]
-  const formattedTimestamp1 = format(notification1?.timestamp)
-  const formattedTimestamp2 = format(notification1?.timestamp)
+  const notification1=  user?.notifications[user?.notifications.length-1] as Notification | undefined;
+  const notification2 = user?.notifications[user?.notifications.length-2] as Notification | undefined;
+  const formattedTimestamp1 =  notification1 ? format(notification1.timestamp, 'yyyy-MM-dd HH:mm:ss') : '';
+  const formattedTimestamp2 = notification2 ? format(notification2.timestamp, 'yyyy-MM-dd HH:mm:ss') : '';
 
  useEffect(()=>{
     setunreadlength(unreadNotificationsCount?.length)

@@ -69,8 +69,6 @@ export const createRefreshToken = async (refreshToken:string)=>{
  
 
     const user = await User.findById(decoded._id);
-    console.log("user",user)
-      
   
 
     if (!user || user.refreshToken !== refreshToken) {
@@ -83,7 +81,7 @@ export const createRefreshToken = async (refreshToken:string)=>{
 
 
   } catch (error) {
-    console.error("Error fetching createRefreshToken", error);
+    console.error("Error fetching user createRefreshToken", error);
     throw new CustomError("Unable to fetch createRefreshToken", 500);
   }
 }

@@ -1,16 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 import { axiosInstanceAdmin } from '../../Api/axiosinstance';
+import { ChartConfiguration } from 'chart.js';
 
 interface RevenueData {
   amount: number;
   createdAt: Date;
 }
 
+
+
+
+
+
+
 const RevenueChart: React.FC = () => {
+
+
+
+
   const [revenueData, setRevenueData] = useState<RevenueData[]>([]);
   const chartRef = useRef<HTMLCanvasElement | null>(null);
-  const chartInstance = useRef<Chart<"line"> | null>(null);
+  const chartInstance = useRef<Chart<"bar", (number | [number, number] | null)[], unknown> | null>(null);
 
   useEffect(() => {
     fetchRevenueData();
@@ -48,7 +59,7 @@ const renderChart = () => {
   });
   const walletBalances = revenueData.map(() => cumulativeBalance);
 
-  const chartConfig: Chart.ChartConfiguration<"bar"> = {
+  const chartConfig: ChartConfiguration<"bar"> = {
     type: 'bar',
     data: {
       labels: dates,

@@ -40,9 +40,9 @@ import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
   
     const navigate = useNavigate();
   
-    const handleerror = (file) =>{
+    const handleerror = (file : File | undefined) =>{
       const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
-      if (!allowedTypes.includes(file?.type)) {
+      if (file && !allowedTypes.includes(file?.type)) {
        toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
        return;
      }
@@ -68,7 +68,7 @@ import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
 
 
      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif' , 'image/jpg'];
-     if (!allowedTypes.includes(file?.type)) {
+     if (file && !allowedTypes.includes(file?.type)) {
       toast.error("Only JPEG, JPG , PNG, and GIF image formats are allowed.");
       return;
     }
