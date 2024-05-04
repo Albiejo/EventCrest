@@ -11,8 +11,14 @@ import cors from 'cors';
 import session from 'express-session';
 import cookieParser from "cookie-parser";
 import { userEmailVerifyOtp, userOtpExpiration, vendorOtpExpiration } from './Middleware/OtpExpiration';
+import path from 'path'
+import { Request,Response } from 'express';
 
 
+
+
+const { initializeSocket } = require('./socket')
+import {createServer} from 'http';
 
 dotenv.config();
 
@@ -20,12 +26,18 @@ connectDB();
 
 const app = express();
 
+const server = createServer(app)
+
+
+
+
 app.use(cors({
-  origin:'http://localhost:5000',
+  origin:['http://localhost:5000' ,"https://eventcrest.online"],
   credentials:true
 }))
 
-
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname,'../../Frontend/dist')))
 
 
 
@@ -52,6 +64,12 @@ app.use('/api/user' , userRoutes);
 app.use('/api/vendor',vendorRoutes)
 app.use('/api/conversation' , chatRoute)
 app.use('/api/messages', messageRoute)
+
+initializeSocket(server);
+
+app.get('*',(req:Request,res:Response) =>{
+  res.sendFile(path.join(__dirname,'../../Frontend/dist/index.html'))
+})
 
 
 const PORT = process.env.PORT;
