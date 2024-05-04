@@ -609,7 +609,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           
                   onClick={handleLogout}
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-white duration-300 ease-in-out 
-                  ${pathname.includes('tables') ? 'bg-graydark dark:bg-meta-4' : 'bg-green-500 hover:bg-red-900 dark:hover:bg-green-700'}
+                  ${pathname.includes('tables') ? 'bg-graydark dark:bg-meta-4' : 'bg-red-900 dark:hover:bg-green-700'}
                 `} placeholder={undefined}>
                    <svg
                           className="fill-current"

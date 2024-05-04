@@ -1,4 +1,4 @@
-import DefaultLayout from '../../../Layout/DefaultLayout'
+import DefaultLayout from '../../../Layout/VendorLayout'
 import Breadcrumb from '../../../Components/Vendor/Breadcrumbs/Breadcrumb';
 import BookingTable from '../../../Components/Vendor/Tables/BookingTable';
 

@@ -12,7 +12,7 @@ import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import VendorRootState from "../../../Redux/rootstate/VendorState";
 import { axiosInstanceVendor } from "../../../Api/axiosinstance";
-import DefaultLayout from "../../../Layout/DefaultLayout";
+import DefaultLayout from "../../../Layout/VendorLayout";
 import Breadcrumb from "../../../Components/Vendor/Breadcrumbs/Breadcrumb";
   
 

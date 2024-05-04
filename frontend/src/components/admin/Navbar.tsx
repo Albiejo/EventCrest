@@ -69,7 +69,7 @@ const AdminNavbar=()=> {
  
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', zIndex: 100 }} >
-    <Navbar className="px-4 lg:px-8 lg:py-2 max-w-screen-3xl" placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#002F5E' }} >
+    <Navbar className="px-4 lg:px-8 lg:py-2 max-w-screen-3xl " placeholder={undefined} style={{ borderRadius: 0,border:0,backgroundColor:'#002F5E' }} >
       <div className="container mx-auto justify-between flex items-center  text-blue-gray-900">
         <Typography
                   className="mr-4 cursor-pointer py-1.5 font-medium " color="white" placeholder={undefined}        >

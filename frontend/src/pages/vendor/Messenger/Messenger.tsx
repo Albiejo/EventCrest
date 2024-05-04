@@ -7,7 +7,7 @@ import VendorRootState from '../../../Redux/rootstate/VendorState';
 import { useEffect, useRef, useState } from 'react';
 import { axiosInstanceChat, axiosInstanceMsg } from '../../../Api/axiosinstance';
 import {io} from 'socket.io-client';
-import DefaultLayout from '../../../Layout/DefaultLayout';
+import DefaultLayout from '../../../Layout/VendorLayout';
 import Picker from '@emoji-mart/react';
 import {
     S3Client,

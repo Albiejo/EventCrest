@@ -75,12 +75,19 @@ export default function Sidebar() {
         <Card
           shadow={false}
           className="h-full w-full p-4 rounded-none border-8 border-white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}   style={{background:'#002F5E'}}     >
-          <div className="mb-2 flex items-center gap-4 p-4">
-           
-            <Typography variant="h5" color="white"  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
-             Admin panel
-            </Typography>
-          </div>
+          
+          <div className="mb-2 flex items-center justify-between p-4"> 
+      <Typography variant="h5" color="white" placeholder={undefined}>
+        Admin panel
+      </Typography>
+
+      <div className="cursor-pointer" onClick={closeDrawer}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-chevron-left" style={{ width: '24px', height: '24px' }}>
+          <circle cx="12" cy="12" r="10" fill="rgba(0, 0, 0, 0.5)" />
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </div>
+    </div>
           
           <List  placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             

@@ -1,4 +1,4 @@
-import DefaultLayout from '../../Layout/DefaultLayout'
+import DefaultLayout from '../../Layout/VendorLayout'
 import Breadcrumb from '../../Components/Vendor/Breadcrumbs/Breadcrumb'
 import { useDispatch, useSelector } from 'react-redux'
 import VendorRootState from '../../Redux/rootstate/VendorState'
